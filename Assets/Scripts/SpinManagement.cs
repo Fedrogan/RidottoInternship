@@ -113,7 +113,6 @@ public class SpinManagement : MonoBehaviour
 
     public void SlowdownReelSpin(RectTransform reel)
     {
-        print("SlowDownPos = " + reel.localPosition.y);
         var currReelPos = reel.localPosition.y;
         //gameManager.SetSlowingDownState(true);
         gameManager.stopButton.SetActive(false);
@@ -133,7 +132,6 @@ public class SpinManagement : MonoBehaviour
         DOTween.KillAll();
         foreach (RectTransform reel in reels)
         {
-            print("SlowDownPos = " + reel.localPosition.y);
             CorrectReelPos(reel);
             StopReel(reel, true);
         }        
