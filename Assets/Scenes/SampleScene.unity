@@ -545,6 +545,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 753283934}
   m_CullTransparentMesh: 0
+--- !u!224 &778695503 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 29331402027514034, guid: 4e50d0b7a6a41cd45977b40eb4e814c5,
+    type: 3}
+  m_PrefabInstance: {fileID: 2084575429}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &828448601 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9167309973675109206, guid: 4e50d0b7a6a41cd45977b40eb4e814c5,
@@ -1648,7 +1654,7 @@ PrefabInstance:
     - target: {fileID: -8389473205875787052, guid: c903c888c41983c4381af74d2bf80b9c,
         type: 3}
       propertyPath: boostEase
-      value: 8
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: -8389473205875787052, guid: c903c888c41983c4381af74d2bf80b9c,
         type: 3}
@@ -1678,7 +1684,7 @@ PrefabInstance:
     - target: {fileID: -8389473205875787052, guid: c903c888c41983c4381af74d2bf80b9c,
         type: 3}
       propertyPath: slowdownEase
-      value: 27
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: -8389473205875787052, guid: c903c888c41983c4381af74d2bf80b9c,
         type: 3}
@@ -1698,8 +1704,13 @@ PrefabInstance:
     - target: {fileID: -8389473205875787052, guid: c903c888c41983c4381af74d2bf80b9c,
         type: 3}
       propertyPath: boostDuration
-      value: 0.71
+      value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: -8389473205875787052, guid: c903c888c41983c4381af74d2bf80b9c,
+        type: 3}
+      propertyPath: thirdReelParent
+      value: 
+      objectReference: {fileID: 778695503}
     - target: {fileID: -8389473205875787052, guid: c903c888c41983c4381af74d2bf80b9c,
         type: 3}
       propertyPath: reels.Array.size

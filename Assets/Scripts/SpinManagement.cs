@@ -14,6 +14,7 @@ public class SpinManagement : MonoBehaviour
     [SerializeField] private Ease boostEase, slowdownEase;
     [SerializeField] private float delayStep;
     [SerializeField] private int symbolHeigth;
+    [SerializeField] private RectTransform thirdReelParent;
 
     private float correctedSlowDownDistance;
     private float startReelPositionY;
@@ -66,7 +67,8 @@ public class SpinManagement : MonoBehaviour
 
     public void LinearSpin(RectTransform reel)
     {
-        gameManager.stopButton.SetActive(true); //закомментить для автоспина (для тестирования)
+        if (reel.IsChildOf(thirdReelParent)) gameManager.stopButton.SetActive(true); //закомментить для автоспина (для тестирования)
+        print(reel.localPosition.y);
         reel.DOAnchorPosY(spinDistance, -spinDistance / spinSpeed).SetEase(Ease.Linear)
             .OnComplete(delegate
             {
@@ -111,6 +113,7 @@ public class SpinManagement : MonoBehaviour
 
     public void SlowdownReelSpin(RectTransform reel)
     {
+        print("SlowDownPos = " + reel.localPosition.y);
         var currReelPos = reel.localPosition.y;
         //gameManager.SetSlowingDownState(true);
         gameManager.stopButton.SetActive(false);
@@ -130,6 +133,7 @@ public class SpinManagement : MonoBehaviour
         DOTween.KillAll();
         foreach (RectTransform reel in reels)
         {
+            print("SlowDownPos = " + reel.localPosition.y);
             CorrectReelPos(reel);
             StopReel(reel, true);
         }        
