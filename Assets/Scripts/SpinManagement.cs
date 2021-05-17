@@ -15,6 +15,7 @@ public class SpinManagement : MonoBehaviour
     [SerializeField] private float delayStep;
     [SerializeField] private int symbolHeigth;
     [SerializeField] private RectTransform thirdReelParent;
+    [SerializeField] private RectTransform mainCanvas;
 
     private float correctedSlowDownDistance;
     private float startReelPositionY;
@@ -56,6 +57,7 @@ public class SpinManagement : MonoBehaviour
 
     public void StartSpinning()
     {
+        print("Scale = " + mainCanvas.localScale.y);
         //isSpinStarted = true; (тестирование)
         for (int i = 0; i < 3; i++)
         {            
@@ -90,6 +92,7 @@ public class SpinManagement : MonoBehaviour
         if (0 <= remaingerOfDivision && remaingerOfDivision <= 199.99f)        
         {
             var correction = 199.99f - remaingerOfDivision;
+            print(correction);
             MakeAllSymbolsMutable(false);
             var target = reel.localPosition.y - correction;
             reel.DOAnchorPosY(target, target / spinSpeed).SetEase(Ease.Linear)
@@ -113,6 +116,7 @@ public class SpinManagement : MonoBehaviour
 
     public void SlowdownReelSpin(RectTransform reel)
     {
+        print("SlowDownPos = " + reel.localPosition.y);
         var currReelPos = reel.localPosition.y;
         //gameManager.SetSlowingDownState(true);
         gameManager.stopButton.SetActive(false);
@@ -132,13 +136,14 @@ public class SpinManagement : MonoBehaviour
         DOTween.KillAll();
         foreach (RectTransform reel in reels)
         {
+            print("SlowDownPos = " + reel.localPosition.y);
             CorrectReelPos(reel);
             StopReel(reel, true);
         }        
     }
 
     void ReelSetDefaultPos(RectTransform reel)
-    {        
+    {   
         if (DOTween.TotalPlayingTweens() == 0) gameManager.playButton.SetActive(true);
         var reelCurrPos = reel.localPosition;
         if (correctedSlowDownDistance != reelCurrPos.y) cellYCorrection = correctedSlowDownDistance - reelCurrPos.y;
@@ -175,4 +180,9 @@ public class SpinManagement : MonoBehaviour
         var slowDownDistance = currReelPos - extraDistance;        
         return slowDownDistance;
     }
+
+    //private void GiveCanvasScale()
+    //{
+    //    pmainCanvas.transform.localScale;
+    //}
 }

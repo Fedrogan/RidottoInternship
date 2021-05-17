@@ -82,6 +82,11 @@ public class GameManagement : MonoBehaviour
     public SymbolData GetFinalScreenSymbol(RectTransform symbol)
     {
         var index = GetFinalSymbolIndex(symbol);
+        //if(index > 11)
+        //{
+        //    index = 0;
+        //}
+        print(index);
         var newSymbol = finalScreens[currentSet].FinalScreenSymbols[index];
         return newSymbol != null ? newSymbol : GetRandomSymbol();        
     }

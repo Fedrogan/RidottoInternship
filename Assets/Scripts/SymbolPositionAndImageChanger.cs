@@ -24,6 +24,7 @@ public class SymbolPositionAndImageChanger : MonoBehaviour
     void ChangeSymbolPosition()
     {
         var offset = symbol.position.y + symbolHeigth * 4;
+        print(offset);
         var newPos = new Vector3(symbol.position.x, offset, symbol.position.z);
         symbol.position = newPos;
         if (isMutable) ChangeSprite();
