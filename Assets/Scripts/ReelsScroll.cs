@@ -2,11 +2,11 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class SpinManagement : MonoBehaviour
+public class ReelsScroll : MonoBehaviour
 {
     #region FIELDS
     [SerializeField] private List<RectTransform> reels;
-    [SerializeField] private List<SymbolPositionAndImageChanger> symbols;
+    [SerializeField] private SymbolsManagement symbolsManager;
     [SerializeField] private GameManagement gameManager;
     [SerializeField] [Range(0, 10000)] private float spinSpeed;
     [SerializeField] private float boostDistance, spinDistance;
@@ -15,7 +15,7 @@ public class SpinManagement : MonoBehaviour
     [SerializeField] private float delayStep;
     [SerializeField] private int symbolHeigth;
     [SerializeField] private RectTransform thirdReelParent;
-    [SerializeField] private RectTransform mainCanvas;
+    [SerializeField] private int visibleSymbolsOnReelCount;
 
     private float correctedSlowDownDistance;
     private float startReelPositionY;
@@ -57,9 +57,8 @@ public class SpinManagement : MonoBehaviour
 
     public void StartSpinning()
     {
-        print("Scale = " + mainCanvas.localScale.y);
         //isSpinStarted = true; (тестирование)
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < reels.Count; i++)
         {            
             var reel = reels[i];
             reel.DOAnchorPosY(boostDistance, boostDuration).SetDelay(i * delayStep)
@@ -69,8 +68,7 @@ public class SpinManagement : MonoBehaviour
 
     public void LinearSpin(RectTransform reel)
     {
-        if (reel.IsChildOf(thirdReelParent)) gameManager.stopButton.SetActive(true); //закомментить для автоспина (для тестирования)
-        print(reel.localPosition.y);
+        if (reel.IsChildOf(thirdReelParent)) gameManager.SetStopButtonActive(true); //закомментить для автоспина (для тестирования)
         reel.DOAnchorPosY(spinDistance, -spinDistance / spinSpeed).SetEase(Ease.Linear)
             .OnComplete(delegate
             {
@@ -81,7 +79,7 @@ public class SpinManagement : MonoBehaviour
         
     private void CorrectReelPos(RectTransform reel)
     {
-        /**КОСТЫЛЬ
+    /**КОСТЫЛЬ
     * следующий "метод-костыль"(или не костыль... пока не до конца разобрался)
     * избавляет от лишней смены символа,
     * которая происходит из-за неточностей при float арифметике.
@@ -92,22 +90,15 @@ public class SpinManagement : MonoBehaviour
         if (0 <= remaingerOfDivision && remaingerOfDivision <= 199.99f)        
         {
             var correction = 199.99f - remaingerOfDivision;
-            print(correction);
-            MakeAllSymbolsMutable(false);
+            symbolsManager.MakeAllSymbolsMutable(false);
             var target = reel.localPosition.y - correction;
             reel.DOAnchorPosY(target, target / spinSpeed).SetEase(Ease.Linear)
                 .OnComplete(() => SlowdownReelSpin(reel));
         }
-        else SlowdownReelSpin(reel);                
+        else SlowdownReelSpin(reel);               
     }
 
-    private void MakeAllSymbolsMutable(bool isMutable)
-    {        
-        foreach (SymbolPositionAndImageChanger symbol in symbols)
-        {
-            symbol.MakeSymbolMutable(isMutable);
-        }
-    }
+    
 
     private void StopReel(RectTransform reel, bool isStopping)
     {
@@ -116,50 +107,38 @@ public class SpinManagement : MonoBehaviour
 
     public void SlowdownReelSpin(RectTransform reel)
     {
-        print("SlowDownPos = " + reel.localPosition.y);
         var currReelPos = reel.localPosition.y;
-        //gameManager.SetSlowingDownState(true);
-        gameManager.stopButton.SetActive(false);
-        MakeAllSymbolsMutable(true);
+        gameManager.SetStopButtonActive(false);
+        symbolsManager.MakeAllSymbolsMutable(true);
         DOTween.Kill(reel);
         correctedSlowDownDistance = CalculateSlowDownDistance(currReelPos);       
         reel.DOAnchorPosY(correctedSlowDownDistance, slowdownDuration).SetEase(slowdownEase)
             .OnComplete(delegate
             {
-                ReelSetDefaultPos(reel);
+                ResetReelPos(reel);
             });
     }
 
     public void SlowdownSpin()
     {
-        gameManager.stopButton.SetActive(false);
+        gameManager.SetStopButtonActive(false);
         DOTween.KillAll();
         foreach (RectTransform reel in reels)
         {
-            print("SlowDownPos = " + reel.localPosition.y);
             CorrectReelPos(reel);
             StopReel(reel, true);
         }        
     }
 
-    void ReelSetDefaultPos(RectTransform reel)
+    void ResetReelPos(RectTransform reel)
     {   
-        if (DOTween.TotalPlayingTweens() == 0) gameManager.playButton.SetActive(true);
+        if (DOTween.TotalPlayingTweens() == 0) gameManager.SetPlayButtonActive(true);
         var reelCurrPos = reel.localPosition;
         if (correctedSlowDownDistance != reelCurrPos.y) cellYCorrection = correctedSlowDownDistance - reelCurrPos.y;
         else cellYCorrection = 0;
         reel.localPosition = new Vector3(reelCurrPos.x, startReelPositionY, reelCurrPos.z);
         StopReel(reel, false);
-        var symbolsCount = reel.childCount;
-        for (int i = 0; i < symbolsCount; i++)
-        {
-            var symbol = reel.GetChild(i);
-            var symbolPos = symbol.localPosition;
-            var newYPos = Mathf.Round(symbolPos.y + correctedSlowDownDistance - cellYCorrection - startReelPositionY);
-            symbol.localPosition =
-                new Vector3(symbolPos.x, newYPos, symbolPos.z);
-        }        
-        //gameManager.SetSlowingDownState(false);
+        symbolsManager.ResetSymbolsPosition(correctedSlowDownDistance, cellYCorrection, startReelPositionY, reel);    
         //reelsStoppedCount++; (тестирование)
     } 
     
@@ -176,13 +155,8 @@ public class SpinManagement : MonoBehaviour
         var symbolsChanged = traveledDistance / symbolHeigth;        
         var integerPart = Mathf.Floor(symbolsChanged);
         var fractionalPart = symbolsChanged - integerPart;
-        var extraDistance = symbolHeigth * 3 + (1 - fractionalPart) * symbolHeigth;
+        var extraDistance = symbolHeigth * visibleSymbolsOnReelCount + (1 - fractionalPart) * symbolHeigth;
         var slowDownDistance = currReelPos - extraDistance;        
         return slowDownDistance;
-    }
-
-    //private void GiveCanvasScale()
-    //{
-    //    pmainCanvas.transform.localScale;
-    //}
+    }    
 }

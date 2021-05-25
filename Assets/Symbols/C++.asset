@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   symbolName: C++
   symbolImage: {fileID: 21300000, guid: acee2c90aafafb54592d51512e139edc, type: 3}
+  symbolID: 1

@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   symbolName: Pascal
   symbolImage: {fileID: 21300000, guid: 93d8e1415852e004982aba14edba98f7, type: 3}
+  symbolID: 6

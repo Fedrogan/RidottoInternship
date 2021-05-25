@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   symbolName: Java
   symbolImage: {fileID: 21300000, guid: 8ca860a7cac576143a00c1be7324e0e7, type: 3}
+  symbolID: 4

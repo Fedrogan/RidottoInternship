@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   symbolName: JS
   symbolImage: {fileID: 21300000, guid: ed12c82563610284488dd427df50ee3f, type: 3}
+  symbolID: 5
