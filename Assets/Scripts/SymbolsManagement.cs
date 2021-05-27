@@ -9,7 +9,8 @@ public class SymbolsManagement : MonoBehaviour
     [SerializeField] private RectTransform mainCanvasRT;
     [SerializeField] private RectTransform[] symbols;
     [SerializeField] private List<SymbolData> symbolsData;
-    [SerializeField] List<FinalScreenSO> finalScreens;
+    [SerializeField] private List<FinalScreenSO> finalScreens;
+    //[SerializeField] private List<WinLine> winLines;
 
     //для проверки на каком риле находится символ
     [SerializeField] private List<RectTransform> reelAnchors;
@@ -20,6 +21,7 @@ public class SymbolsManagement : MonoBehaviour
     private int thirdReelSymbol;
     private int currentSet;
 
+    private SymbolData symbolData;
     private RectTransform symbol;
     private Sprite symbolSprite;
     private float symbolHeigth;
@@ -37,7 +39,7 @@ public class SymbolsManagement : MonoBehaviour
     {
         for (int i = 0; i < symbols.Length; i++)
         {
-            symbol = symbols[i];
+            symbol = symbols[i];            
             CheckSymbolPosition(symbol);
         }        
     }
@@ -66,14 +68,17 @@ public class SymbolsManagement : MonoBehaviour
         var offset = symbol.position.y + symbolHeigth * mainCanvasScale * 4;
         var newPos = new Vector3(symbol.position.x, offset, symbol.position.z);
         symbol.position = newPos;
-        if (isMutable) ChangeSprite(symbol);
+        if (isMutable) ChangeSpriteAndSetSymbolData(symbol);
     }
 
-    private void ChangeSprite(RectTransform symbol)
+    private void ChangeSpriteAndSetSymbolData(RectTransform symbol)
     {
         var newSymbol = symbol.GetComponentInParent<ReelInfo>().isStopping ?
             GetFinalScreenSymbol(symbol) : GetRandomSymbol();
-        symbolSprite = newSymbol.SymbolImage;
+        symbolData = newSymbol;
+        //Debug.Log(symbolData.SymbolID + " " + symbolData.SymbolName);
+        symbol.GetComponent<SlotSymbol>().SymbolSO = symbolData;
+        symbolSprite = symbolData.SymbolImage;
         symbol.GetComponent<Image>().sprite = symbolSprite;
     }
 
@@ -129,5 +134,5 @@ public class SymbolsManagement : MonoBehaviour
     {
         var random = Random.Range(0, 11);
         return symbolsData[random];
-    }
+    }    
 }

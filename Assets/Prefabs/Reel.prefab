@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1971420685692294316}
   - component: {fileID: 5396061997967300301}
   - component: {fileID: 7703848067278046789}
-  - component: {fileID: 5210110298639301098}
+  - component: {fileID: 8014299244686888238}
   m_Layer: 5
   m_Name: Image (3)
   m_TagString: Untagged
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5210110298639301098
+--- !u!114 &8014299244686888238
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -84,12 +84,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2080639541199127406}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dd8b9fd67a4d93429bedccd4636f9c5, type: 3}
+  m_Script: {fileID: 11500000, guid: f823621fce06e534d80301f6cf0cb711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 4379805236261632201, guid: 9975e2d2088a5a84b8c29c111a0291f4,
-    type: 3}
-  isChangeable: 0
+  symbol: {fileID: 0}
 --- !u!1 &2314846520203298885
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +237,7 @@ GameObject:
   - component: {fileID: 4898446429324100579}
   - component: {fileID: 7762358792597496859}
   - component: {fileID: 7363639566028643285}
-  - component: {fileID: 1093218942686612472}
+  - component: {fileID: 3649124827681369573}
   m_Layer: 5
   m_Name: Image (1)
   m_TagString: Untagged
@@ -288,7 +286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -303,7 +301,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1093218942686612472
+--- !u!114 &3649124827681369573
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -312,12 +310,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5784318991681904402}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dd8b9fd67a4d93429bedccd4636f9c5, type: 3}
+  m_Script: {fileID: 11500000, guid: f823621fce06e534d80301f6cf0cb711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 4379805236261632201, guid: 9975e2d2088a5a84b8c29c111a0291f4,
-    type: 3}
-  isChangeable: 0
+  symbol: {fileID: 0}
 --- !u!1 &7087242381691949861
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -418,7 +414,7 @@ GameObject:
   - component: {fileID: 4780876989623588199}
   - component: {fileID: 2624029811773802855}
   - component: {fileID: 50002704695241005}
-  - component: {fileID: 9167309973675109206}
+  - component: {fileID: 4038048649266885162}
   m_Layer: 5
   m_Name: Image (2)
   m_TagString: Untagged
@@ -467,7 +463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -482,7 +478,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &9167309973675109206
+--- !u!114 &4038048649266885162
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -491,12 +487,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7727827831856669880}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dd8b9fd67a4d93429bedccd4636f9c5, type: 3}
+  m_Script: {fileID: 11500000, guid: f823621fce06e534d80301f6cf0cb711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 4379805236261632201, guid: 9975e2d2088a5a84b8c29c111a0291f4,
-    type: 3}
-  isChangeable: 0
+  symbol: {fileID: 0}
 --- !u!1 &8892019014830699879
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,7 +502,7 @@ GameObject:
   - component: {fileID: 9156975060544305318}
   - component: {fileID: 653034792604220519}
   - component: {fileID: 5227760778161037957}
-  - component: {fileID: 7516358394158089547}
+  - component: {fileID: 8919901592685278197}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -557,7 +551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -572,7 +566,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7516358394158089547
+--- !u!114 &8919901592685278197
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -581,9 +575,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8892019014830699879}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dd8b9fd67a4d93429bedccd4636f9c5, type: 3}
+  m_Script: {fileID: 11500000, guid: f823621fce06e534d80301f6cf0cb711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 4379805236261632201, guid: 9975e2d2088a5a84b8c29c111a0291f4,
-    type: 3}
-  isChangeable: 0
+  symbol: {fileID: 0}

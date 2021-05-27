@@ -116,6 +116,7 @@ public class ReelsScroll : MonoBehaviour
             .OnComplete(delegate
             {
                 ResetReelPos(reel);
+                if (reel.IsChildOf(thirdReelParent)) gameManager.CheckWin();
             });
     }
 
@@ -138,7 +139,7 @@ public class ReelsScroll : MonoBehaviour
         else cellYCorrection = 0;
         reel.localPosition = new Vector3(reelCurrPos.x, startReelPositionY, reelCurrPos.z);
         StopReel(reel, false);
-        symbolsManager.ResetSymbolsPosition(correctedSlowDownDistance, cellYCorrection, startReelPositionY, reel);    
+        symbolsManager.ResetSymbolsPosition(correctedSlowDownDistance, cellYCorrection, startReelPositionY, reel);
         //reelsStoppedCount++; (тестирование)
     } 
     

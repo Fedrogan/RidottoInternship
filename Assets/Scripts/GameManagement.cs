@@ -7,6 +7,7 @@ public class GameManagement : MonoBehaviour
     
     [SerializeField] private ReelsScroll reelsScroller;
     [SerializeField] private SymbolsManagement symbolsManager;
+    [SerializeField] private WinLinesCheck winLinesChecker;
     [SerializeField] private GameObject playButton, stopButton;    
     #endregion
 
@@ -35,5 +36,10 @@ public class GameManagement : MonoBehaviour
     public void SetStopButtonActive(bool active)
     {
         stopButton.SetActive(active);
+    }
+
+    public void CheckWin()
+    {
+        winLinesChecker.CheckWin();
     }
 } 

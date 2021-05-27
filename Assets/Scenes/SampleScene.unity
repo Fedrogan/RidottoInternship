@@ -840,6 +840,60 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 2084575429}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1491762240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1491762242}
+  - component: {fileID: 1491762241}
+  m_Layer: 0
+  m_Name: WinLinesChecker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1491762241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491762240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00bedea127bedab4ca0125eb19a93667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  winLines:
+  - {fileID: 11400000, guid: 3a093154c7fb35b4b915c7b6ea73b5c2, type: 2}
+  - {fileID: 11400000, guid: fa1661084daa8be4595ce03a533c02ff, type: 2}
+  - {fileID: 11400000, guid: 50b6b06d5efd0ad40a9ec8dbac230c92, type: 2}
+  - {fileID: 11400000, guid: 268da23c6f72f0f48b3017645a6920d4, type: 2}
+  - {fileID: 11400000, guid: a120494bcb9e3ee48ab51815b32d0cbf, type: 2}
+  - {fileID: 11400000, guid: a13a2608cfcc8b74f823109660806166, type: 2}
+  - {fileID: 11400000, guid: d9bd0e0d4b347bd4288f49e189e7b044, type: 2}
+  reel1: {fileID: 1803948926}
+  reel2: {fileID: 1493713955}
+  reel3: {fileID: 493297188}
+--- !u!4 &1491762242
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491762240}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1493713955 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4766156959533758151, guid: 4e50d0b7a6a41cd45977b40eb4e814c5,
@@ -1720,7 +1774,7 @@ PrefabInstance:
     - target: {fileID: 7142576138334490550, guid: fee65bd3da3cd01439d8270e786ef7ca,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7142576138334490550, guid: fee65bd3da3cd01439d8270e786ef7ca,
         type: 3}
@@ -1861,6 +1915,11 @@ PrefabInstance:
       propertyPath: symbolsManager
       value: 
       objectReference: {fileID: 1220991902}
+    - target: {fileID: 4210293881386946375, guid: 0d956a00007d1194cb7bf23751c02392,
+        type: 3}
+      propertyPath: winLinesChecker
+      value: 
+      objectReference: {fileID: 1491762241}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d956a00007d1194cb7bf23751c02392, type: 3}
 --- !u!1001 &4290248709656363100
@@ -1968,7 +2027,7 @@ PrefabInstance:
     - target: {fileID: 4290248710876797891, guid: 05a13014754f93b40bcb9f83d533eb9f,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4290248710876797891, guid: 05a13014754f93b40bcb9f83d533eb9f,
         type: 3}
