@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,11 +16,14 @@ public class SymbolsManagement : MonoBehaviour
     //для проверки на каком риле находится символ
     [SerializeField] private List<RectTransform> reelAnchors;
 
+    private readonly int reelSymbolsCount = 4;
+    private readonly int defaultExitYPos = 240;
+
     //для чтения финальных символов
     private int firstReelSymbol;
     private int secondReelSymbol;
     private int thirdReelSymbol;
-    private int currentSet;
+    private int currentSet;    
 
     private SymbolData symbolData;
     private RectTransform symbol;
@@ -57,7 +61,7 @@ public class SymbolsManagement : MonoBehaviour
 
     private void CheckSymbolPosition(RectTransform symbol)
     {
-        if (symbol.position.y <= 240 * mainCanvasScale)
+        if (symbol.position.y <= defaultExitYPos * mainCanvasScale)
         {
             ChangeSymbolPosition(symbol);
         }
@@ -65,7 +69,7 @@ public class SymbolsManagement : MonoBehaviour
     private void ChangeSymbolPosition(RectTransform symbol)
     {
         symbolHeigth = symbol.rect.height;
-        var offset = symbol.position.y + symbolHeigth * mainCanvasScale * 4;
+        var offset = symbol.position.y + symbolHeigth * mainCanvasScale * reelSymbolsCount;
         var newPos = new Vector3(symbol.position.x, offset, symbol.position.z);
         symbol.position = newPos;
         if (isMutable) ChangeSpriteAndSetSymbolData(symbol);
@@ -78,6 +82,10 @@ public class SymbolsManagement : MonoBehaviour
         symbolData = newSymbol;
         //Debug.Log(symbolData.SymbolID + " " + symbolData.SymbolName);
         symbol.GetComponent<SlotSymbol>().SymbolSO = symbolData;
+        if (symbol.GetComponent<SlotSymbol>().DefaultParentReel == null)
+        {
+            symbol.GetComponent<SlotSymbol>().DefaultParentReel = (RectTransform)symbol.parent;
+        }        
         symbolSprite = symbolData.SymbolImage;
         symbol.GetComponent<Image>().sprite = symbolSprite;
     }
@@ -132,7 +140,35 @@ public class SymbolsManagement : MonoBehaviour
     }
     private SymbolData GetRandomSymbol()
     {
-        var random = Random.Range(0, 11);
+        var random = Random.Range(0, symbolsData.Count - 1);
         return symbolsData[random];
-    }    
+    }
+
+    public SlotSymbol GetSymbolOnReelById(RectTransform reel, int id)
+    {
+        var childCount = reel.childCount;
+        var symbolsOnReel = new List<SlotSymbol>();
+
+        for (int i = 0; i < childCount; i++)
+        {
+            if (reel.GetChild(i).GetComponent<RectTransform>().localPosition.y != 0)
+                symbolsOnReel.Add(reel.GetChild(i).GetComponent<RectTransform>().GetComponent<SlotSymbol>());
+        }
+        var sortedSymbols = symbolsOnReel.OrderBy(x => x.GetComponent<RectTransform>().localPosition.y);
+        var sortedSymbolsArray = sortedSymbols.ToArray();
+        return sortedSymbolsArray[id];
+    }
+
+    public List<SlotSymbol> GetSymbolsOnReel(RectTransform reel)
+    {
+        var childCount = reel.childCount;
+        var symbolsOnReel = new List<SlotSymbol>();
+
+        for (int i = 0; i < childCount; i++)
+        {
+            symbolsOnReel.Add(reel.GetChild(i).GetComponent<RectTransform>().GetComponent<SlotSymbol>());
+        }
+        
+        return symbolsOnReel;
+    }
 }

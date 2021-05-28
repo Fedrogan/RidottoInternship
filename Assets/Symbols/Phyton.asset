@@ -15,3 +15,4 @@ MonoBehaviour:
   symbolName: Phyton
   symbolImage: {fileID: 21300000, guid: 9017f1361eab624439add96b9e9360af, type: 3}
   symbolID: 8
+  symbolType: 2

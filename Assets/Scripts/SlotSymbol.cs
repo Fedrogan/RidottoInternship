@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SlotSymbol : MonoBehaviour
 {
     [SerializeField] private SymbolData symbolSO;
+    private RectTransform defaultParentReel;
 
     public SymbolData SymbolSO { get => symbolSO; set => symbolSO = value; }
+    public RectTransform DefaultParentReel { get => defaultParentReel; set => defaultParentReel = value; }
 }

@@ -18,6 +18,7 @@ public class GameManagement : MonoBehaviour
     }
     public void StartSpin()
     {
+        winLinesChecker.ResetWinCheck();
         SetPlayButtonActive(false);
         reelsScroller.StartSpinning();
         symbolsManager.ResetSymbols();

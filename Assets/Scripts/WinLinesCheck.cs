@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DG.Tweening;
@@ -7,77 +6,80 @@ using UnityEngine.UI;
 
 public class WinLinesCheck : MonoBehaviour
 {
+    [SerializeField] private SymbolsManagement symbolsManager;
+    [SerializeField] private AnimationsManagement animationsManager;
     [SerializeField] private List<WinLine> winLines;
-    [SerializeField] private RectTransform reel1;
-    [SerializeField] private RectTransform reel2;
-    [SerializeField] private RectTransform reel3;
-    [SerializeField] private float scaleDuration;
+    [SerializeField] private List<RectTransform> reels;
+    [SerializeField] private Image shadow;
+    
 
-    private Vector3 scale = new Vector3(1.1f, 1.1f);
-    private Vector3 pulseScale = new Vector3(1.2f, 1.2f);
-    private Vector3 rotation = new Vector3(0, 0, 720);
+
 
     private List<SlotSymbol> winningSymbols = new List<SlotSymbol>();
-
-    
-    private SlotSymbol GetSymbolOnReelById(RectTransform reel, int id)
-    {
-        var childCount = reel.childCount;
-        var symbolsOnReel = new List<SlotSymbol>();
-        
-        for (int i = 0; i < childCount; i++)
-        {
-            if (reel.GetChild(i).GetComponent<Transform>().localPosition.y != 0)
-                symbolsOnReel.Add(reel.GetChild(i).GetComponent<Transform>().GetComponent<SlotSymbol>());
-        }
-        var sortedSymbols = symbolsOnReel.OrderBy(x => x.GetComponent<Transform>().localPosition.y);
-        var sortedSymbolsArray = sortedSymbols.ToArray();
-        return sortedSymbolsArray[id];
-    }
+    private List<SlotSymbol> symbolsInLine = new List<SlotSymbol>();
+    private List<SlotSymbol> allSymbols = new List<SlotSymbol>();
 
     public void CheckWin()
-    {
+    {       
         foreach (var winLine in winLines)
         {
-            var symbol1 = GetSymbolOnReelById(reel1, winLine.WinSymbols[0]);
-            var symbol2 = GetSymbolOnReelById(reel2, winLine.WinSymbols[1]);
-            var symbol3 = GetSymbolOnReelById(reel3, winLine.WinSymbols[2]);
-            if (symbol1.SymbolSO.SymbolID == symbol2.SymbolSO.SymbolID && symbol1.SymbolSO.SymbolID == symbol3.SymbolSO.SymbolID)
+            for (int i = 0; i < reels.Count; i++)
             {
-                winningSymbols.Add(symbol1);
-                winningSymbols.Add(symbol2);
-                winningSymbols.Add(symbol3);
+                var symbol = symbolsManager.GetSymbolOnReelById(reels[i], winLine.WinSymbols[i]);
+                symbolsInLine.Add(symbol);                
             }
+            var symbolsInLineData = GetSymbolsData(symbolsInLine);
+            if (symbolsInLineData.Distinct().Count() == 1)
+            {
+                winningSymbols.AddRange(symbolsInLine);
+            }
+            symbolsInLine.Clear();
         }
-        foreach (var winningSymbol in winningSymbols)
+        SetWinningSymbolsMaskable(false);
+        if (winningSymbols.Count > 0)
         {
-            ShowWinAnimation(winningSymbol);
-            
+            shadow.color = new Color(0f, 0f, 0f, 0.5f);
+            animationsManager.ShowWinAnimation(winningSymbols);
         }
-        SetAllSymbolsMaskable();
-        winningSymbols.Clear();
         
     }
 
-    private void ShowWinAnimation(SlotSymbol winningSymbol)
+    private List<SymbolData> GetSymbolsData(List<SlotSymbol> symbolsInLine)
     {
-        var symbolRT = winningSymbol.GetComponent<RectTransform>();
-        var symbolImage = winningSymbol.GetComponent<Image>();
-        symbolImage.maskable = false;
-        var tweener1 = symbolRT.DOScale(scale, 0.5f).OnComplete(() => 
+        var symbolsData = new List<SymbolData>();
+        foreach (var symbol in symbolsInLine)
         {
-            var pulseTween = symbolRT.DOScale(pulseScale, 0.5f).SetLoops(5, LoopType.Yoyo).OnComplete(() =>
-            {
-                var backTween = symbolRT.DOScale(1, 1.2f);                                
-            });
-        });  
+            symbolsData.Add(symbol.SymbolSO);
+        }
+        return symbolsData;
+    }    
+
+    public void ResetWinCheck()
+    {
+        DOTween.KillAll();        
+        foreach (var winningSymbol in winningSymbols)
+        {
+            SetWinningSymbolMaskable(winningSymbol, true);
+            var symbolRT = winningSymbol.GetComponent<RectTransform>();
+            symbolRT.localScale = new Vector3(1, 1, 1);
+            print(winningSymbol.DefaultParentReel);
+            winningSymbol.transform.SetParent(winningSymbol.DefaultParentReel);
+        }
+        winningSymbols.Clear();
+        symbolsInLine.Clear();
+        allSymbols.Clear();
+        shadow.color = new Color(0f, 0f, 0f, 0f);
     }
 
-    private void SetAllSymbolsMaskable()
+    private void SetWinningSymbolsMaskable(bool maskable)
     {
         foreach (var winningSymbol in winningSymbols)
         {
-            winningSymbol.GetComponent<Image>().maskable = true;
+            winningSymbol.GetComponent<Image>().maskable = maskable;
         }
+    }
+    private void SetWinningSymbolMaskable(SlotSymbol symbol, bool maskable)
+    {
+        symbol.GetComponent<Image>().maskable = maskable;
     }
 }
