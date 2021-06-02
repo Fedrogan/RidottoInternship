@@ -5,7 +5,7 @@ using DG.Tweening;
 public class ReelsScroll : MonoBehaviour
 {
     #region FIELDS
-    [SerializeField] private List<RectTransform> reels;
+    [SerializeField] private RectTransform[] reels;
     [SerializeField] private SymbolsManagement symbolsManager;
     [SerializeField] private GameManagement gameManager;
     [SerializeField] [Range(0, 10000)] private float spinSpeed;
@@ -58,7 +58,7 @@ public class ReelsScroll : MonoBehaviour
     public void StartSpinning()
     {
         //isSpinStarted = true; (тестирование)
-        for (int i = 0; i < reels.Count; i++)
+        for (int i = 0; i < reels.Length; i++)
         {            
             var reel = reels[i];
             reel.DOAnchorPosY(boostDistance, boostDuration).SetDelay(i * delayStep)

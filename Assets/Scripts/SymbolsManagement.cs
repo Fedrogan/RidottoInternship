@@ -11,6 +11,7 @@ public class SymbolsManagement : MonoBehaviour
     [SerializeField] private RectTransform[] symbols;
     [SerializeField] private List<SymbolData> symbolsData;
     [SerializeField] private List<FinalScreenSO> finalScreens;
+    [SerializeField] private bool isRandomGame;
     //[SerializeField] private List<WinLine> winLines;
 
     //для проверки на каком риле находится символ
@@ -32,6 +33,8 @@ public class SymbolsManagement : MonoBehaviour
     public bool isMutable;
     private float mainCanvasScale;
     #endregion
+
+    public bool IsRandomGame { get => isRandomGame; }
 
     void Start()
     {
@@ -56,6 +59,7 @@ public class SymbolsManagement : MonoBehaviour
     }
     public void NextSet()
     {
+        print("NextSet");
         _ = currentSet >= finalScreens.Count - 1 ? currentSet = 0 : currentSet += 1;
     }
 
@@ -77,7 +81,7 @@ public class SymbolsManagement : MonoBehaviour
 
     private void ChangeSpriteAndSetSymbolData(RectTransform symbol)
     {
-        var newSymbol = symbol.GetComponentInParent<ReelInfo>().isStopping ?
+        var newSymbol = symbol.GetComponentInParent<ReelInfo>().isStopping && !isRandomGame ?
             GetFinalScreenSymbol(symbol) : GetRandomSymbol();
         symbolData = newSymbol;
         //Debug.Log(symbolData.SymbolID + " " + symbolData.SymbolName);
@@ -170,5 +174,33 @@ public class SymbolsManagement : MonoBehaviour
         }
         
         return symbolsOnReel;
+    }
+
+    public SymbolData[] GetSymbolsData(SlotSymbol[] symbolsInLine)
+    {
+        var symbolsData = new SymbolData[symbolsInLine.Length];
+        var i = 0;
+        foreach (var symbol in symbolsInLine)
+        {
+            symbolsData[i] = symbol.SymbolSO;
+            i++;
+        }
+        return symbolsData;
+    }
+
+    public SlotSymbol[] GetAllSymbols()
+    {
+        var allSymbols = new SlotSymbol[12];
+        int i = 0;
+        for (int j = 0; j < reelAnchors.Count; j++)
+        {
+            var childCount = reelAnchors[j].childCount;
+            for (int k = 0; k < childCount; k++)
+            {
+                allSymbols[i] = reelAnchors[j].GetChild(k).GetComponent<SlotSymbol>();
+                i++;
+            }
+        }
+        return allSymbols;
     }
 }

@@ -15,4 +15,5 @@ MonoBehaviour:
   symbolName: Ruby
   symbolImage: {fileID: 21300000, guid: 000ab5694b836e246b7da74a61e517a9, type: 3}
   symbolID: 9
-  symbolType: 1
+  symbolType: 0
+  symbolCost: 590

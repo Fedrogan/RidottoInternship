@@ -4,82 +4,51 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 
+
 public class WinLinesCheck : MonoBehaviour
 {
     [SerializeField] private SymbolsManagement symbolsManager;
     [SerializeField] private AnimationsManagement animationsManager;
-    [SerializeField] private List<WinLine> winLines;
-    [SerializeField] private List<RectTransform> reels;
-    [SerializeField] private Image shadow;
-    
+    [SerializeField] private WinLine[] winLines;
+    [SerializeField] private RectTransform[] reels;
 
+    private SlotSymbol[] winLineSymbols;
+    private SymbolData[] symbolsInLineData;
 
-
-    private List<SlotSymbol> winningSymbols = new List<SlotSymbol>();
-    private List<SlotSymbol> symbolsInLine = new List<SlotSymbol>();
-    private List<SlotSymbol> allSymbols = new List<SlotSymbol>();
-
-    public void CheckWin()
-    {       
-        foreach (var winLine in winLines)
-        {
-            for (int i = 0; i < reels.Count; i++)
-            {
-                var symbol = symbolsManager.GetSymbolOnReelById(reels[i], winLine.WinSymbols[i]);
-                symbolsInLine.Add(symbol);                
-            }
-            var symbolsInLineData = GetSymbolsData(symbolsInLine);
-            if (symbolsInLineData.Distinct().Count() == 1)
-            {
-                winningSymbols.AddRange(symbolsInLine);
-            }
-            symbolsInLine.Clear();
-        }
-        SetWinningSymbolsMaskable(false);
-        if (winningSymbols.Count > 0)
-        {
-            shadow.color = new Color(0f, 0f, 0f, 0.5f);
-            animationsManager.ShowWinAnimation(winningSymbols);
-        }
-        
+    private void Start()
+    {
+        winLineSymbols = new SlotSymbol[reels.Length];
     }
 
-    private List<SymbolData> GetSymbolsData(List<SlotSymbol> symbolsInLine)
+    public void CheckWin()
     {
-        var symbolsData = new List<SymbolData>();
-        foreach (var symbol in symbolsInLine)
+        foreach (var winLine in winLines)
         {
-            symbolsData.Add(symbol.SymbolSO);
+            for (int i = 0; i < winLine.WinSymbols.Length; i++)
+            {
+                winLineSymbols[i] = symbolsManager.GetSymbolOnReelById(reels[i], winLine.WinSymbols[i]);
+            }
+            symbolsInLineData = symbolsManager.GetSymbolsData(winLineSymbols);
+            
+            if (symbolsInLineData[1] == symbolsInLineData[0] && symbolsInLineData[2] == symbolsInLineData[1])
+            {
+                //SetWinningSymbolsMaskable(winLineSymbols, false);
+                animationsManager.AddWinLineToShowList(winLineSymbols);
+            }
         }
-        return symbolsData;
-    }    
+        animationsManager.StartAnimations();
+    }
 
     public void ResetWinCheck()
     {
-        DOTween.KillAll();        
-        foreach (var winningSymbol in winningSymbols)
-        {
-            SetWinningSymbolMaskable(winningSymbol, true);
-            var symbolRT = winningSymbol.GetComponent<RectTransform>();
-            symbolRT.localScale = new Vector3(1, 1, 1);
-            print(winningSymbol.DefaultParentReel);
-            winningSymbol.transform.SetParent(winningSymbol.DefaultParentReel);
-        }
-        winningSymbols.Clear();
-        symbolsInLine.Clear();
-        allSymbols.Clear();
-        shadow.color = new Color(0f, 0f, 0f, 0f);
+        SetWinningSymbolsMaskable(symbolsManager.GetAllSymbols(), true);
     }
 
-    private void SetWinningSymbolsMaskable(bool maskable)
+    private void SetWinningSymbolsMaskable(SlotSymbol[] winLineSymbols, bool maskable)
     {
-        foreach (var winningSymbol in winningSymbols)
+        foreach (var winningSymbol in winLineSymbols)
         {
             winningSymbol.GetComponent<Image>().maskable = maskable;
         }
-    }
-    private void SetWinningSymbolMaskable(SlotSymbol symbol, bool maskable)
-    {
-        symbol.GetComponent<Image>().maskable = maskable;
     }
 }

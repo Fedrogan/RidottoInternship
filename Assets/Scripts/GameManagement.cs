@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManagement : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class GameManagement : MonoBehaviour
         SetPlayButtonActive(false);
         reelsScroller.StartSpinning();
         symbolsManager.ResetSymbols();
-        symbolsManager.NextSet();
+        if (symbolsManager.IsRandomGame == false) symbolsManager.NextSet();
     }
 
     public void StopSpin()
@@ -32,11 +33,13 @@ public class GameManagement : MonoBehaviour
     }
     public void SetPlayButtonActive(bool active)
     {
-        playButton.SetActive(active);
+        //playButton.SetActive(active);
+        playButton.GetComponent<Button>().interactable = active;
     }
     public void SetStopButtonActive(bool active)
     {
-        stopButton.SetActive(active);
+        //stopButton.SetActive(active);
+        stopButton.GetComponent<Button>().interactable = active;
     }
 
     public void CheckWin()
