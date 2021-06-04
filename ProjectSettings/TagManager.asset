@@ -44,3 +44,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: "\u0421\u0438\u043C\u0432\u043E\u043B"
+    uniqueID: 3166383429
+    locked: 0
+  - name: 1000
+    uniqueID: 2922021631
+    locked: 0
+  - name: 1500
+    uniqueID: 3602909933
+    locked: 0
+  - name: 2000
+    uniqueID: 2024339439
+    locked: 0
+  - name: 2500
+    uniqueID: 4284404783
+    locked: 0
+  - name: "\u0417\u0430\u0442\u0435\u043C\u043D\u0435\u043D\u0438\u0435"
+    uniqueID: 257831275
+    locked: 0
