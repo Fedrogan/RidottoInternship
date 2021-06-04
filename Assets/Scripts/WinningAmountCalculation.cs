@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using System;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -22,23 +23,25 @@ public class WinningAmountCalculation : MonoBehaviour
     private bool isInterrupted;
     private TweenerCore<float, float, FloatOptions> tween;
 
-    private void Start()
-    {
-        GameController.Instance.ReelsStarted += ResetCounter;
-    }
-
     public void CalculateWin(List<SlotSymbol[]> winningSymbols)
     {
+        print("Calculate");
+        print(winningSymbols.Count);
         float winningAmount = 0;
 
         foreach (var line in winningSymbols)
         {
+            print("в цикле");
             for (int i = 0; i < line.Length; i += 3)
             {
-                if (line[i].SymbolSO != null) winningAmount += line[i].SymbolSO.SymbolCost;
+                print(line[i].SymbolSO != null);
+                if (line[i].SymbolSO != null)
+                    print(line[i].SymbolSO.SymbolCost);
+                    winningAmount += line[i].SymbolSO.SymbolCost;
             }            
         }
         value = winningAmount;
+        print(value);
         UpdateValue(0, winningAmount);
     }
 
@@ -75,6 +78,7 @@ public class WinningAmountCalculation : MonoBehaviour
 
                 FinishChangingPrize?.Invoke();
             };
+
             StartCoroutine(CoCount());
         }
     }
@@ -109,6 +113,7 @@ public class WinningAmountCalculation : MonoBehaviour
 
             text.text = temp;
         }
+
     }
 
     private void ShowText(float value)

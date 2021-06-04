@@ -4,11 +4,10 @@ using DG.Tweening;
 using UnityEngine.UI;
 using System.Linq;
 using System.Collections;
-using System;
 
 public class AnimationsManagement : MonoBehaviour
 {
-    public event Action AllAnimationsFinished;
+
     [SerializeField] private WinLinesCheck winLinesChecker;
     [SerializeField] private SymbolsManagement symbolsManager;
     [SerializeField] private WinningAmountCalculation calculator;
@@ -33,30 +32,21 @@ public class AnimationsManagement : MonoBehaviour
         winLinesToShow = new List<SlotSymbol[]>();
         allSymbols = symbolsManager.GetAllSymbols();
     }
-    private void Start()
-    {
-        GameController.Instance.SpinStarted += ResetAnimations;
-    }
 
     public void AddWinLineToShowList(SlotSymbol[] winLine)
     {
-        print("WinLine Added");
         var newLine = winLine.Clone() as SlotSymbol[];
         winLinesToShow.Add(newLine);
     }
 
     public void StartAnimations()
-    {
+    {        
         StartCoroutine(CoShowWinLine());
-        if (winLinesToShow.Count > 0)
+        foreach (var reelBG in reelsBG)
         {
-            foreach (var reelBG in reelsBG)
-            {
-                reelBG.color = Color.gray;
-            }
+            reelBG.color = Color.gray;
         }
     }
-
     public IEnumerator CoShowWinLine()
     {
         foreach (var line in winLinesToShow)
@@ -64,17 +54,8 @@ public class AnimationsManagement : MonoBehaviour
             ShowWinAnimation(line);
             yield return new WaitForSecondsRealtime(pauseBetweenCoroutines);
             ResetAllSymbolsAnimations();
-        }        
-        ResetAnimations();
-        AllAnimationsFinished?.Invoke();
-    }
-
-    private void ResetReelsBG()
-    {
-        foreach (var reelBG in reelsBG)
-        {
-            reelBG.color = Color.white;
         }
+        ResetSpin();
     }
 
     public void ShowWinAnimation(SlotSymbol[] winLineSymbols)
@@ -89,17 +70,16 @@ public class AnimationsManagement : MonoBehaviour
         foreach (var winningSymbol in winLineSymbols)
         {
             var symbolRT = winningSymbol.GetComponent<RectTransform>();
-            winningSymbol.ParticleFrame.SetActive(true);
-            winningSymbol.ParticleSystem.Play();
             var putForwardTweener = symbolRT.DOScale(putForwardScale, putForwardTweenDuration).OnComplete(() =>
             {
-                var pulseTweener = symbolRT.DOScale(pulseScale, pulseTweenDuration).SetLoops(pulseLoops, LoopType.Yoyo)
-                .OnComplete(() =>
+                var pulseTweener = symbolRT.DOScale(pulseScale, pulseTweenDuration).SetLoops(pulseLoops, LoopType.Yoyo).OnComplete(() =>
                 {
                     var backTweener = symbolRT.DOScale(defaultSymboleScale, backTweenDuration);
                 });
             });
         }
+
+        //yield return null;
     }
 
     public void ResetAllSymbolsAnimations()
@@ -108,20 +88,20 @@ public class AnimationsManagement : MonoBehaviour
         {
             var symbolRT = symbol.GetComponent<RectTransform>();
             symbolRT.DOKill();
-            symbol.ParticleFrame.SetActive(false);
-            symbol.ParticleSystem.Stop();
             symbolRT.localScale = defaultSymboleScale;
             symbol.GetComponent<Image>().color = Color.white;
         }
     }
 
-    public void ResetAnimations()
-    {            
-        ResetReelsBG();
+    public void ResetSpin()
+    {
+        foreach (var reelBG in reelsBG)
+        {
+            reelBG.color = Color.white;
+        }
+        calculator.CalculateWin(winLinesToShow);
 
         ResetAllSymbolsAnimations();
-
-        calculator.CalculateWin(winLinesToShow);        
 
         StopAllCoroutines();
 
