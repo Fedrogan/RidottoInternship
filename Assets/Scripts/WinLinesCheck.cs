@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using DG.Tweening;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 
 public class WinLinesCheck : MonoBehaviour
@@ -17,6 +13,7 @@ public class WinLinesCheck : MonoBehaviour
 
     private void Start()
     {
+        GameController.Instance.SpinFinished += CheckWin;
         winLineSymbols = new SlotSymbol[reels.Length];
     }
 
@@ -32,23 +29,9 @@ public class WinLinesCheck : MonoBehaviour
             
             if (symbolsInLineData[1] == symbolsInLineData[0] && symbolsInLineData[2] == symbolsInLineData[1])
             {
-                //SetWinningSymbolsMaskable(winLineSymbols, false);
                 animationsManager.AddWinLineToShowList(winLineSymbols);
             }
         }
         animationsManager.StartAnimations();
-    }
-
-    public void ResetWinCheck()
-    {
-        SetWinningSymbolsMaskable(symbolsManager.GetAllSymbols(), true);
-    }
-
-    private void SetWinningSymbolsMaskable(SlotSymbol[] winLineSymbols, bool maskable)
-    {
-        foreach (var winningSymbol in winLineSymbols)
-        {
-            winningSymbol.GetComponent<Image>().maskable = maskable;
-        }
-    }
+    }    
 }

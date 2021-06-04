@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6500038676613511571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6500038676613511569}
+  - component: {fileID: 6500038676613511570}
+  m_Layer: 0
+  m_Name: AnimationsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6500038676613511569
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6500038676613511571}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 632.7727, y: 458.97888, z: -250.00941}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6500038676613511570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6500038676613511571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 287d9615387b7484d96c8830496faebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  winLinesChecker: {fileID: 0}
+  symbolsManager: {fileID: 0}
+  calculator: {fileID: 0}
+  reelsBG:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  putForwardTweenDuration: 0.2
+  pulseTweenDuration: 0.25
+  backTweenDuration: 0.2
+  pauseBetweenCoroutines: 2
+  pulseLoops: 6
+  putForwardScale: {x: 1.12, y: 1.12, z: 0}
+  pulseScale: {x: 1.3, y: 1.3, z: 0}
