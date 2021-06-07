@@ -11,6 +11,9 @@ public class AnimationsManagement : MonoBehaviour
     public event Action AllAnimationsFinished;
     [SerializeField] private WinLinesCheck winLinesChecker;
     [SerializeField] private SymbolsManagement symbolsManager;
+
+    [SerializeField] private ReelsSymbolManager reelsSymbolManager;
+
     [SerializeField] private WinningAmountCalculation calculator;
 
     [SerializeField] private Image[] reelsBG;
@@ -31,11 +34,12 @@ public class AnimationsManagement : MonoBehaviour
     private void Awake()
     {
         winLinesToShow = new List<SlotSymbol[]>();
-        allSymbols = symbolsManager.GetAllSymbols();
+        
     }
     private void Start()
     {
         GameController.Instance.SpinStarted += ResetAnimations;
+        allSymbols = reelsSymbolManager.GetAllVisibleSymbols();
     }
 
     public void AddWinLineToShowList(SlotSymbol[] winLine)
@@ -89,8 +93,8 @@ public class AnimationsManagement : MonoBehaviour
         foreach (var winningSymbol in winLineSymbols)
         {
             var symbolRT = winningSymbol.GetComponent<RectTransform>();
-            winningSymbol.ParticleFrame.SetActive(true);
-            winningSymbol.ParticleSystem.Play();
+            //winningSymbol.ParticleFrame.SetActive(true);
+            //winningSymbol.ParticleSystem.Play();
             var putForwardTweener = symbolRT.DOScale(putForwardScale, putForwardTweenDuration).OnComplete(() =>
             {
                 var pulseTweener = symbolRT.DOScale(pulseScale, pulseTweenDuration).SetLoops(pulseLoops, LoopType.Yoyo)
@@ -108,8 +112,8 @@ public class AnimationsManagement : MonoBehaviour
         {
             var symbolRT = symbol.GetComponent<RectTransform>();
             symbolRT.DOKill();
-            symbol.ParticleFrame.SetActive(false);
-            symbol.ParticleSystem.Stop();
+            //symbol.ParticleFrame.SetActive(false);
+            //symbol.ParticleSystem.Stop();
             symbolRT.localScale = defaultSymboleScale;
             symbol.GetComponent<Image>().color = Color.white;
         }
@@ -126,5 +130,5 @@ public class AnimationsManagement : MonoBehaviour
         StopAllCoroutines();
 
         winLinesToShow.Clear();
-    }
+    }    
 }

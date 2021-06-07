@@ -13,15 +13,12 @@ MonoBehaviour:
   m_Name: FS 10
   m_EditorClassIdentifier: 
   finalScreenSymbols:
-  - {fileID: 11400000, guid: d78a4bd3f38c1494a8e35b6df5c27b1c, type: 2}
-  - {fileID: 11400000, guid: d78a4bd3f38c1494a8e35b6df5c27b1c, type: 2}
-  - {fileID: 11400000, guid: d78a4bd3f38c1494a8e35b6df5c27b1c, type: 2}
-  - {fileID: 11400000, guid: d78a4bd3f38c1494a8e35b6df5c27b1c, type: 2}
-  - {fileID: 11400000, guid: d78a4bd3f38c1494a8e35b6df5c27b1c, type: 2}
-  - {fileID: 11400000, guid: d78a4bd3f38c1494a8e35b6df5c27b1c, type: 2}
-  - {fileID: 11400000, guid: d78a4bd3f38c1494a8e35b6df5c27b1c, type: 2}
-  - {fileID: 11400000, guid: d78a4bd3f38c1494a8e35b6df5c27b1c, type: 2}
-  - {fileID: 11400000, guid: d78a4bd3f38c1494a8e35b6df5c27b1c, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 98b89288b71dcde49bdafe1417bde108, type: 2}
+  - {fileID: 11400000, guid: 1d25b8b0d4d921146946b8387f32961d, type: 2}
+  - {fileID: 11400000, guid: 98b89288b71dcde49bdafe1417bde108, type: 2}
+  - {fileID: 11400000, guid: 1d25b8b0d4d921146946b8387f32961d, type: 2}
+  - {fileID: 11400000, guid: 98b89288b71dcde49bdafe1417bde108, type: 2}
+  - {fileID: 11400000, guid: 1d25b8b0d4d921146946b8387f32961d, type: 2}
+  - {fileID: 11400000, guid: 98b89288b71dcde49bdafe1417bde108, type: 2}
+  - {fileID: 11400000, guid: 1d25b8b0d4d921146946b8387f32961d, type: 2}
+  - {fileID: 11400000, guid: 98b89288b71dcde49bdafe1417bde108, type: 2}

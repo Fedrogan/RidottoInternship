@@ -13,15 +13,12 @@ MonoBehaviour:
   m_Name: FS 6
   m_EditorClassIdentifier: 
   finalScreenSymbols:
+  - {fileID: 11400000, guid: d060e53b9ec467d4588bc8934ab2a1b8, type: 2}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 11400000, guid: 0ed7486825e15d14492e361866e29141, type: 2}
+  - {fileID: 11400000, guid: d060e53b9ec467d4588bc8934ab2a1b8, type: 2}
+  - {fileID: 11400000, guid: d060e53b9ec467d4588bc8934ab2a1b8, type: 2}
   - {fileID: 0}
-  - {fileID: 11400000, guid: 0ed7486825e15d14492e361866e29141, type: 2}
+  - {fileID: 11400000, guid: d060e53b9ec467d4588bc8934ab2a1b8, type: 2}
   - {fileID: 0}
-  - {fileID: 11400000, guid: 0ed7486825e15d14492e361866e29141, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: d060e53b9ec467d4588bc8934ab2a1b8, type: 2}

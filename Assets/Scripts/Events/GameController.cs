@@ -63,4 +63,13 @@ public class GameController : MonoBehaviour
 
         SpinStarted?.Invoke();
     }
+
+    private void OnDestroy()
+    {
+        playButton.onClick.RemoveListener(OnPlayButtonClicked);
+        stopButton.onClick.RemoveListener(OnStopButtonClicked);
+
+        reelsScroller.AllReelsStarted -= OnAllReelsStarted;
+        reelsScroller.AllReelsStopped -= OnAllReelsStopped;
+    }
 }

@@ -7,9 +7,11 @@ public class SlotSymbol : MonoBehaviour
     [SerializeField] private GameObject particleFrame;
     [SerializeField] private new ParticleSystem particleSystem;
     private RectTransform defaultParentReel;
+    public bool isHidden;
 
     public SymbolData SymbolSO { get => symbolSO; set => symbolSO = value; }
     public RectTransform DefaultParentReel { get => defaultParentReel; set => defaultParentReel = value; }
     public GameObject ParticleFrame { get => particleFrame; set => particleFrame = value; }
     public ParticleSystem ParticleSystem { get => particleSystem; set => particleSystem = value; }
+    public bool IsHidden { get => isHidden; set => isHidden = value; }
 }
