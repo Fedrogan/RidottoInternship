@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using DG.Tweening;
 using System;
+using UnityEngine.UI;
 
 public class ReelsScroll : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class ReelsScroll : MonoBehaviour
 
     [SerializeField] private RectTransform[] reels;
     [SerializeField] private SymbolsManagement symbolsManager;
-    [SerializeField] [Range(0, 10000)] private float spinSpeed;
+    [SerializeField] [Range(0, 3000)] private float spinSpeed;
     [SerializeField] private float boostDistance, spinDistance;
     [SerializeField] private float boostDuration, slowdownDuration;
     [SerializeField] private Ease boostEase, slowdownEase;
@@ -40,7 +41,7 @@ public class ReelsScroll : MonoBehaviour
     {
         for (int i = 0; i < reels.Length; i++)
         {            
-            var reel = reels[i];
+            var reel = reels[i];            
             reel.DOAnchorPosY(boostDistance, boostDuration).SetDelay(i * delayStep)
                 .SetEase(boostEase).OnComplete(() => LinearSpin(reel));
         }
