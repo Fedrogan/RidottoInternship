@@ -33,8 +33,7 @@ public class ReelsSymbolManager : MonoBehaviour
         Instance = this;
         currentSet = 0;
         FillReels();        
-    }
-    
+    }   
 
 
     public void FillReels()
@@ -117,13 +116,14 @@ public class ReelsSymbolManager : MonoBehaviour
             for (int k = 0; k < childCount; k++)
             {
                 var symbol = substitutionReels[j].GetChild(k).GetComponent<SlotSymbol>();
-                if (symbol != null && symbol.GetComponent<RectTransform>().position.y < 300)
+                if (symbol != null && symbol.GetComponent<RectTransform>().localPosition.y < 300)
                 {
                     allSymbols[i] = symbol;
                     i++;                    
                 }
             }
         }
+        foreach (var symbol in allSymbols) print(symbol);
         return allSymbols;
     }
 }

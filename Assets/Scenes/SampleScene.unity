@@ -1671,6 +1671,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: S-Reel2
       objectReference: {fileID: 0}
+    - target: {fileID: 6289337123066974197, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 600
+      objectReference: {fileID: 0}
     - target: {fileID: 6289337123875620988, guid: 2e4e1abb1ab6d654397208028d75cc4d,
         type: 3}
       propertyPath: m_Name
@@ -3310,6 +3315,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: S-Reel3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6289337123066974197, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 6289337123875620988, guid: 2e4e1abb1ab6d654397208028d75cc4d,
         type: 3}

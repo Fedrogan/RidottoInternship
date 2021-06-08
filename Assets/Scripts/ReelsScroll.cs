@@ -40,7 +40,7 @@ public class ReelsScroll : MonoBehaviour
         GameController.Instance.SpinInterrupted += OnSlowdownSpin;
 
         startReelPositionY = fakeReels[0].localPosition.y;
-        startFakeReelPositionY = fakeReels[0].localPosition.y;
+        startFakeReelPositionY = substitutionReels[0].localPosition.y;
     }
 
     private void OnSpinStarted()
@@ -58,7 +58,7 @@ public class ReelsScroll : MonoBehaviour
             if (isFirstSpin == false) 
             {
                 symbolsManager.SetSymbolsOnReelAlpha(reel, false);
-                MoveFakeReelOut(reel, delay);
+                MoveSubstitutionReelOut(reel, delay);
             }
             reel.DOAnchorPosY(boostDistance, boostDuration).SetDelay(delay)
                 .SetEase(boostEase).OnComplete(() => { LinearSpin(reel); print(reel.anchoredPosition); });
@@ -74,13 +74,12 @@ public class ReelsScroll : MonoBehaviour
             {
                 print(reel.anchoredPosition);
                 SlowdownReelSpin(reel);
-                MoveFakeReelIn(reel);
-                //CorrectReelPos(reel);
-                StopReel(reel, true);
+                MoveSubstitutionReelIn(reel);
+                StopFakeReel(reel, true);
             });
     }  
 
-    private void StopReel(RectTransform reel, bool isStopping)
+    private void StopFakeReel(RectTransform reel, bool isStopping)
     {
         reel.GetComponent<ReelInfo>().IsStopping = isStopping;
     }
@@ -108,9 +107,9 @@ public class ReelsScroll : MonoBehaviour
         foreach (RectTransform reel in fakeReels)
         {
             SlowdownReelSpin(reel);
-            MoveFakeReelIn(reel);
+            MoveSubstitutionReelIn(reel);
             //CorrectReelPos(reel);
-            StopReel(reel, true);
+            StopFakeReel(reel, true);
         }
     }
 
@@ -120,7 +119,7 @@ public class ReelsScroll : MonoBehaviour
         if (correctedSlowDownDistance != reelCurrPos.y) cellYCorrection = correctedSlowDownDistance - reelCurrPos.y;
         else cellYCorrection = 0;
         reel.localPosition = new Vector3(reelCurrPos.x, startReelPositionY, reelCurrPos.z);
-        StopReel(reel, false);
+        StopFakeReel(reel, false);
         symbolsManager.ResetSymbolsPosition(correctedSlowDownDistance, cellYCorrection, startReelPositionY, reel);
     }
 
@@ -136,21 +135,21 @@ public class ReelsScroll : MonoBehaviour
         return slowDownDistance;
     }
 
-    private void MoveFakeReelIn(RectTransform reel)
+    private void MoveSubstitutionReelIn(RectTransform reel)
     {
         var reelID = reel.GetComponent<ReelInfo>().ReelID;
         var fakeReel = substitutionReels[reelID - 1];
         fakeReel.DOAnchorPosY(middlePosition, slowdownDuration).SetEase(slowdownEase);
     }
 
-    private void MoveFakeReelOut(RectTransform reel, float delay)
+    private void MoveSubstitutionReelOut(RectTransform reel, float delay)
     {
         var reelID = reel.GetComponent<ReelInfo>().ReelID;
-        var fakeReel = substitutionReels[reelID - 1];
-        fakeReel.DOAnchorPosY(boostDistance, boostDuration).SetEase(boostEase).SetDelay(delay).OnComplete(() => ResetFakeReelPos(fakeReel, reelID));
+        var substitutionReel = substitutionReels[reelID - 1];
+        substitutionReel.DOAnchorPosY(boostDistance, boostDuration).SetEase(boostEase).SetDelay(delay).OnComplete(() => ResetSubstitutionReelPos(substitutionReel, reelID));
     }
 
-    private void ResetFakeReelPos(RectTransform reel, int reelID)
+    private void ResetSubstitutionReelPos(RectTransform reel, int reelID)
     {
         var reelCurrPos = reel.localPosition;
         reel.localPosition = new Vector3(reelCurrPos.x, startFakeReelPositionY, reelCurrPos.z);
