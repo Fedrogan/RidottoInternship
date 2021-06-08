@@ -58,21 +58,25 @@ public class ReelsScroll : MonoBehaviour
                 StopReel(reel, true);
             });
     }
-        
+
     private void CorrectReelPos(RectTransform reel)
     {
         traveledDistance = startReelPositionY - reel.localPosition.y;
         var remaingerOfDivision = traveledDistance % symbolHeigth;
-        if (0 <= remaingerOfDivision && remaingerOfDivision <= 199.99f)        
+        if (0 <= remaingerOfDivision && remaingerOfDivision <= 199.99f)
         {
             var correction = 199.99f - remaingerOfDivision;
+            print(correction / spinSpeed);
+            
             symbolsManager.MakeAllSymbolsMutable(false);
+            
             var target = reel.localPosition.y - correction;
-            reel.DOAnchorPosY(target, target / spinSpeed).SetEase(Ease.Linear)
+            print(-target / spinSpeed);
+            reel.DOAnchorPosY(target, correction / spinSpeed).SetEase(Ease.Linear)
                 .OnComplete(() => SlowdownReelSpin(reel));
         }
-        else SlowdownReelSpin(reel);               
-    }    
+        else SlowdownReelSpin(reel);
+    }
 
     private void StopReel(RectTransform reel, bool isStopping)
     {
@@ -98,7 +102,7 @@ public class ReelsScroll : MonoBehaviour
         DOTween.KillAll();
         foreach (RectTransform reel in reels)
         {
-            CorrectReelPos(reel);
+            SlowdownReelSpin(reel);
             StopReel(reel, true);
         }        
     }
