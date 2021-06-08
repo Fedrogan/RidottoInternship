@@ -43,6 +43,7 @@ public class GameController : MonoBehaviour
     private void OnAllReelsStopped()
     {
         playButton.interactable = true;
+        stopButton.interactable = false;
         playButton.GetComponent<RectTransform>().localScale = new Vector3(1, 1);
 
         SpinFinished?.Invoke();
