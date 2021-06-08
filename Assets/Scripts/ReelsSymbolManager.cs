@@ -16,7 +16,7 @@ public class ReelsSymbolManager : MonoBehaviour
     [SerializeField] private FinalScreenSO[] finalScreens;
     [SerializeField] private bool isRandomGame;
 
-    [SerializeField] private RectTransform[] fakeReels;
+    [SerializeField] private RectTransform[] substitutionReels;
 
     private int currentSet;
 
@@ -111,13 +111,13 @@ public class ReelsSymbolManager : MonoBehaviour
     {
         var allSymbols = new SlotSymbol[9];
         int i = 0;
-        for (int j = 0; j < fakeReels.Length; j++)
+        for (int j = 0; j < substitutionReels.Length; j++)
         {
-            var childCount = fakeReels[j].childCount;
+            var childCount = substitutionReels[j].childCount;
             for (int k = 0; k < childCount; k++)
             {
-                var symbol = fakeReels[j].GetChild(k).GetComponent<SlotSymbol>();
-                if (symbol != null && symbol.GetComponent<RectTransform>().localPosition.y < 300)
+                var symbol = substitutionReels[j].GetChild(k).GetComponent<SlotSymbol>();
+                if (symbol != null && symbol.GetComponent<RectTransform>().position.y < 300)
                 {
                     allSymbols[i] = symbol;
                     i++;                    

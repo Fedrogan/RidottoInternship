@@ -8,19 +8,21 @@ public class ReelsScroll : MonoBehaviour
     public event Action AllReelsStopped;
 
     [SerializeField] private ReelsSymbolManager reelsSymbolManager;
-
-    [SerializeField] private RectTransform[] reels;
     [SerializeField] private SymbolsManagement symbolsManager;
-    [SerializeField] [Range(0, 10000)] private float spinSpeed;
+    [Space]
+    [SerializeField] private RectTransform[] fakeReels;
+    [SerializeField] private RectTransform[] substitutionReels;
+    [Space]
+
+    [SerializeField] [Range(0, 4000)] private float spinSpeed;
     [SerializeField] private float boostDistance, spinDistance;
     [SerializeField] private float boostDuration, slowdownDuration;
     [SerializeField] private Ease boostEase, slowdownEase;
     [SerializeField] private float delayStep;
     [SerializeField] private int symbolHeigth;
-    [SerializeField] private RectTransform thirdReelParent;
     [SerializeField] private int visibleSymbolsOnReelCount;
 
-    [SerializeField] private RectTransform[] fakeReels;
+    
     private float startFakeReelPositionY;
     private readonly float middlePosition = 0;
 
@@ -37,7 +39,7 @@ public class ReelsScroll : MonoBehaviour
         GameController.Instance.SpinStarted += OnSpinStarted;
         GameController.Instance.SpinInterrupted += OnSlowdownSpin;
 
-        startReelPositionY = reels[0].localPosition.y;
+        startReelPositionY = fakeReels[0].localPosition.y;
         startFakeReelPositionY = fakeReels[0].localPosition.y;
     }
 
@@ -49,27 +51,28 @@ public class ReelsScroll : MonoBehaviour
 
     private void StartSpinning()
     {
-        for (int i = 0; i < reels.Length; i++)
+        for (int i = 0; i < fakeReels.Length; i++)
         {
             var delay = i * delayStep;
-            var reel = reels[i];
+            var reel = fakeReels[i];
             if (isFirstSpin == false) 
             {
                 symbolsManager.SetSymbolsOnReelAlpha(reel, false);
                 MoveFakeReelOut(reel, delay);
             }
             reel.DOAnchorPosY(boostDistance, boostDuration).SetDelay(delay)
-                .SetEase(boostEase).OnComplete(() => LinearSpin(reel));
+                .SetEase(boostEase).OnComplete(() => { LinearSpin(reel); print(reel.anchoredPosition); });
         }
     }
 
     private void LinearSpin(RectTransform reel)
     {
-        if (reel.GetComponent<ReelInfo>().ReelID == reels.Length) AllReelsStarted?.Invoke();
+        if (reel.GetComponent<ReelInfo>().ReelID == fakeReels.Length) AllReelsStarted?.Invoke();
 
         reel.DOAnchorPosY(spinDistance, -spinDistance / spinSpeed).SetEase(Ease.Linear)
             .OnComplete(delegate
             {
+                print(reel.anchoredPosition);
                 SlowdownReelSpin(reel);
                 MoveFakeReelIn(reel);
                 //CorrectReelPos(reel);
@@ -85,6 +88,8 @@ public class ReelsScroll : MonoBehaviour
     public void SlowdownReelSpin(RectTransform reel)
     {
         var currReelPos = reel.localPosition.y;
+        print(reel.anchoredPosition.y);
+        print(reel.localPosition.y);
         symbolsManager.SetSymbolsOnReelAlpha(reel, true);
         symbolsManager.MakeAllSymbolsMutable(true);
         DOTween.Kill(reel);
@@ -93,14 +98,14 @@ public class ReelsScroll : MonoBehaviour
             .OnComplete(delegate
             {
                 ResetReelPos(reel);
-                if (reel.GetComponent<ReelInfo>().ReelID == reels.Length) AllReelsStopped?.Invoke();
+                if (reel.GetComponent<ReelInfo>().ReelID == fakeReels.Length) AllReelsStopped?.Invoke();
             });
     }
 
     public void OnSlowdownSpin()
     {
         DOTween.KillAll();
-        foreach (RectTransform reel in reels)
+        foreach (RectTransform reel in fakeReels)
         {
             SlowdownReelSpin(reel);
             MoveFakeReelIn(reel);
@@ -127,20 +132,21 @@ public class ReelsScroll : MonoBehaviour
         var fractionalPart = symbolsChanged - integerPart;
         var extraDistance = symbolHeigth * visibleSymbolsOnReelCount + (1 - fractionalPart) * symbolHeigth;
         var slowDownDistance = currReelPos - extraDistance;
+        print(slowDownDistance);
         return slowDownDistance;
     }
 
     private void MoveFakeReelIn(RectTransform reel)
     {
         var reelID = reel.GetComponent<ReelInfo>().ReelID;
-        var fakeReel = fakeReels[reelID - 1];
+        var fakeReel = substitutionReels[reelID - 1];
         fakeReel.DOAnchorPosY(middlePosition, slowdownDuration).SetEase(slowdownEase);
     }
 
     private void MoveFakeReelOut(RectTransform reel, float delay)
     {
         var reelID = reel.GetComponent<ReelInfo>().ReelID;
-        var fakeReel = fakeReels[reelID - 1];
+        var fakeReel = substitutionReels[reelID - 1];
         fakeReel.DOAnchorPosY(boostDistance, boostDuration).SetEase(boostEase).SetDelay(delay).OnComplete(() => ResetFakeReelPos(fakeReel, reelID));
     }
 

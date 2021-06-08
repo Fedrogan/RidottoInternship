@@ -1,0 +1,211 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ReelsSymbolManager
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: 5df58c8ec6c3ef24ba5f0a7536af156a,
+      type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mainCanvasRT
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: firstReelSymbols.Array.size
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: firstReelSymbols.Array.data[0]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: firstReelSymbols.Array.data[1]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: firstReelSymbols.Array.data[2]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: firstReelSymbols.Array.data[3]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: secondReelSymbols.Array.size
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: secondReelSymbols.Array.data[0]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: secondReelSymbols.Array.data[1]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: secondReelSymbols.Array.data[2]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: secondReelSymbols.Array.data[3]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thirdReelSymbols.Array.size
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thirdReelSymbols.Array.data[0]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thirdReelSymbols.Array.data[1]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thirdReelSymbols.Array.data[2]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thirdReelSymbols.Array.data[3]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: symbolsData.Array.size
+    value: 11
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: symbolsData.Array.data[0]
+    value: 
+    objectReference: {fileID: 11400000, guid: d060e53b9ec467d4588bc8934ab2a1b8, type: 2}
+  - target: {fileID: 0}
+    propertyPath: symbolsData.Array.data[1]
+    value: 
+    objectReference: {fileID: 11400000, guid: 251344343949f7d4db12550e11bed94c, type: 2}
+  - target: {fileID: 0}
+    propertyPath: symbolsData.Array.data[2]
+    value: 
+    objectReference: {fileID: 11400000, guid: d78a4bd3f38c1494a8e35b6df5c27b1c, type: 2}
+  - target: {fileID: 0}
+    propertyPath: symbolsData.Array.data[3]
+    value: 
+    objectReference: {fileID: 11400000, guid: 0fe3db52c1bed3044a14e48c281a6903, type: 2}
+  - target: {fileID: 0}
+    propertyPath: symbolsData.Array.data[4]
+    value: 
+    objectReference: {fileID: 11400000, guid: b932c37b5991b3941b9fdbe4e7910415, type: 2}
+  - target: {fileID: 0}
+    propertyPath: symbolsData.Array.data[5]
+    value: 
+    objectReference: {fileID: 11400000, guid: 5cbcc473c4a05a746b472981dc5e9f6f, type: 2}
+  - target: {fileID: 0}
+    propertyPath: symbolsData.Array.data[6]
+    value: 
+    objectReference: {fileID: 11400000, guid: 1692b5f71918c994bae7586003bde06e, type: 2}
+  - target: {fileID: 0}
+    propertyPath: symbolsData.Array.data[7]
+    value: 
+    objectReference: {fileID: 11400000, guid: e5df09657da57c14cbe744289113d148, type: 2}
+  - target: {fileID: 0}
+    propertyPath: symbolsData.Array.data[8]
+    value: 
+    objectReference: {fileID: 11400000, guid: 0ed7486825e15d14492e361866e29141, type: 2}
+  - target: {fileID: 0}
+    propertyPath: symbolsData.Array.data[9]
+    value: 
+    objectReference: {fileID: 11400000, guid: 98b89288b71dcde49bdafe1417bde108, type: 2}
+  - target: {fileID: 0}
+    propertyPath: symbolsData.Array.data[10]
+    value: 
+    objectReference: {fileID: 11400000, guid: 1d25b8b0d4d921146946b8387f32961d, type: 2}
+  - target: {fileID: 0}
+    propertyPath: finalScreens.Array.size
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: finalScreens.Array.data[0]
+    value: 
+    objectReference: {fileID: 11400000, guid: 8ded7bab0693688408e11b145da680fd, type: 2}
+  - target: {fileID: 0}
+    propertyPath: finalScreens.Array.data[1]
+    value: 
+    objectReference: {fileID: 11400000, guid: f32d446666918c741a22163a36450a2f, type: 2}
+  - target: {fileID: 0}
+    propertyPath: finalScreens.Array.data[2]
+    value: 
+    objectReference: {fileID: 11400000, guid: 4b8e3d1360d8d824694ac5843de7bc8a, type: 2}
+  - target: {fileID: 0}
+    propertyPath: finalScreens.Array.data[3]
+    value: 
+    objectReference: {fileID: 11400000, guid: 00f1c60bcfe1da743978444339b6b81a, type: 2}
+  - target: {fileID: 0}
+    propertyPath: finalScreens.Array.data[4]
+    value: 
+    objectReference: {fileID: 11400000, guid: 92c3aa461255f8a469ba366d68f76fac, type: 2}
+  - target: {fileID: 0}
+    propertyPath: finalScreens.Array.data[5]
+    value: 
+    objectReference: {fileID: 11400000, guid: ab36ecb4d57fae44cb73c6b039a4037a, type: 2}
+  - target: {fileID: 0}
+    propertyPath: finalScreens.Array.data[6]
+    value: 
+    objectReference: {fileID: 11400000, guid: 51a051b1b2e4a6c499fc207b7c883dae, type: 2}
+  - target: {fileID: 0}
+    propertyPath: finalScreens.Array.data[7]
+    value: 
+    objectReference: {fileID: 11400000, guid: 3eaa31dac3fcd0441b238bbe851f5779, type: 2}
+  - target: {fileID: 0}
+    propertyPath: finalScreens.Array.data[8]
+    value: 
+    objectReference: {fileID: 11400000, guid: 833a2c3c6ec7fc549b1fe8b275c75cf2, type: 2}
+  - target: {fileID: 0}
+    propertyPath: finalScreens.Array.data[9]
+    value: 
+    objectReference: {fileID: 11400000, guid: 9cb3d9d92083d6a44baf5211a38b58cd, type: 2}
+  - target: {fileID: 0}
+    propertyPath: isRandomGame
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: substitutionReels.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: substitutionReels.Array.data[0]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: substitutionReels.Array.data[1]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: substitutionReels.Array.data[2]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: isMutable
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: reelStopping
+    value: 0
+    objectReference: {fileID: 0}

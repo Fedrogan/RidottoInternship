@@ -56,6 +56,7 @@ public class GameController : MonoBehaviour
 
     private void OnPlayButtonClicked()
     {
+        print("Play");
         playButton.interactable = false;
         playButton.GetComponent<RectTransform>().localScale = new Vector3(0, 0);
 
