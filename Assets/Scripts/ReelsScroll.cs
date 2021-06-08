@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using DG.Tweening;
 using System;
+using UnityEngine.UI;
 
 public class ReelsScroll : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class ReelsScroll : MonoBehaviour
 
     [SerializeField] private RectTransform[] reels;
     [SerializeField] private SymbolsManagement symbolsManager;
-    [SerializeField] [Range(0, 10000)] private float spinSpeed;
+    [SerializeField] [Range(0, 3000)] private float spinSpeed;
     [SerializeField] private float boostDistance, spinDistance;
     [SerializeField] private float boostDuration, slowdownDuration;
     [SerializeField] private Ease boostEase, slowdownEase;
@@ -40,7 +41,7 @@ public class ReelsScroll : MonoBehaviour
     {
         for (int i = 0; i < reels.Length; i++)
         {            
-            var reel = reels[i];
+            var reel = reels[i];            
             reel.DOAnchorPosY(boostDistance, boostDuration).SetDelay(i * delayStep)
                 .SetEase(boostEase).OnComplete(() => LinearSpin(reel));
         }
@@ -57,21 +58,25 @@ public class ReelsScroll : MonoBehaviour
                 StopReel(reel, true);
             });
     }
-        
+
     private void CorrectReelPos(RectTransform reel)
     {
         traveledDistance = startReelPositionY - reel.localPosition.y;
         var remaingerOfDivision = traveledDistance % symbolHeigth;
-        if (0 <= remaingerOfDivision && remaingerOfDivision <= 199.99f)        
+        if (0 <= remaingerOfDivision && remaingerOfDivision <= 199.99f)
         {
             var correction = 199.99f - remaingerOfDivision;
+            print(correction / spinSpeed);
+            
             symbolsManager.MakeAllSymbolsMutable(false);
+            
             var target = reel.localPosition.y - correction;
-            reel.DOAnchorPosY(target, target / spinSpeed).SetEase(Ease.Linear)
+            print(-target / spinSpeed);
+            reel.DOAnchorPosY(target, correction / spinSpeed).SetEase(Ease.Linear)
                 .OnComplete(() => SlowdownReelSpin(reel));
         }
-        else SlowdownReelSpin(reel);               
-    }    
+        else SlowdownReelSpin(reel);
+    }
 
     private void StopReel(RectTransform reel, bool isStopping)
     {
@@ -94,11 +99,14 @@ public class ReelsScroll : MonoBehaviour
 
     public void OnSlowdownSpin()
     {
-        DOTween.KillAll();
         foreach (RectTransform reel in reels)
         {
-            CorrectReelPos(reel);
-            StopReel(reel, true);
+            if (reel.GetComponent<ReelInfo>().IsStopping == false)
+            {
+                DOTween.Kill(reel);
+                SlowdownReelSpin(reel);
+                StopReel(reel, true);
+            }            
         }        
     }
 

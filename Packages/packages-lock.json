@@ -1,9 +1,9 @@
 {
   "dependencies": {
     "com.coffee.ui-particle": {
-      "version": "file:C:/RidottoTraining/ParticleEffectForUGUI-main",
+      "version": "file:ParticleEffectForUGUI",
       "depth": 0,
-      "source": "local",
+      "source": "embedded",
       "dependencies": {}
     },
     "com.unity.2d.animation": {
