@@ -99,11 +99,14 @@ public class ReelsScroll : MonoBehaviour
 
     public void OnSlowdownSpin()
     {
-        DOTween.KillAll();
         foreach (RectTransform reel in reels)
         {
-            SlowdownReelSpin(reel);
-            StopReel(reel, true);
+            if (reel.GetComponent<ReelInfo>().IsStopping == false)
+            {
+                DOTween.Kill(reel);
+                SlowdownReelSpin(reel);
+                StopReel(reel, true);
+            }            
         }        
     }
 
