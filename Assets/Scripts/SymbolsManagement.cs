@@ -21,7 +21,7 @@ public class SymbolsManagement : MonoBehaviour
     public bool isMutable;
     private float mainCanvasScale;
 
-    [SerializeField] public bool reelStopping;
+    //[SerializeField] public bool reelStopping;
 
     void Start()
     {
@@ -52,9 +52,15 @@ public class SymbolsManagement : MonoBehaviour
         var offset = symbol.position.y + symbolHeigth * mainCanvasScale * reelSymbolsCount;
         var newPos = new Vector3(symbol.position.x, offset, symbol.position.z);
         symbol.position = newPos;
-        if (symbol.GetComponent<SlotSymbol>() != null && symbol.GetComponent<SlotSymbol>().IsHidden == true) symbol.GetComponent<Image>().CrossFadeAlpha(0, 0, true);
-        else if (symbol.GetComponent<SlotSymbol>() != null && symbol.GetComponent<SlotSymbol>().IsHidden == false) symbol.GetComponent<Image>().CrossFadeAlpha(1, 0, true);
-        if (isMutable && symbol.GetComponent<SlotSymbol>() != null) ChangeSprite(symbol);
+
+        if (symbol.GetComponent<SlotSymbol>().IsHidden == true) 
+            symbol.GetComponent<Image>().CrossFadeAlpha(0, 0, true);
+
+        else if (symbol.GetComponent<SlotSymbol>().IsHidden == false) 
+            symbol.GetComponent<Image>().CrossFadeAlpha(1, 0, true);
+
+        if (isMutable) 
+            ChangeSprite(symbol);
     }
 
     private void ChangeSprite(RectTransform symbol)

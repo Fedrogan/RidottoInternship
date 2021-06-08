@@ -25,6 +25,7 @@ public class GameController : MonoBehaviour
         stopButton.onClick.AddListener(OnStopButtonClicked);
 
         stopButton.interactable = false;
+
         stopButton.GetComponent<RectTransform>().localScale = new Vector3(0, 0);
 
         reelsScroller.AllReelsStarted += OnAllReelsStarted;
@@ -35,7 +36,9 @@ public class GameController : MonoBehaviour
     private void OnStopButtonClicked()
     {
         stopButton.interactable = false;
+
         stopButton.GetComponent<RectTransform>().localScale = new Vector3(0, 0);
+        playButton.GetComponent<RectTransform>().localScale = new Vector3(1, 1);
 
         SpinInterrupted?.Invoke();
     }
@@ -43,6 +46,8 @@ public class GameController : MonoBehaviour
     private void OnAllReelsStopped()
     {
         playButton.interactable = true;
+        stopButton.interactable = false;
+
         playButton.GetComponent<RectTransform>().localScale = new Vector3(1, 1);
 
         SpinFinished?.Invoke();
@@ -51,15 +56,15 @@ public class GameController : MonoBehaviour
     private void OnAllReelsStarted()
     {
         stopButton.interactable = true;
+
         ReelsStarted?.Invoke();
     }
 
     private void OnPlayButtonClicked()
     {
-        print("Play");
         playButton.interactable = false;
-        playButton.GetComponent<RectTransform>().localScale = new Vector3(0, 0);
 
+        playButton.GetComponent<RectTransform>().localScale = new Vector3(0, 0);
         stopButton.GetComponent<RectTransform>().localScale = new Vector3(1, 1);
 
         SpinStarted?.Invoke();

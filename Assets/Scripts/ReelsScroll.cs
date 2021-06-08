@@ -11,7 +11,7 @@ public class ReelsScroll : MonoBehaviour
     [SerializeField] private SymbolsManagement symbolsManager;
     [Space]
     [SerializeField] private RectTransform[] fakeReels;
-    [SerializeField] private RectTransform[] substitutionReels;
+    [SerializeField] private RectTransform[] subReels;
     [Space]
 
     [SerializeField] [Range(0, 4000)] private float spinSpeed;
@@ -23,11 +23,11 @@ public class ReelsScroll : MonoBehaviour
     [SerializeField] private int visibleSymbolsOnReelCount;
 
     
-    private float startFakeReelPositionY;
+    private float startSubReelPositionY;
     private readonly float middlePosition = 0;
 
     private float correctedSlowDownDistance;
-    private float startReelPositionY;
+    private float startFakeReelPositionY;
     private float traveledDistance;
     private float cellYCorrection;
 
@@ -39,8 +39,8 @@ public class ReelsScroll : MonoBehaviour
         GameController.Instance.SpinStarted += OnSpinStarted;
         GameController.Instance.SpinInterrupted += OnSlowdownSpin;
 
-        startReelPositionY = fakeReels[0].localPosition.y;
-        startFakeReelPositionY = substitutionReels[0].localPosition.y;
+        startFakeReelPositionY = fakeReels[0].localPosition.y;
+        startSubReelPositionY = subReels[0].localPosition.y;
     }
 
     private void OnSpinStarted()
@@ -58,10 +58,10 @@ public class ReelsScroll : MonoBehaviour
             if (isFirstSpin == false) 
             {
                 symbolsManager.SetSymbolsOnReelAlpha(reel, false);
-                MoveSubstitutionReelOut(reel, delay);
+                MoveSubReelOut(reel, delay);
             }
             reel.DOAnchorPosY(boostDistance, boostDuration).SetDelay(delay)
-                .SetEase(boostEase).OnComplete(() => { LinearSpin(reel); print(reel.anchoredPosition); });
+                .SetEase(boostEase).OnComplete(() => LinearSpin(reel));
         }
     }
 
@@ -72,9 +72,8 @@ public class ReelsScroll : MonoBehaviour
         reel.DOAnchorPosY(spinDistance, -spinDistance / spinSpeed).SetEase(Ease.Linear)
             .OnComplete(delegate
             {
-                print(reel.anchoredPosition);
                 SlowdownReelSpin(reel);
-                MoveSubstitutionReelIn(reel);
+                //MoveSubReelIn(reel);
                 StopFakeReel(reel, true);
             });
     }  
@@ -87,13 +86,14 @@ public class ReelsScroll : MonoBehaviour
     public void SlowdownReelSpin(RectTransform reel)
     {
         var currReelPos = reel.localPosition.y;
-        print(reel.anchoredPosition.y);
-        print(reel.localPosition.y);
         symbolsManager.SetSymbolsOnReelAlpha(reel, true);
         symbolsManager.MakeAllSymbolsMutable(true);
         DOTween.Kill(reel);
-        correctedSlowDownDistance = CalculateSlowDownDistance(currReelPos);
-        reel.DOAnchorPosY(correctedSlowDownDistance, slowdownDuration).SetEase(slowdownEase)
+        var extraDistance = CalculateSlowDownDistance(currReelPos);
+        var slowDownDistance = currReelPos - extraDistance;
+        var substitutionSpeed = -(slowDownDistance - currReelPos) / slowdownDuration;
+        MoveSubReelIn(reel, substitutionSpeed);
+        reel.DOAnchorPosY(slowDownDistance, slowdownDuration).SetEase(slowdownEase)
             .OnComplete(delegate
             {
                 ResetReelPos(reel);
@@ -101,13 +101,20 @@ public class ReelsScroll : MonoBehaviour
             });
     }
 
+    private void CorrectSubReelPos(float extraDistance, RectTransform reel)
+    {
+        var reelID = reel.GetComponent<ReelInfo>().ReelID;
+        var subReel = subReels[reelID - 1];
+        subReel.DOAnchorPosY(extraDistance, 0);
+    }
+
     public void OnSlowdownSpin()
     {
-        DOTween.KillAll();
         foreach (RectTransform reel in fakeReels)
         {
+            DOTween.Kill(reel);
             SlowdownReelSpin(reel);
-            MoveSubstitutionReelIn(reel);
+            
             //CorrectReelPos(reel);
             StopFakeReel(reel, true);
         }
@@ -118,42 +125,50 @@ public class ReelsScroll : MonoBehaviour
         var reelCurrPos = reel.localPosition;
         if (correctedSlowDownDistance != reelCurrPos.y) cellYCorrection = correctedSlowDownDistance - reelCurrPos.y;
         else cellYCorrection = 0;
-        reel.localPosition = new Vector3(reelCurrPos.x, startReelPositionY, reelCurrPos.z);
+        reel.localPosition = new Vector3(reelCurrPos.x, startFakeReelPositionY, reelCurrPos.z);
         StopFakeReel(reel, false);
-        symbolsManager.ResetSymbolsPosition(correctedSlowDownDistance, cellYCorrection, startReelPositionY, reel);
+        symbolsManager.ResetSymbolsPosition(correctedSlowDownDistance, cellYCorrection, startFakeReelPositionY, reel);
     }
 
     private float CalculateSlowDownDistance(float currReelPos)
     {
-        traveledDistance = startReelPositionY - currReelPos;
-        var symbolsChanged = traveledDistance / symbolHeigth;
-        var integerPart = Mathf.Floor(symbolsChanged);
-        var fractionalPart = symbolsChanged - integerPart;
+        traveledDistance = startFakeReelPositionY - currReelPos;
+        var symbolsScrolled = traveledDistance / symbolHeigth;
+        var integerPart = Mathf.Floor(symbolsScrolled);
+        var fractionalPart = symbolsScrolled - integerPart;
         var extraDistance = symbolHeigth * visibleSymbolsOnReelCount + (1 - fractionalPart) * symbolHeigth;
+        print("Extra dist = " + extraDistance);
         var slowDownDistance = currReelPos - extraDistance;
-        print(slowDownDistance);
-        return slowDownDistance;
+        print("SlowDistance = " + slowDownDistance);
+
+        //return slowDownDistance;
+        return extraDistance;
     }
 
-    private void MoveSubstitutionReelIn(RectTransform reel)
+    private void MoveSubReelIn(RectTransform reel, float subSpeed)
     {
         var reelID = reel.GetComponent<ReelInfo>().ReelID;
-        var fakeReel = substitutionReels[reelID - 1];
-        fakeReel.DOAnchorPosY(middlePosition, slowdownDuration).SetEase(slowdownEase);
+        var subReel = subReels[reelID - 1];
+        var subDistance = startSubReelPositionY - middlePosition;
+        print(subSpeed);
+        print(subDistance / subSpeed);
+        subReel.DOAnchorPosY(middlePosition, subDistance / subSpeed).SetEase(slowdownEase);
     }
 
-    private void MoveSubstitutionReelOut(RectTransform reel, float delay)
+    private void MoveSubReelOut(RectTransform reel, float delay)
     {
         var reelID = reel.GetComponent<ReelInfo>().ReelID;
-        var substitutionReel = substitutionReels[reelID - 1];
-        substitutionReel.DOAnchorPosY(boostDistance, boostDuration).SetEase(boostEase).SetDelay(delay).OnComplete(() => ResetSubstitutionReelPos(substitutionReel, reelID));
+        var subReel = subReels[reelID - 1];
+        subReel.DOAnchorPosY(boostDistance, boostDuration)
+            .SetEase(boostEase).SetDelay(delay)
+            .OnComplete(() => ResetSubReelPos(subReel, reelID));
     }
 
-    private void ResetSubstitutionReelPos(RectTransform reel, int reelID)
+    private void ResetSubReelPos(RectTransform reel, int reelID)
     {
         var reelCurrPos = reel.localPosition;
-        reel.localPosition = new Vector3(reelCurrPos.x, startFakeReelPositionY, reelCurrPos.z);
-        if (reelID == 3)
+        reel.localPosition = new Vector3(reelCurrPos.x, startSubReelPositionY, reelCurrPos.z);
+        if (reelID == subReels.Length)
             reelsSymbolManager.FillReels();
     }
 }

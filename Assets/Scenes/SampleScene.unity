@@ -913,7 +913,7 @@ GameObject:
   - component: {fileID: 491455128}
   - component: {fileID: 491455131}
   m_Layer: 5
-  m_Name: SubstitutionReels
+  m_Name: SubReels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1394,7 +1394,7 @@ MonoBehaviour:
   - {fileID: 255176930}
   - {fileID: 682357622}
   - {fileID: 1758673968}
-  substitutionReels:
+  subReels:
   - {fileID: 1625713114}
   - {fileID: 2049380832}
   - {fileID: 600778460}
@@ -1402,7 +1402,7 @@ MonoBehaviour:
   boostDistance: -800
   spinDistance: -7000
   boostDuration: 0.76
-  slowdownDuration: 0.78
+  slowdownDuration: 0.73
   boostEase: 5
   slowdownEase: 6
   delayStep: 0.3
@@ -1679,7 +1679,7 @@ PrefabInstance:
     - target: {fileID: 6289337123875620988, guid: 2e4e1abb1ab6d654397208028d75cc4d,
         type: 3}
       propertyPath: m_Name
-      value: SubstitutionReel2
+      value: SubReel2
       objectReference: {fileID: 0}
     - target: {fileID: 6289337123875620991, guid: 2e4e1abb1ab6d654397208028d75cc4d,
         type: 3}
@@ -3318,13 +3318,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6289337123066974197, guid: 2e4e1abb1ab6d654397208028d75cc4d,
         type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6289337123066974197, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 6289337123875620988, guid: 2e4e1abb1ab6d654397208028d75cc4d,
         type: 3}
       propertyPath: m_Name
-      value: SubstitutionReel3
+      value: SubReel3
       objectReference: {fileID: 0}
     - target: {fileID: 6289337123875620991, guid: 2e4e1abb1ab6d654397208028d75cc4d,
         type: 3}
@@ -4077,13 +4082,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6289337123066974197, guid: 2e4e1abb1ab6d654397208028d75cc4d,
         type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6289337123066974197, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 6289337123875620988, guid: 2e4e1abb1ab6d654397208028d75cc4d,
         type: 3}
       propertyPath: m_Name
-      value: SubstitutionReel1
+      value: SubReel1
       objectReference: {fileID: 0}
     - target: {fileID: 6289337123875620991, guid: 2e4e1abb1ab6d654397208028d75cc4d,
         type: 3}

@@ -25,7 +25,6 @@ public class WinLinesCheck : MonoBehaviour
     {
         foreach (var winLine in winLines)
         {
-            print(winLine.WinSymbols.Length);
             for (int i = 0; i < winLine.WinSymbols.Length; i++)
             {
                 winLineSymbols[i] = reelsSymbolManager.GetSymbolOnReelById(fakeReels[i], winLine.WinSymbols[i]);

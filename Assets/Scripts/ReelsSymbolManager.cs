@@ -122,8 +122,7 @@ public class ReelsSymbolManager : MonoBehaviour
                     i++;                    
                 }
             }
-        }
-        foreach (var symbol in allSymbols) print(symbol);
+        }        
         return allSymbols;
     }
 }
