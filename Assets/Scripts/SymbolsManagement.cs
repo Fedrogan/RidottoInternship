@@ -165,11 +165,15 @@ public class SymbolsManagement : MonoBehaviour
     public SymbolData[] GetSymbolsData(SlotSymbol[] symbolsInLine)
     {
         var symbolsData = new SymbolData[symbolsInLine.Length];
-        var i = 0;
-        foreach (var symbol in symbolsInLine)
+        //var i = 0;
+        //foreach (var symbol in symbolsInLine)
+        //{
+        //    symbolsData[i] = symbol.SymbolSO;
+        //    i++;
+        //}
+        for (int i = 0; i < symbolsInLine.Length - 1; i++)
         {
-            symbolsData[i] = symbol.SymbolSO;
-            i++;
+            symbolsData[i] = symbolsInLine[i].SymbolSO;
         }
         return symbolsData;
     }
