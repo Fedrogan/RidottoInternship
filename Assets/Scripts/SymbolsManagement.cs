@@ -88,7 +88,8 @@ public class SymbolsManagement : MonoBehaviour
         
     private SymbolData GetRandomSymbol()
     {
-        var random = Random.Range(0, symbolsData.Count - 1);
+        var random = Random.Range(0, symbolsData.Count);
+        print(random);
         return symbolsData[random];
     } 
     
