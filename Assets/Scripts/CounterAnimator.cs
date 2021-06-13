@@ -7,16 +7,16 @@ using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using TMPro;
 
-public class WinningAmountCalculation : MonoBehaviour
+public class CounterAnimator : MonoBehaviour
 {
-
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private float countDuration;
     [SerializeField] private CanvasGroup counterDisabler;
     [SerializeField] private CanvasGroup currencyDisabler;
+    [SerializeField] private PrizeCalculator calculator;
 
-    public event Action StartChangingPrize;
-    public event Action FinishChangingPrize;
+    //public event Action StartChangingPrize;
+    //public event Action FinishChangingPrize;
 
     private float value;
     private bool isInterrupted;
@@ -25,21 +25,11 @@ public class WinningAmountCalculation : MonoBehaviour
     private void Start()
     {
         GameController.Instance.ReelsStarted += ResetCounter;
+        calculator.PrizeCalculated += OnShowCounterAnimation;
     }
-
-    public void CalculateWin(List<SlotSymbol[]> winningSymbols)
+    private void OnShowCounterAnimation(float prizeAmount)
     {
-        float winningAmount = 0;
-
-        foreach (var line in winningSymbols)
-        {
-            for (int i = 0; i < line.Length; i += 3)
-            {
-                if (line[i].SymbolSO != null) winningAmount += line[i].SymbolSO.SymbolCost;
-            }            
-        }
-        value = winningAmount;
-        UpdateValue(0, winningAmount);
+        UpdateValue(0, prizeAmount);
     }
 
     public void UpdateValue(float prevValue, float newValue, bool immediate = false)
@@ -61,7 +51,7 @@ public class WinningAmountCalculation : MonoBehaviour
         else
         {
             ShowText(newValue);
-            StartChangingPrize?.Invoke();
+            //StartChangingPrize?.Invoke();
             value = prevValue;
             tween = DOTween.To(() => value, (x) => value = x, newValue, countDuration);
             tween.onComplete = () =>
@@ -73,7 +63,7 @@ public class WinningAmountCalculation : MonoBehaviour
                     ShowText(newValue);
                 }
 
-                FinishChangingPrize?.Invoke();
+                //FinishChangingPrize?.Invoke();
             };
             StartCoroutine(CoCount());
         }

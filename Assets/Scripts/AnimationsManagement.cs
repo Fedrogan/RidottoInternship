@@ -10,11 +10,10 @@ public class AnimationsManagement : MonoBehaviour
 {
     public event Action AllAnimationsFinished;
     [SerializeField] private WinLinesCheck winLinesChecker;
-    [SerializeField] private SymbolsManagement symbolsManager;
 
-    [SerializeField] private ReelsSymbolManager reelsSymbolManager;
+    [SerializeField] private SubReel[] subReels;
 
-    [SerializeField] private WinningAmountCalculation calculator;
+    [SerializeField] private PrizeCalculator calculator;
 
     [SerializeField] private Image[] reelsBG;
 
@@ -28,24 +27,31 @@ public class AnimationsManagement : MonoBehaviour
     [SerializeField] private Vector3 pulseScale;
     private readonly Vector3 defaultSymboleScale = new Vector3(1, 1, 1);
 
-    private List<SlotSymbol[]> winLinesToShow;
-    private SlotSymbol[] allSymbols;
+    private List<Symbol[]> winLinesToShow;
+    private List<Symbol> allSymbols;
 
     private void Awake()
     {
-        winLinesToShow = new List<SlotSymbol[]>();
+        winLinesToShow = new List<Symbol[]>();
+        allSymbols = new List<Symbol>();
         
     }
     private void Start()
     {
         GameController.Instance.SpinStarted += ResetAnimations;
-        allSymbols = reelsSymbolManager.GetAllVisibleSymbols();
+        foreach(var subReel in subReels)
+        {
+            var symbols = subReel.VisibleReelSymbols;
+            foreach(var symbol in symbols)
+            {
+                allSymbols.Add(symbol);
+            }            
+        }
     }
 
-    public void AddWinLineToShowList(SlotSymbol[] winLine)
+    public void AddWinLineToShowList(Symbol[] winLine)
     {
-        print("WinLine Added");
-        var newLine = winLine.Clone() as SlotSymbol[];
+        var newLine = winLine.Clone() as Symbol[];
         winLinesToShow.Add(newLine);
     }
 
@@ -69,7 +75,7 @@ public class AnimationsManagement : MonoBehaviour
             yield return new WaitForSecondsRealtime(pauseBetweenCoroutines);
             ResetAllSymbolsAnimations();
         }        
-        ResetAnimations();
+        ResetAnimations(false);
         AllAnimationsFinished?.Invoke();
     }
 
@@ -81,20 +87,20 @@ public class AnimationsManagement : MonoBehaviour
         }
     }
 
-    public void ShowWinAnimation(SlotSymbol[] winLineSymbols)
+    public void ShowWinAnimation(Symbol[] winLineSymbols)
     {
         foreach (var symbol in allSymbols)
         {
             if (!winLineSymbols.Contains(symbol))
             {
-                symbol.GetComponent<Image>().color = Color.gray;
+                symbol.Icon.color = Color.gray;
             }
         }
         foreach (var winningSymbol in winLineSymbols)
         {
-            var symbolRT = winningSymbol.GetComponent<RectTransform>();
-            //winningSymbol.ParticleFrame.SetActive(true);
-            //winningSymbol.ParticleSystem.Play();
+            var symbolRT = winningSymbol.SymbolRT;
+            winningSymbol.ParticleFrame.SetActive(true);
+            winningSymbol.ParticleSystem.Play();
             var putForwardTweener = symbolRT.DOScale(putForwardScale, putForwardTweenDuration).OnComplete(() =>
             {
                 var pulseTweener = symbolRT.DOScale(pulseScale, pulseTweenDuration).SetLoops(pulseLoops, LoopType.Yoyo)
@@ -110,22 +116,22 @@ public class AnimationsManagement : MonoBehaviour
     {
         foreach (var symbol in allSymbols)
         {
-            var symbolRT = symbol.GetComponent<RectTransform>();
+            var symbolRT = symbol.SymbolRT;
             symbolRT.DOKill();
-            //symbol.ParticleFrame.SetActive(false);
-            //symbol.ParticleSystem.Stop();
+            symbol.ParticleFrame.SetActive(false);
+            symbol.ParticleSystem.Stop();
             symbolRT.localScale = defaultSymboleScale;
-            symbol.GetComponent<Image>().color = Color.white;
+            symbol.Icon.color = Color.white;
         }
     }
 
-    public void ResetAnimations()
+    public void ResetAnimations(bool isFirstSpin)
     {            
         ResetReelsBG();
 
         ResetAllSymbolsAnimations();
 
-        calculator.CalculateWin(winLinesToShow);        
+        if (isFirstSpin == false) calculator.CalculateWin(winLinesToShow);        
 
         StopAllCoroutines();
 

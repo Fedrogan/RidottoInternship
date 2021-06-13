@@ -4,17 +4,22 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    public event Action SpinStarted;
+    public event Action<bool> SpinStarted;
     public event Action SpinInterrupted;
     public event Action ReelsStarted;
     public event Action SpinFinished;
 
-
-    [SerializeField] private Button playButton;
-    [SerializeField] private Button stopButton;
-
     [SerializeField] private ReelsScroll reelsScroller;
 
+    [SerializeField] private Button playButton;
+    [SerializeField] private RectTransform playButtonRT;
+    [SerializeField] private Button stopButton;
+    [SerializeField] private RectTransform stopButtonRT;
+
+    private Vector3 visibleButtonScale = new Vector3(1, 1);
+    private Vector3 invisibleButtonScale = new Vector3(0, 0);
+
+    private bool isFirstSpin = true;
     public static GameController Instance { get; private set; }
 
     private void Awake()
@@ -26,7 +31,7 @@ public class GameController : MonoBehaviour
 
         stopButton.interactable = false;
 
-        stopButton.GetComponent<RectTransform>().localScale = new Vector3(0, 0);
+        stopButtonRT.localScale = invisibleButtonScale;
 
         reelsScroller.AllReelsStarted += OnAllReelsStarted;
         reelsScroller.AllReelsStopped += OnAllReelsStopped;
@@ -37,8 +42,8 @@ public class GameController : MonoBehaviour
     {
         stopButton.interactable = false;
 
-        stopButton.GetComponent<RectTransform>().localScale = new Vector3(0, 0);
-        playButton.GetComponent<RectTransform>().localScale = new Vector3(1, 1);
+        stopButtonRT.localScale = invisibleButtonScale;
+        playButtonRT.localScale = visibleButtonScale;
 
         SpinInterrupted?.Invoke();
     }
@@ -48,7 +53,7 @@ public class GameController : MonoBehaviour
         playButton.interactable = true;
         stopButton.interactable = false;
 
-        playButton.GetComponent<RectTransform>().localScale = new Vector3(1, 1);
+        playButtonRT.localScale = visibleButtonScale;
 
         SpinFinished?.Invoke();
     }
@@ -64,10 +69,11 @@ public class GameController : MonoBehaviour
     {
         playButton.interactable = false;
 
-        playButton.GetComponent<RectTransform>().localScale = new Vector3(0, 0);
-        stopButton.GetComponent<RectTransform>().localScale = new Vector3(1, 1);
+        playButtonRT.localScale = invisibleButtonScale;
+        stopButtonRT.localScale = visibleButtonScale;
 
-        SpinStarted?.Invoke();
+        SpinStarted?.Invoke(isFirstSpin);
+        isFirstSpin = false;
     }
 
     private void OnDestroy()
