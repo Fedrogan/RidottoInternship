@@ -1,133 +1,210 @@
 ﻿using UnityEngine;
 using DG.Tweening;
 using System;
-using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class ReelsScroll : MonoBehaviour
 {
     public event Action AllReelsStarted;
     public event Action AllReelsStopped;
 
-    [SerializeField] private RectTransform[] reels;
-    [SerializeField] private SymbolsManagement symbolsManager;
-    [SerializeField] [Range(0, 3000)] private float spinSpeed;
-    [SerializeField] private float boostDistance, spinDistance;
-    [SerializeField] private float boostDuration, slowdownDuration;
+    [SerializeField] private GameConfig gameConfig;
+    [Space]
+    [SerializeField] private RectTransform[] fakeReelsRT;
+    [SerializeField] private FakeReel[] fakeReels;
+    [Space]
+    [SerializeField] private RectTransform[] subReelsRT;
+    [SerializeField] private SubReel[] subReels;
+
+    private Dictionary<RectTransform, FakeReel> fakeDictionary;    
+    private Dictionary<RectTransform, SubReel> subDictionary;
+    private Dictionary<RectTransform, RectTransform> fakeSubConnection;
+    [Space]
     [SerializeField] private Ease boostEase, slowdownEase;
     [SerializeField] private float delayStep;
     [SerializeField] private int symbolHeigth;
-    [SerializeField] private RectTransform thirdReelParent;
-    [SerializeField] private int visibleSymbolsOnReelCount;
+    
+
+    [SerializeField] [Range(2000, 4000)] private float reelLinearSpeed;
+    [SerializeField] private float boostDistance;
+    [SerializeField] private float boostDuration, spinDuration, slowdownDuration;
+    private float spinDistance;    
+
+
+    private float startSubReelPositionY;
+    private readonly float middlePosition = 0;    
+    private float startFakeReelPositionY;
 
     private float correctedSlowDownDistance;
-    private float startReelPositionY;
-    private float traveledDistance;    
+    private float traveledDistance;
     private float cellYCorrection;
-    
-    void Start()
+
+    private bool isFirstSpin;
+
+    private void Awake()
     {
-        GameController.Instance.SpinStarted += OnSpinStarted;
-        GameController.Instance.SpinInterrupted += OnSlowdownSpin;
-
-        startReelPositionY = reels[0].localPosition.y;
-    }
-
-    private void OnSpinStarted()
-    {
-        StartSpinning();
-    }
-
-    public void StartSpinning()
-    {
-        for (int i = 0; i < reels.Length; i++)
-        {            
-            var reel = reels[i];            
-            reel.DOAnchorPosY(boostDistance, boostDuration).SetDelay(i * delayStep)
-                .SetEase(boostEase).OnComplete(() => LinearSpin(reel));
-        }
-    }
-
-    public void LinearSpin(RectTransform reel)
-    {
-        if (reel.GetComponent<ReelInfo>().ReelID == reels.Length) AllReelsStarted?.Invoke();
-
-        reel.DOAnchorPosY(spinDistance, -spinDistance / spinSpeed).SetEase(Ease.Linear)
-            .OnComplete(delegate
-            {
-                CorrectReelPos(reel);
-                StopReel(reel, true);
-            });
-    }
-
-    private void CorrectReelPos(RectTransform reel)
-    {
-        traveledDistance = startReelPositionY - reel.localPosition.y;
-        var remaingerOfDivision = traveledDistance % symbolHeigth;
-        if (0 <= remaingerOfDivision && remaingerOfDivision <= 199.99f)
+        fakeDictionary = new Dictionary<RectTransform, FakeReel>();
+        subDictionary = new Dictionary<RectTransform, SubReel>();
+        fakeSubConnection = new Dictionary<RectTransform, RectTransform>();
+        for (int i = 0; i < fakeReels.Length; i++)
         {
-            var correction = 199.99f - remaingerOfDivision;
-            print(correction / spinSpeed);
-            
-            symbolsManager.MakeAllSymbolsMutable(false);
-            
-            var target = reel.localPosition.y - correction;
-            print(-target / spinSpeed);
-            reel.DOAnchorPosY(target, correction / spinSpeed).SetEase(Ease.Linear)
-                .OnComplete(() => SlowdownReelSpin(reel));
+            fakeDictionary.Add(fakeReelsRT[i], fakeReels[i]);
+            subDictionary.Add(subReelsRT[i], subReels[i]);
+            fakeSubConnection.Add(fakeReelsRT[i], subReelsRT[i]);
         }
-        else SlowdownReelSpin(reel);
+        isFirstSpin = true;
+        spinDistance = -spinDuration * reelLinearSpeed;
+        startFakeReelPositionY = fakeReelsRT[0].localPosition.y;
+        startSubReelPositionY = subReelsRT[0].localPosition.y;
     }
 
-    private void StopReel(RectTransform reel, bool isStopping)
-    {
-        reel.GetComponent<ReelInfo>().IsStopping = isStopping;
+    private void Start()
+    {  
+        GameController.Instance.SpinStarted += OnSpinStarted;
+        GameController.Instance.SpinInterrupted += OnSlowdownSpin;        
     }
 
-    public void SlowdownReelSpin(RectTransform reel)
+    private void Update()
     {
-        var currReelPos = reel.localPosition.y;
-        symbolsManager.MakeAllSymbolsMutable(true);
-        DOTween.Kill(reel);
-        correctedSlowDownDistance = CalculateSlowDownDistance(currReelPos);       
-        reel.DOAnchorPosY(correctedSlowDownDistance, slowdownDuration).SetEase(slowdownEase)
-            .OnComplete(delegate
+        for (int i = 0; i < subReelsRT.Length; i++)
+        {
+            if (subReels[i].ReelState == ReelState.Stopping)
             {
-                ResetReelPos(reel);
-                if (reel.GetComponent<ReelInfo>().ReelID == reels.Length) AllReelsStopped?.Invoke();
-            });
+                if (subReelsRT[i].localPosition.y <= startSubReelPositionY + symbolHeigth / 2)
+                    fakeReels[i].HideSymbolsOnFakeReel(true);
+            }
+            else
+            {
+                fakeReels[i].HideSymbolsOnFakeReel(false);
+            }
+        }        
+    }
+
+    private void OnSpinStarted(bool isFirstSpin)
+    {
+        this.isFirstSpin = isFirstSpin;
+        StartSpinning();
     }
 
     public void OnSlowdownSpin()
     {
-        foreach (RectTransform reel in reels)
+        foreach (RectTransform fakeReelRT in fakeReelsRT)
         {
-            if (reel.GetComponent<ReelInfo>().IsStopping == false)
+            if (fakeDictionary[fakeReelRT].ReelState == ReelState.Spin)
             {
-                DOTween.Kill(reel);
-                SlowdownReelSpin(reel);
-                StopReel(reel, true);
-            }            
-        }        
+                DOTween.Kill(fakeReelRT);
+                SlowdownFakeReel(fakeReelRT);
+            }
+        }
     }
 
-    void ResetReelPos(RectTransform reel)
-    {   
-        var reelCurrPos = reel.localPosition;
-        if (correctedSlowDownDistance != reelCurrPos.y) cellYCorrection = correctedSlowDownDistance - reelCurrPos.y;
-        else cellYCorrection = 0;
-        reel.localPosition = new Vector3(reelCurrPos.x, startReelPositionY, reelCurrPos.z);
-        StopReel(reel, false);
-        symbolsManager.ResetSymbolsPosition(correctedSlowDownDistance, cellYCorrection, startReelPositionY, reel);
-    } 
-    
-    private float CalculateSlowDownDistance(float currReelPos)
+    private void StartSpinning()
     {
-        traveledDistance = startReelPositionY - currReelPos;
-        var symbolsChanged = traveledDistance / symbolHeigth;        
-        var integerPart = Mathf.Floor(symbolsChanged);
-        var fractionalPart = symbolsChanged - integerPart;
-        var extraDistance = symbolHeigth * visibleSymbolsOnReelCount + (1 - fractionalPart) * symbolHeigth;
-        var slowDownDistance = currReelPos - extraDistance;        
-        return slowDownDistance;
-    }    
+        for (int i = 0; i < fakeReels.Length; i++)
+        {
+            var delay = i * delayStep;
+            var fakeReelRT = fakeReelsRT[i];
+            fakeDictionary[fakeReelRT].ReelState = ReelState.Spin;
+            if (isFirstSpin == false)
+            {
+                MoveSubReelOut(fakeSubConnection[fakeReelRT], delay);
+            }
+            fakeReelRT.DOAnchorPosY(boostDistance, boostDuration).SetDelay(delay)
+                .SetEase(boostEase).OnComplete(() => LinearSpin(fakeReelRT));
+        }
+    }
+
+    private void LinearSpin(RectTransform fakeReelRT)
+    {
+        if (fakeDictionary[fakeReelRT].ReelID == fakeReels.Length) AllReelsStarted?.Invoke();
+
+        fakeReelRT.DOAnchorPosY(spinDistance, spinDuration).SetEase(Ease.Linear)
+            .OnComplete(()=>
+            {
+                SlowdownFakeReel(fakeReelRT);
+            });
+    }
+
+    public void SlowdownFakeReel(RectTransform fakeReelRT)
+    {
+        fakeDictionary[fakeReelRT].ReelState = ReelState.Stopping;
+        var currentFakeReelPos = fakeReelRT.localPosition.y;
+        DOTween.Kill(fakeReelRT);
+        var extraDistance = CalculateSlowDownDistance(currentFakeReelPos);
+        var slowDownDistance = currentFakeReelPos - extraDistance;
+
+        CorrectSubReel(fakeSubConnection[fakeReelRT], extraDistance);
+        MoveSubReelIn(fakeSubConnection[fakeReelRT]);
+
+        fakeReelRT.DOAnchorPosY(slowDownDistance, slowdownDuration).SetEase(slowdownEase)
+            .OnComplete(() =>
+            {
+                fakeDictionary[fakeReelRT].ReelState = ReelState.Stop;
+                PrepareFakeReel(fakeReelRT);
+                if (fakeDictionary[fakeReelRT].ReelID == fakeReels.Length)
+                {
+                    AllReelsStopped?.Invoke();
+                }
+            });
+    }
+
+    private void PrepareFakeReel(RectTransform fakeReelRT)
+    {
+        var currentFakeReelPos = fakeReelRT.localPosition;
+        if (correctedSlowDownDistance != currentFakeReelPos.y) 
+            cellYCorrection = correctedSlowDownDistance - currentFakeReelPos.y;
+        else 
+            cellYCorrection = 0;
+        fakeReelRT.localPosition = new Vector3(currentFakeReelPos.x, startFakeReelPositionY, currentFakeReelPos.z);
+        fakeDictionary[fakeReelRT].ResetSymbolsPosition(correctedSlowDownDistance, cellYCorrection, startFakeReelPositionY);
+    }
+
+    private float CalculateSlowDownDistance(float currentFakeReelPos)
+    {
+        traveledDistance = startFakeReelPositionY - currentFakeReelPos;
+        var symbolsScrolled = traveledDistance / symbolHeigth;
+        var integerPart = Mathf.Floor(symbolsScrolled);
+        var fractionalPart = symbolsScrolled - integerPart;
+        var extraDistance = symbolHeigth * gameConfig.VisibleSymbolsOnReel + (1 - fractionalPart) * symbolHeigth;
+        return extraDistance;
+    }
+
+    public void CorrectSubReel(RectTransform subReelRT, float offset)
+    {
+        var subReel = subDictionary[subReelRT];
+        subReel.ReelState = ReelState.Stopping;
+        Vector2 position = subReelRT.anchoredPosition;
+        position.y = offset;
+        subReelRT.anchoredPosition = position;
+    }
+
+    private void MoveSubReelIn(RectTransform subReelRT)
+    { 
+        subReelRT.DOAnchorPosY(middlePosition, slowdownDuration).SetEase(slowdownEase);
+    }
+
+    private void MoveSubReelOut(RectTransform subReelRT, float delay)
+    {
+        var subReel = subDictionary[subReelRT];
+        subReel.ReelState = ReelState.Spin;
+        subReelRT.DOAnchorPosY(boostDistance, boostDuration)
+            .SetEase(boostEase).SetDelay(delay)
+            .OnComplete(() => 
+            {
+                PrepareSubReel(subReelRT, subReel.ReelID);                
+            });
+    }
+
+    private void PrepareSubReel(RectTransform subReelRT, int reelID)
+    {
+        var reelCurrPos = subReelRT.localPosition;
+        subReelRT.localPosition = new Vector3(reelCurrPos.x, startSubReelPositionY, reelCurrPos.z);
+        if (reelID == subReels.Length)
+        {
+            foreach (var subReel in subReels)
+            {
+                subReel.FillReel();
+            }
+        }
+    }
 }

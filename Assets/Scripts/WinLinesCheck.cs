@@ -3,18 +3,18 @@
 
 public class WinLinesCheck : MonoBehaviour
 {
-    [SerializeField] private SymbolsManagement symbolsManager;
+    
     [SerializeField] private AnimationsManagement animationsManager;
     [SerializeField] private WinLine[] winLines;
-    [SerializeField] private RectTransform[] reels;
 
-    private SlotSymbol[] winLineSymbols;
-    private SymbolData[] symbolsInLineData;
+    [SerializeField] private SubReel[] subReels;
+
+    private Symbol[] winLineSymbols;
 
     private void Start()
     {
         GameController.Instance.SpinFinished += CheckWin;
-        winLineSymbols = new SlotSymbol[reels.Length];
+        winLineSymbols = new Symbol[subReels.Length];
     }
 
     public void CheckWin()
@@ -23,15 +23,14 @@ public class WinLinesCheck : MonoBehaviour
         {
             for (int i = 0; i < winLine.WinSymbols.Length; i++)
             {
-                winLineSymbols[i] = symbolsManager.GetSymbolOnReelById(reels[i], winLine.WinSymbols[i]);
+                winLineSymbols[i] = subReels[i].VisibleReelSymbols[winLine.WinSymbols[i]];                    
             }
-            symbolsInLineData = symbolsManager.GetSymbolsData(winLineSymbols);
-            
-            if (symbolsInLineData[1] == symbolsInLineData[0] && symbolsInLineData[2] == symbolsInLineData[1])
+
+            if (winLineSymbols[0].SymbolSO == winLineSymbols[1].SymbolSO && winLineSymbols[1].SymbolSO == winLineSymbols[2].SymbolSO)           
             {
                 animationsManager.AddWinLineToShowList(winLineSymbols);
             }
         }
         animationsManager.StartAnimations();
-    }    
+    }
 }

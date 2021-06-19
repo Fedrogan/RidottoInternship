@@ -13,15 +13,12 @@ MonoBehaviour:
   m_Name: FS 9
   m_EditorClassIdentifier: 
   finalScreenSymbols:
-  - {fileID: 11400000, guid: 5cbcc473c4a05a746b472981dc5e9f6f, type: 2}
-  - {fileID: 11400000, guid: 5cbcc473c4a05a746b472981dc5e9f6f, type: 2}
-  - {fileID: 11400000, guid: 5cbcc473c4a05a746b472981dc5e9f6f, type: 2}
-  - {fileID: 11400000, guid: 5cbcc473c4a05a746b472981dc5e9f6f, type: 2}
-  - {fileID: 11400000, guid: 5cbcc473c4a05a746b472981dc5e9f6f, type: 2}
-  - {fileID: 11400000, guid: 5cbcc473c4a05a746b472981dc5e9f6f, type: 2}
-  - {fileID: 11400000, guid: 5cbcc473c4a05a746b472981dc5e9f6f, type: 2}
-  - {fileID: 11400000, guid: 5cbcc473c4a05a746b472981dc5e9f6f, type: 2}
-  - {fileID: 11400000, guid: 5cbcc473c4a05a746b472981dc5e9f6f, type: 2}
+  - {fileID: 11400000, guid: 0fe3db52c1bed3044a14e48c281a6903, type: 2}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 0fe3db52c1bed3044a14e48c281a6903, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 0fe3db52c1bed3044a14e48c281a6903, type: 2}
   - {fileID: 0}
   - {fileID: 0}
