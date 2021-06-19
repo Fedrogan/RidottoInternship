@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour
+public class BonusGameController : MonoBehaviour
 {
     public event Action<bool> SpinStarted;
     public event Action SpinInterrupted;
@@ -29,14 +29,13 @@ public class GameController : MonoBehaviour
 
     private float prevWin;
     private float currentWin;
-    public static GameController Instance { get; private set; }
+    public static BonusGameController Instance { get; private set; }
 
     private void Awake()
     {
         Instance = this;
 
         playButton.onClick.AddListener(OnPlayButtonClicked);
-        stopButton.onClick.AddListener(OnStopButtonClicked);
 
         stopButton.interactable = false;
         stopButtonRT.localScale = invisibleButtonScale;
@@ -45,15 +44,6 @@ public class GameController : MonoBehaviour
         reelsScroller.AllReelsStopped += OnAllReelsStopped;
     }
 
-    private void OnStopButtonClicked()
-    {
-        stopButton.interactable = false;
-
-        stopButtonRT.localScale = invisibleButtonScale;
-        playButtonRT.localScale = visibleButtonScale;
-
-        reelsScroller.OnSlowdownSpin();
-    }
 
     private void OnAllReelsStopped()
     {
@@ -92,14 +82,5 @@ public class GameController : MonoBehaviour
         isFirstSpin = false;
 
         balanceHolder.AddPrize(currentWin);
-    }
-
-    private void OnDestroy()
-    {
-        playButton.onClick.RemoveListener(OnPlayButtonClicked);
-        stopButton.onClick.RemoveListener(OnStopButtonClicked);
-
-        reelsScroller.AllReelsStarted -= OnAllReelsStarted;
-        reelsScroller.AllReelsStopped -= OnAllReelsStopped;
     }
 }

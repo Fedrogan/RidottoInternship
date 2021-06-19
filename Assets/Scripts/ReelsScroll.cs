@@ -7,6 +7,7 @@ public class ReelsScroll : MonoBehaviour
 {
     public event Action AllReelsStarted;
     public event Action AllReelsStopped;
+    public event Action<SubReel> ReelStopped;
 
     [SerializeField] private GameConfig gameConfig;
     [Space]
@@ -60,8 +61,8 @@ public class ReelsScroll : MonoBehaviour
 
     private void Start()
     {  
-        GameController.Instance.SpinStarted += OnSpinStarted;
-        GameController.Instance.SpinInterrupted += OnSlowdownSpin;        
+        //GameController.Instance.SpinStarted += OnSpinStarted;
+        //GameController.Instance.SpinInterrupted += OnSlowdownSpin;        
     }
 
     private void Update()
@@ -80,11 +81,11 @@ public class ReelsScroll : MonoBehaviour
         }        
     }
 
-    private void OnSpinStarted(bool isFirstSpin)
-    {
-        this.isFirstSpin = isFirstSpin;
-        StartSpinning();
-    }
+    //private void OnSpinStarted(bool isFirstSpin)
+    //{
+    //    this.isFirstSpin = isFirstSpin;
+    //    StartSpinning();
+    //}
 
     public void OnSlowdownSpin()
     {
@@ -98,7 +99,7 @@ public class ReelsScroll : MonoBehaviour
         }
     }
 
-    private void StartSpinning()
+    public void StartSpinning(bool isFirstSpin)
     {
         for (int i = 0; i < fakeReels.Length; i++)
         {
@@ -191,6 +192,7 @@ public class ReelsScroll : MonoBehaviour
             .SetEase(boostEase).SetDelay(delay)
             .OnComplete(() => 
             {
+                ReelStopped?.Invoke(subReel);
                 PrepareSubReel(subReelRT, subReel.ReelID);                
             });
     }

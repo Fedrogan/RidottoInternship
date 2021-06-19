@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using System.Linq;
 
 
 public class WinLinesCheck : MonoBehaviour
 {
-    
-    [SerializeField] private AnimationsManagement animationsManager;
-    [SerializeField] private WinLine[] winLines;
+    [SerializeField] private GameConfig gameConfig;
 
     [SerializeField] private SubReel[] subReels;
 
@@ -13,24 +13,27 @@ public class WinLinesCheck : MonoBehaviour
 
     private void Start()
     {
-        GameController.Instance.SpinFinished += CheckWin;
         winLineSymbols = new Symbol[subReels.Length];
     }
 
-    public void CheckWin()
+    public List<Symbol[]> GetWinLines()
     {
-        foreach (var winLine in winLines)
+        List<Symbol[]> winningLines = new List<Symbol[]>();
+        foreach (var winLine in gameConfig.WinLines)
         {
             for (int i = 0; i < winLine.WinSymbols.Length; i++)
             {
-                winLineSymbols[i] = subReels[i].VisibleReelSymbols[winLine.WinSymbols[i]];                    
+                winLineSymbols[i] = subReels[i].VisibleReelSymbols[winLine.WinSymbols[i]];
             }
 
-            if (winLineSymbols[0].SymbolSO == winLineSymbols[1].SymbolSO && winLineSymbols[1].SymbolSO == winLineSymbols[2].SymbolSO)           
+            if (winLineSymbols[0].SymbolSO == winLineSymbols[1].SymbolSO && winLineSymbols[1].SymbolSO == winLineSymbols[2].SymbolSO)
             {
-                animationsManager.AddWinLineToShowList(winLineSymbols);
+                var newLine = winLineSymbols.Clone() as Symbol[];
+                winningLines.Add(newLine);
             }
         }
-        animationsManager.StartAnimations();
+        return winningLines;
     }
+
+    //public int 
 }

@@ -16,13 +16,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8ded7bab0693688408e11b145da680fd, type: 2}
   - {fileID: 11400000, guid: f32d446666918c741a22163a36450a2f, type: 2}
   - {fileID: 11400000, guid: 4b8e3d1360d8d824694ac5843de7bc8a, type: 2}
-  - {fileID: 11400000, guid: 00f1c60bcfe1da743978444339b6b81a, type: 2}
+  - {fileID: 11400000, guid: 9901a61a3b2c72347b69b0606131e26b, type: 2}
   - {fileID: 11400000, guid: 92c3aa461255f8a469ba366d68f76fac, type: 2}
   - {fileID: 11400000, guid: ab36ecb4d57fae44cb73c6b039a4037a, type: 2}
   - {fileID: 11400000, guid: 51a051b1b2e4a6c499fc207b7c883dae, type: 2}
   - {fileID: 11400000, guid: 3eaa31dac3fcd0441b238bbe851f5779, type: 2}
   - {fileID: 11400000, guid: 833a2c3c6ec7fc549b1fe8b275c75cf2, type: 2}
   - {fileID: 11400000, guid: 9cb3d9d92083d6a44baf5211a38b58cd, type: 2}
+  - {fileID: 11400000, guid: 00f1c60bcfe1da743978444339b6b81a, type: 2}
   symbolsData:
   - {fileID: 11400000, guid: d060e53b9ec467d4588bc8934ab2a1b8, type: 2}
   - {fileID: 11400000, guid: 251344343949f7d4db12550e11bed94c, type: 2}
@@ -35,4 +36,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0ed7486825e15d14492e361866e29141, type: 2}
   - {fileID: 11400000, guid: 98b89288b71dcde49bdafe1417bde108, type: 2}
   - {fileID: 11400000, guid: 1d25b8b0d4d921146946b8387f32961d, type: 2}
+  - {fileID: 11400000, guid: fad1bf5c8efc04f4e84cb40464861c25, type: 2}
+  winLines:
+  - {fileID: 11400000, guid: 268da23c6f72f0f48b3017645a6920d4, type: 2}
+  - {fileID: 11400000, guid: 3a093154c7fb35b4b915c7b6ea73b5c2, type: 2}
+  - {fileID: 11400000, guid: d9bd0e0d4b347bd4288f49e189e7b044, type: 2}
+  - {fileID: 11400000, guid: fa1661084daa8be4595ce03a533c02ff, type: 2}
+  - {fileID: 11400000, guid: a13a2608cfcc8b74f823109660806166, type: 2}
   visibleSymbolsOnReel: 3

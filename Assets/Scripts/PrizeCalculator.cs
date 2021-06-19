@@ -7,7 +7,7 @@ using UnityEngine;
 public class PrizeCalculator : MonoBehaviour
 {
     public event Action<float> PrizeCalculated;
-    public void CalculateWin(List<Symbol[]> winningSymbols)
+    public float CalculateWin(List<Symbol[]> winningSymbols)
     {
         float prize = 0;
 
@@ -18,7 +18,8 @@ public class PrizeCalculator : MonoBehaviour
                 if (line[i].SymbolSO != null) prize += line[i].SymbolSO.SymbolCost;
             }            
         }
-        print(prize);
-        PrizeCalculated?.Invoke(prize);
+        return prize;
+        //print(prize);
+        //PrizeCalculated?.Invoke(prize);
     }    
 }

@@ -22,16 +22,6 @@ public class CounterAnimator : MonoBehaviour
     private bool isInterrupted;
     private TweenerCore<float, float, FloatOptions> tween;
 
-    private void Start()
-    {
-        GameController.Instance.ReelsStarted += ResetCounter;
-        calculator.PrizeCalculated += OnShowCounterAnimation;
-    }
-    private void OnShowCounterAnimation(float prizeAmount)
-    {
-        UpdateValue(0, prizeAmount);
-    }
-
     public void UpdateValue(float prevValue, float newValue, bool immediate = false)
     {
         isInterrupted = false;

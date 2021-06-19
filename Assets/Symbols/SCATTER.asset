@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7ce746c086ea624596324d45836dfd5, type: 3}
-  m_Name: C#
+  m_Name: SCATTER
   m_EditorClassIdentifier: 
-  symbolImage: {fileID: 21300000, guid: 3eac6bb1fda843b41b707a65280fe66f, type: 3}
-  symbolType: 1
-  symbolCost: 1000
+  symbolImage: {fileID: 21300000, guid: fe1c97a77a2d3b343b83073cd3c47d40, type: 3}
+  symbolType: 3
+  symbolCost: 2000

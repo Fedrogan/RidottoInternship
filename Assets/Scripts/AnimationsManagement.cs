@@ -38,7 +38,7 @@ public class AnimationsManagement : MonoBehaviour
     }
     private void Start()
     {
-        GameController.Instance.SpinStarted += ResetAnimations;
+        //GameController.Instance.SpinStarted += ResetAnimations;
         foreach(var subReel in subReels)
         {
             var symbols = subReel.VisibleReelSymbols;
@@ -51,14 +51,15 @@ public class AnimationsManagement : MonoBehaviour
 
     public void AddWinLineToShowList(Symbol[] winLine)
     {
+        print("winline added");
         var newLine = winLine.Clone() as Symbol[];
         winLinesToShow.Add(newLine);
     }
 
-    public void StartAnimations()
+    public void StartAnimations(List<Symbol[]> winningLines)
     {
-        StartCoroutine(CoShowWinLine());
-        if (winLinesToShow.Count > 0)
+        StartCoroutine(CoShowWinLine(winningLines));
+        if (winningLines.Count > 0)
         {
             foreach (var reelBG in reelsBG)
             {
@@ -67,7 +68,7 @@ public class AnimationsManagement : MonoBehaviour
         }
     }
 
-    public IEnumerator CoShowWinLine()
+    public IEnumerator CoShowWinLine(List<Symbol[]> winLinesToShow)
     {
         foreach (var line in winLinesToShow)
         {
