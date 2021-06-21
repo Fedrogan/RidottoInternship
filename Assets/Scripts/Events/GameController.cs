@@ -17,6 +17,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private PrizeCalculator prizeCalculator;
     [SerializeField] private CounterAnimator counterAnimator;
 
+    [SerializeField] private PopUpsContainer popUpsContainer;
+
     [SerializeField] private BalanceHolder balanceHolder;
 
     [SerializeField] private Button playButton;
