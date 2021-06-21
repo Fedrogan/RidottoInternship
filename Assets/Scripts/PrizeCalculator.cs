@@ -19,7 +19,5 @@ public class PrizeCalculator : MonoBehaviour
             }            
         }
         return prize;
-        //print(prize);
-        //PrizeCalculated?.Invoke(prize);
     }    
 }

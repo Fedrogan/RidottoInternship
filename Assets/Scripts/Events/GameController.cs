@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour
     public event Action ReelsStarted;
     public event Action SpinFinished;
 
+
+    [SerializeField] private BonusGameController bonusGameController;
     [SerializeField] private ReelsScroll reelsScroller;
     [SerializeField] private AnimationsManagement animationsManager;
     [SerializeField] private WinLinesCheck winLinesChecker;
@@ -22,6 +24,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private Button stopButton;
     [SerializeField] private RectTransform stopButtonRT;
 
+    private GameType gameType = GameType.Ordinary;
+
     private Vector3 visibleButtonScale = new Vector3(1, 1);
     private Vector3 invisibleButtonScale = new Vector3(0, 0);
 
@@ -29,20 +33,38 @@ public class GameController : MonoBehaviour
 
     private float prevWin;
     private float currentWin;
+
+
+
     public static GameController Instance { get; private set; }
+    public GameType GameType { get => gameType; set => gameType = value; }
+    public BalanceHolder BalanceHolder => balanceHolder;
 
     private void Awake()
     {
         Instance = this;
 
-        playButton.onClick.AddListener(OnPlayButtonClicked);
-        stopButton.onClick.AddListener(OnStopButtonClicked);
-
         stopButton.interactable = false;
         stopButtonRT.localScale = invisibleButtonScale;
+    }
+    private void Start()
+    {
+        StartOrdinaryGame();
+    }
 
-        reelsScroller.AllReelsStarted += OnAllReelsStarted;
-        reelsScroller.AllReelsStopped += OnAllReelsStopped;
+    public void StartOrdinaryGame()
+    {
+        SubscribeEvents();
+
+        gameType = GameType.Ordinary;
+
+        playButton.interactable = true;
+        playButtonRT.localScale = visibleButtonScale;
+    }
+
+    private void OnAnimationsFinished()
+    {
+        counterAnimator.UpdateValue(prevWin, currentWin, false);
     }
 
     private void OnStopButtonClicked()
@@ -63,17 +85,18 @@ public class GameController : MonoBehaviour
         playButtonRT.localScale = visibleButtonScale;
 
         var winningLines = winLinesChecker.GetWinLines();
+
         animationsManager.StartAnimations(winningLines);
+
         currentWin = prizeCalculator.CalculateWin(winningLines);
-        animationsManager.AllAnimationsFinished += delegate
-        {
-            counterAnimator.UpdateValue(prevWin, currentWin, false);
-        };
+
+        winLinesChecker.CheckFSGame();
     }
 
     private void OnAllReelsStarted()
     {
         stopButton.interactable = true;
+
         counterAnimator.ResetCounter();
     }
 
@@ -83,15 +106,61 @@ public class GameController : MonoBehaviour
 
         playButtonRT.localScale = invisibleButtonScale;
         stopButtonRT.localScale = visibleButtonScale;
+
         reelsScroller.StartSpinning(isFirstSpin);
-        animationsManager.ResetAnimations(isFirstSpin);
+
+        animationsManager.ResetAnimations();
+
         if (isFirstSpin == false)
         {
             counterAnimator.UpdateValue(prevWin, currentWin, true);
         }
         isFirstSpin = false;
 
-        balanceHolder.AddPrize(currentWin);
+        BalanceHolder.AddPrize(currentWin);
+    }
+
+    private void UnsubscribeEvents()
+    {
+        playButton.onClick.RemoveListener(OnPlayButtonClicked);
+        stopButton.onClick.RemoveListener(OnStopButtonClicked);
+
+        reelsScroller.AllReelsStarted -= OnAllReelsStarted;
+        reelsScroller.AllReelsStopped -= OnAllReelsStopped;
+
+        animationsManager.AllAnimationsFinished -= OnAnimationsFinished;
+
+        winLinesChecker.FreeSpinsDetected -= OnFreeSpinsDetected;
+    }
+
+    public void SubscribeEvents()
+    { 
+        playButton.onClick.AddListener(OnPlayButtonClicked);
+        stopButton.onClick.AddListener(OnStopButtonClicked);
+
+        reelsScroller.AllReelsStarted += OnAllReelsStarted;
+        reelsScroller.AllReelsStopped += OnAllReelsStopped;
+
+        animationsManager.AllAnimationsFinished += OnAnimationsFinished;
+
+        winLinesChecker.FreeSpinsDetected += OnFreeSpinsDetected;
+    }
+
+    private void OnFreeSpinsDetected(int scattersDetected)
+    {
+        UnsubscribeEvents();
+
+        playButton.interactable = false;
+        stopButton.interactable = false;
+
+        playButtonRT.localScale = invisibleButtonScale;
+        stopButtonRT.localScale = invisibleButtonScale;
+
+        animationsManager.ResetAnimations();
+
+        gameType = GameType.Bonus;
+
+        bonusGameController.StartBonusGame(scattersDetected);
     }
 
     private void OnDestroy()

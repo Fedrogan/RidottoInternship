@@ -27,8 +27,11 @@ public class SubReel : MonoBehaviour
         {
             var finalScreenSymbolIndex = i + (reelId - 1) * visibleReelSymbols.Length;
             var symbol = visibleReelSymbols[i];
-            symbol.SymbolSO = gameConfig.FinalScreens[currentSet].FinalScreenSymbols[finalScreenSymbolIndex] == null ?
-                    GetRandomSymbol() : gameConfig.FinalScreens[currentSet].FinalScreenSymbols[finalScreenSymbolIndex];
+            var newSymbol = gameConfig.FinalScreens[currentSet].FinalScreenSymbols[finalScreenSymbolIndex];
+            if (newSymbol != null) 
+                symbol.SymbolSO = newSymbol;
+            else 
+                symbol.SymbolSO = GetRandomSymbol();
             symbol.Icon.sprite = symbol.SymbolSO.SymbolImage;
         }
         invisibleSymbol.Icon.sprite = GetRandomSymbol().SymbolImage;

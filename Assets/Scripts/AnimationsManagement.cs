@@ -76,8 +76,7 @@ public class AnimationsManagement : MonoBehaviour
             yield return new WaitForSecondsRealtime(pauseBetweenCoroutines);
             ResetAllSymbolsAnimations();
         }        
-        ResetAnimations(false);
-        AllAnimationsFinished?.Invoke();
+        ResetAnimations();        
     }
 
     private void ResetReelsBG()
@@ -126,16 +125,15 @@ public class AnimationsManagement : MonoBehaviour
         }
     }
 
-    public void ResetAnimations(bool isFirstSpin)
-    {            
+    public void ResetAnimations()
+    {        
         ResetReelsBG();
 
-        ResetAllSymbolsAnimations();
-
-        if (isFirstSpin == false) calculator.CalculateWin(winLinesToShow);        
+        ResetAllSymbolsAnimations();      
 
         StopAllCoroutines();
 
         winLinesToShow.Clear();
+        AllAnimationsFinished?.Invoke();
     }    
 }
