@@ -9,12 +9,11 @@ using System;
 public class AnimationsManagement : MonoBehaviour
 {
     public event Action AllAnimationsFinished;
+
     [SerializeField] private WinLinesCheck winLinesChecker;
-
-    [SerializeField] private SubReel[] subReels;
-
     [SerializeField] private PrizeCalculator calculator;
 
+    [SerializeField] private SubReel[] subReels;
     [SerializeField] private Image[] reelsBG;
 
     [SerializeField] private float putForwardTweenDuration;
@@ -134,6 +133,7 @@ public class AnimationsManagement : MonoBehaviour
         StopAllCoroutines();
 
         winLinesToShow.Clear();
+
         AllAnimationsFinished?.Invoke();
     }    
 }

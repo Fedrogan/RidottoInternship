@@ -5,10 +5,8 @@ using UnityEngine.UI;
 
 public class BonusGameController : MonoBehaviour
 {
-    public event Action<bool> SpinStarted;
-    public event Action SpinInterrupted;
-    public event Action ReelsStarted;
-    public event Action SpinFinished;
+    public event Action BonusGameStarted;
+    public event Action BonusGameFinished;
 
     [SerializeField] private GameController gameController;
     [SerializeField] private ReelsScroll reelsScroller;
@@ -16,10 +14,12 @@ public class BonusGameController : MonoBehaviour
     [SerializeField] private WinLinesCheck winLinesChecker;
     [SerializeField] private PrizeCalculator prizeCalculator;
     [SerializeField] private CounterAnimator counterAnimator;
+    [SerializeField] private PopUpsContainer popUpsContainer;
+
+    [SerializeField] private CanvasGroup freeSpinsCounter;
+    [SerializeField] private Text freeSpinsLeftCounterText;
 
     [SerializeField] private GameConfig gameConfig;
-
-    [SerializeField] private BalanceHolder balanceHolder;
 
     [SerializeField] private Button stopButton;
     [SerializeField] private RectTransform stopButtonRT;
@@ -33,7 +33,6 @@ public class BonusGameController : MonoBehaviour
 
     private float prevWin;
     private float currentWin;
-    private float bonusGameWin;
 
     private int freeSpinsLeft;
     public static BonusGameController Instance { get; private set; }
@@ -42,13 +41,22 @@ public class BonusGameController : MonoBehaviour
     {
         Instance = this;
     }
-
-    public void StartBonusGame(int scattersDetected) 
+    private void Start()
     {
+        popUpsContainer.BonusGameStartPopUpShown += StartBonusGame;
+        popUpsContainer.TotalPrizePopUpShown += FinishBonusGame;
+    }
+
+    public void StartBonusGame(int numberOfFreeSpins) 
+    {
+        BonusGameStarted?.Invoke();
         SubscribeEvents();
 
-        freeSpinsLeft = gameConfig.ScattersToFreeSpinsMap[scattersDetected];       
-                     
+        freeSpinsLeft = numberOfFreeSpins; 
+
+        freeSpinsLeftCounterText.text = freeSpinsLeft.ToString();
+        freeSpinsCounter.alpha = 1;
+
         resetAnimButton.interactable = false;
         resetAnimButtonRT.localScale = invisibleButtonScale;
 
@@ -59,8 +67,7 @@ public class BonusGameController : MonoBehaviour
 
     private void FinishBonusGame()
     {
-        bonusGameWin = currentWin;
-        gameController.BalanceHolder.AddPrize(bonusGameWin);
+        gameController.BalanceHolder.AddPrize(currentWin);
 
         UnsubscribeEvents();
 
@@ -72,13 +79,19 @@ public class BonusGameController : MonoBehaviour
         stopButtonRT.localScale = invisibleButtonScale;         
         resetAnimButtonRT.localScale = invisibleButtonScale;
 
+        freeSpinsCounter.alpha = 0;
+        BonusGameFinished?.Invoke();
         gameController.StartOrdinaryGame();
     }
 
     private void StartNextFreeSpin()
     {
         freeSpinsLeft--;
+
+        freeSpinsLeftCounterText.text = freeSpinsLeft.ToString();
+
         isFirstFreeSpin = false;
+
         stopButton.interactable = false;
         stopButtonRT.localScale = visibleButtonScale;
 
@@ -138,16 +151,16 @@ public class BonusGameController : MonoBehaviour
         }
 
         if (isFirstFreeSpin == false && freeSpinsLeft > 0)
-        {            
+        {
             StartNextFreeSpin();
         }
-        else FinishBonusGame();
+        else popUpsContainer.ShowTotalPrizePopUp(currentWin);
     }
 
     private void OnScattersDetected(int scattersDetected)
     {
+        //TODO additive free spins popUp
         freeSpinsLeft += gameConfig.ScattersToFreeSpinsMap[scattersDetected];
-        //currentWin += 10000;
     }
 
     private void SubscribeEvents()
@@ -162,7 +175,6 @@ public class BonusGameController : MonoBehaviour
 
         animationsManager.AllAnimationsFinished += OnAnimationsFinished;
     }
-
 
     private void UnsubscribeEvents()
     {

@@ -4,12 +4,6 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    public event Action<bool> SpinStarted;
-    public event Action SpinInterrupted;
-    public event Action ReelsStarted;
-    public event Action SpinFinished;
-
-
     [SerializeField] private BonusGameController bonusGameController;
     [SerializeField] private ReelsScroll reelsScroller;
     [SerializeField] private AnimationsManagement animationsManager;
@@ -35,8 +29,6 @@ public class GameController : MonoBehaviour
 
     private float prevWin;
     private float currentWin;
-
-
 
     public static GameController Instance { get; private set; }
     public GameType GameType { get => gameType; set => gameType = value; }
@@ -122,6 +114,23 @@ public class GameController : MonoBehaviour
         BalanceHolder.AddPrize(currentWin);
     }
 
+    private void OnFreeSpinsDetected(int scattersDetected)
+    {
+        UnsubscribeEvents();
+
+        playButton.interactable = false;
+        stopButton.interactable = false;
+
+        playButtonRT.localScale = invisibleButtonScale;
+        stopButtonRT.localScale = invisibleButtonScale;
+
+        animationsManager.ResetAnimations();
+
+        gameType = GameType.Bonus;
+
+        popUpsContainer.ShowBonusGameStartPopUp(scattersDetected);
+    }
+
     private void UnsubscribeEvents()
     {
         playButton.onClick.RemoveListener(OnPlayButtonClicked);
@@ -146,31 +155,5 @@ public class GameController : MonoBehaviour
         animationsManager.AllAnimationsFinished += OnAnimationsFinished;
 
         winLinesChecker.FreeSpinsDetected += OnFreeSpinsDetected;
-    }
-
-    private void OnFreeSpinsDetected(int scattersDetected)
-    {
-        UnsubscribeEvents();
-
-        playButton.interactable = false;
-        stopButton.interactable = false;
-
-        playButtonRT.localScale = invisibleButtonScale;
-        stopButtonRT.localScale = invisibleButtonScale;
-
-        animationsManager.ResetAnimations();
-
-        gameType = GameType.Bonus;
-
-        bonusGameController.StartBonusGame(scattersDetected);
-    }
-
-    private void OnDestroy()
-    {
-        playButton.onClick.RemoveListener(OnPlayButtonClicked);
-        stopButton.onClick.RemoveListener(OnStopButtonClicked);
-
-        reelsScroller.AllReelsStarted -= OnAllReelsStarted;
-        reelsScroller.AllReelsStopped -= OnAllReelsStopped;
     }
 }

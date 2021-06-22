@@ -6,7 +6,12 @@ using System;
 public class WinLinesCheck : MonoBehaviour
 {
     public event Action<int> FreeSpinsDetected;
-    [SerializeField] private GameConfig gameConfig;
+
+    [SerializeField] private BonusGameController bonusGameController;
+
+    [SerializeField] private GameConfig bonusGameConfig;
+    [SerializeField] private GameConfig ordinaryGameConfig;
+    private GameConfig gameConfig;
 
     [SerializeField] private SubReel[] subReels;
 
@@ -14,7 +19,19 @@ public class WinLinesCheck : MonoBehaviour
 
     private void Start()
     {
+        gameConfig = ordinaryGameConfig;
+        bonusGameController.BonusGameStarted += SetBonusConfig;
+        bonusGameController.BonusGameFinished += SetOrdinaryConfig;
         winLineSymbols = new Symbol[subReels.Length];
+    }
+    private void SetOrdinaryConfig()
+    {
+        gameConfig = ordinaryGameConfig;
+    }
+
+    private void SetBonusConfig()
+    {
+        gameConfig = bonusGameConfig;
     }
 
     public List<Symbol[]> GetWinLines()
@@ -53,16 +70,17 @@ public class WinLinesCheck : MonoBehaviour
             }
             if (scattersInReel > 0)
             {
+                scattersInReel = 0;
                 reelsWithScatters++;
             }
             else break;
         }
-        if (reelsWithScatters >= subReels.Length)
+        if (reelsWithScatters == subReels.Length)
         {
             FreeSpinsDetected?.Invoke(scattersDetected);
         }
     }
-
+        
     //private int CheckScattersOnReel(SubReel subReel)
     //{
     //    var scattersInReel = 0;

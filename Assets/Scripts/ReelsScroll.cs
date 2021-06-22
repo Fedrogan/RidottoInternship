@@ -8,7 +8,7 @@ public class ReelsScroll : MonoBehaviour
     public event Action AllReelsStarted;
     public event Action AllReelsStopped;
     public event Action<SubReel> ReelStopped;
-
+    
     [SerializeField] private GameConfig gameConfig;
     [Space]
     [SerializeField] private RectTransform[] fakeReelsRT;
@@ -23,14 +23,12 @@ public class ReelsScroll : MonoBehaviour
     [Space]
     [SerializeField] private Ease boostEase, slowdownEase;
     [SerializeField] private float delayStep;
-    [SerializeField] private int symbolHeigth;
-    
+    [SerializeField] private int symbolHeigth;    
 
     [SerializeField] [Range(2000, 4000)] private float reelLinearSpeed;
     [SerializeField] private float boostDistance;
     [SerializeField] private float boostDuration, spinDuration, slowdownDuration;
     private float spinDistance;    
-
 
     private float startSubReelPositionY;
     private readonly float middlePosition = 0;    
@@ -39,8 +37,6 @@ public class ReelsScroll : MonoBehaviour
     private float correctedSlowDownDistance;
     private float traveledDistance;
     private float cellYCorrection;
-
-    private bool isFirstSpin;
 
     private void Awake()
     {
@@ -53,17 +49,11 @@ public class ReelsScroll : MonoBehaviour
             subDictionary.Add(subReelsRT[i], subReels[i]);
             fakeSubConnection.Add(fakeReelsRT[i], subReelsRT[i]);
         }
-        isFirstSpin = true;
         spinDistance = -spinDuration * reelLinearSpeed;
         startFakeReelPositionY = fakeReelsRT[0].localPosition.y;
         startSubReelPositionY = subReelsRT[0].localPosition.y;
     }
-
-    private void Start()
-    {  
-        //GameController.Instance.SpinStarted += OnSpinStarted;
-        //GameController.Instance.SpinInterrupted += OnSlowdownSpin;        
-    }
+    
 
     private void Update()
     {
@@ -80,12 +70,6 @@ public class ReelsScroll : MonoBehaviour
             }
         }        
     }
-
-    //private void OnSpinStarted(bool isFirstSpin)
-    //{
-    //    this.isFirstSpin = isFirstSpin;
-    //    StartSpinning();
-    //}
 
     public void OnSlowdownSpin()
     {
