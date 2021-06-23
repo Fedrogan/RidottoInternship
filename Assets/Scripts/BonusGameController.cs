@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -101,10 +102,17 @@ public class BonusGameController : MonoBehaviour
 
     private void OnAllReelsStopped()
     {
+        
+        StartCoroutine(CoDoPause());
+        
+    }
+    private IEnumerator CoDoPause()
+    {
         stopButton.interactable = false;
+        yield return new WaitForSeconds(0.3f);
         resetAnimButton.interactable = true;
         stopButtonRT.localScale = invisibleButtonScale;
-        resetAnimButtonRT.localScale = visibleButtonScale;        
+        resetAnimButtonRT.localScale = visibleButtonScale;
 
         var winningLines = winLinesChecker.GetWinLines();
 
@@ -124,11 +132,12 @@ public class BonusGameController : MonoBehaviour
         
     private void OnStopReels()
     {
+        var isForceStop = true;
         stopButton.interactable = false;
         stopButtonRT.localScale = invisibleButtonScale;        
         resetAnimButtonRT.localScale = visibleButtonScale;
 
-        reelsScroller.OnSlowdownSpin();
+        reelsScroller.OnSlowdownSpin(isForceStop);
     }
 
     private void OnForceStartNextSpin()

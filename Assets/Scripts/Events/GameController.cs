@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,8 +23,8 @@ public class GameController : MonoBehaviour
 
     private GameType gameType = GameType.Ordinary;
 
-    private Vector3 visibleButtonScale = new Vector3(1, 1);
-    private Vector3 invisibleButtonScale = new Vector3(0, 0);
+    private Vector3 visibleButtonScale = Vector3.one;
+    private Vector3 invisibleButtonScale = Vector3.zero;
 
     private bool isFirstSpin = true;
 
@@ -67,16 +68,20 @@ public class GameController : MonoBehaviour
 
         stopButtonRT.localScale = invisibleButtonScale;
         playButtonRT.localScale = visibleButtonScale;
-
-        reelsScroller.OnSlowdownSpin();
+        var isForceStop = true;
+        reelsScroller.OnSlowdownSpin(isForceStop);
     }
 
     private void OnAllReelsStopped()
-    {
-        playButton.interactable = true;
-        stopButton.interactable = false;
+    {             
+        StartCoroutine(CoDoPause());        
+    }
 
-        playButtonRT.localScale = visibleButtonScale;
+    private IEnumerator CoDoPause()
+    {
+        stopButton.interactable = false;
+        
+        yield return new WaitForSeconds(0.3f);
 
         var winningLines = winLinesChecker.GetWinLines();
 
@@ -84,7 +89,11 @@ public class GameController : MonoBehaviour
 
         currentWin = prizeCalculator.CalculateWin(winningLines);
 
+        playButton.interactable = true;
+        playButtonRT.localScale = visibleButtonScale;
+
         winLinesChecker.CheckFSGame();
+
     }
 
     private void OnAllReelsStarted()

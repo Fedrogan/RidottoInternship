@@ -8,8 +8,10 @@ public class ReelsScroll : MonoBehaviour
     public event Action AllReelsStarted;
     public event Action AllReelsStopped;
     public event Action<SubReel> ReelStopped;
-    
+
     [SerializeField] private GameConfig gameConfig;
+    [SerializeField] private WinLinesCheck winLinesChecker;
+    [SerializeField] private AnticipationAnimation anticipationAnimation;
     [Space]
     [SerializeField] private RectTransform[] fakeReelsRT;
     [SerializeField] private FakeReel[] fakeReels;
@@ -17,21 +19,28 @@ public class ReelsScroll : MonoBehaviour
     [SerializeField] private RectTransform[] subReelsRT;
     [SerializeField] private SubReel[] subReels;
 
-    private Dictionary<RectTransform, FakeReel> fakeDictionary;    
+    private Dictionary<RectTransform, FakeReel> fakeDictionary;
     private Dictionary<RectTransform, SubReel> subDictionary;
     private Dictionary<RectTransform, RectTransform> fakeSubConnection;
     [Space]
     [SerializeField] private Ease boostEase, slowdownEase;
     [SerializeField] private float delayStep;
-    [SerializeField] private int symbolHeigth;    
+    [SerializeField] private int symbolHeigth;
+
+    private bool _isForceStop = false;
 
     [SerializeField] [Range(2000, 4000)] private float reelLinearSpeed;
     [SerializeField] private float boostDistance;
     [SerializeField] private float boostDuration, spinDuration, slowdownDuration;
-    private float spinDistance;    
+    private float spinDistance;
+
+    [SerializeField] [Range(4000, 10000)] private float reelAnticipationSpeed;
+    [SerializeField] private float anticipationDuration;
+    private float anticipationDistance;
+    [SerializeField] private RectTransform anticipationReel;
 
     private float startSubReelPositionY;
-    private readonly float middlePosition = 0;    
+    private readonly float middlePosition = 0;
     private float startFakeReelPositionY;
 
     private float correctedSlowDownDistance;
@@ -50,10 +59,11 @@ public class ReelsScroll : MonoBehaviour
             fakeSubConnection.Add(fakeReelsRT[i], subReelsRT[i]);
         }
         spinDistance = -spinDuration * reelLinearSpeed;
+        anticipationDistance = -anticipationDuration * reelAnticipationSpeed;
         startFakeReelPositionY = fakeReelsRT[0].localPosition.y;
         startSubReelPositionY = subReelsRT[0].localPosition.y;
     }
-    
+
 
     private void Update()
     {
@@ -68,11 +78,12 @@ public class ReelsScroll : MonoBehaviour
             {
                 fakeReels[i].HideSymbolsOnFakeReel(false);
             }
-        }        
+        }
     }
 
-    public void OnSlowdownSpin()
+    public void OnSlowdownSpin(bool isForceStop)
     {
+        _isForceStop = isForceStop;
         foreach (RectTransform fakeReelRT in fakeReelsRT)
         {
             if (fakeDictionary[fakeReelRT].ReelState == ReelState.Spin)
@@ -95,7 +106,10 @@ public class ReelsScroll : MonoBehaviour
                 MoveSubReelOut(fakeSubConnection[fakeReelRT], delay);
             }
             fakeReelRT.DOAnchorPosY(boostDistance, boostDuration).SetDelay(delay)
-                .SetEase(boostEase).OnComplete(() => LinearSpin(fakeReelRT));
+                .SetEase(boostEase).OnComplete(() =>
+                {
+                    LinearSpin(fakeReelRT);
+                });
         }
     }
 
@@ -104,14 +118,25 @@ public class ReelsScroll : MonoBehaviour
         if (fakeDictionary[fakeReelRT].ReelID == fakeReels.Length) AllReelsStarted?.Invoke();
 
         fakeReelRT.DOAnchorPosY(spinDistance, spinDuration).SetEase(Ease.Linear)
-            .OnComplete(()=>
+            .OnComplete(() =>
             {
                 SlowdownFakeReel(fakeReelRT);
             });
     }
 
-    public void SlowdownFakeReel(RectTransform fakeReelRT)
+    public void AnticipationSpin()
     {
+        anticipationReel.DOKill();
+        anticipationReel.DOAnchorPosY(anticipationDistance, anticipationDuration).SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                SlowdownFakeReel(anticipationReel);
+            });
+    }
+
+    private void SlowdownFakeReel(RectTransform fakeReelRT)
+    {
+        anticipationAnimation.Deactivate();
         fakeDictionary[fakeReelRT].ReelState = ReelState.Stopping;
         var currentFakeReelPos = fakeReelRT.localPosition.y;
         DOTween.Kill(fakeReelRT);
@@ -126,8 +151,13 @@ public class ReelsScroll : MonoBehaviour
             {
                 fakeDictionary[fakeReelRT].ReelState = ReelState.Stop;
                 PrepareFakeReel(fakeReelRT);
+                if (fakeDictionary[fakeReelRT].ReelID == fakeReels.Length - 1 && _isForceStop == false)
+                {
+                    TryToStartAnticipation();
+                }
                 if (fakeDictionary[fakeReelRT].ReelID == fakeReels.Length)
                 {
+                    _isForceStop = false;
                     AllReelsStopped?.Invoke();
                 }
             });
@@ -136,9 +166,9 @@ public class ReelsScroll : MonoBehaviour
     private void PrepareFakeReel(RectTransform fakeReelRT)
     {
         var currentFakeReelPos = fakeReelRT.localPosition;
-        if (correctedSlowDownDistance != currentFakeReelPos.y) 
+        if (correctedSlowDownDistance != currentFakeReelPos.y)
             cellYCorrection = correctedSlowDownDistance - currentFakeReelPos.y;
-        else 
+        else
             cellYCorrection = 0;
         fakeReelRT.localPosition = new Vector3(currentFakeReelPos.x, startFakeReelPositionY, currentFakeReelPos.z);
         fakeDictionary[fakeReelRT].ResetSymbolsPosition(correctedSlowDownDistance, cellYCorrection, startFakeReelPositionY);
@@ -164,8 +194,22 @@ public class ReelsScroll : MonoBehaviour
     }
 
     private void MoveSubReelIn(RectTransform subReelRT)
-    { 
-        subReelRT.DOAnchorPosY(middlePosition, slowdownDuration).SetEase(slowdownEase);
+    {
+        subReelRT.DOAnchorPosY(middlePosition, slowdownDuration)
+            .SetEase(slowdownEase)
+            .OnComplete(() =>
+            {
+                ReelStopped?.Invoke(subDictionary[subReelRT]);
+            });
+    }
+
+    private void TryToStartAnticipation()
+    {
+        if (winLinesChecker.CheckAnticipation(subReels[0], subReels[1]) == true)
+        {
+            anticipationAnimation.Activate();
+            AnticipationSpin();
+        }
     }
 
     private void MoveSubReelOut(RectTransform subReelRT, float delay)
@@ -174,10 +218,9 @@ public class ReelsScroll : MonoBehaviour
         subReel.ReelState = ReelState.Spin;
         subReelRT.DOAnchorPosY(boostDistance, boostDuration)
             .SetEase(boostEase).SetDelay(delay)
-            .OnComplete(() => 
+            .OnComplete(() =>
             {
-                ReelStopped?.Invoke(subReel);
-                PrepareSubReel(subReelRT, subReel.ReelID);                
+                PrepareSubReel(subReelRT, subReel.ReelID);
             });
     }
 
