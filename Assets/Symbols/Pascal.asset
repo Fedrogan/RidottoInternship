@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7ce746c086ea624596324d45836dfd5, type: 3}
   m_Name: Pascal
   m_EditorClassIdentifier: 
-  symbolName: Pascal
   symbolImage: {fileID: 21300000, guid: 93d8e1415852e004982aba14edba98f7, type: 3}
-  symbolID: 6
   symbolType: 0
-  symbolCost: 350
+  symbolCost: 300

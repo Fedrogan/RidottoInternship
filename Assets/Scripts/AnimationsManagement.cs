@@ -9,6 +9,7 @@ using System;
 public class AnimationsManagement : MonoBehaviour
 {
     public event Action AllAnimationsFinished;
+    public event Action WinLineAnimationShowing;
 
     [SerializeField] private WinLinesCheck winLinesChecker;
     [SerializeField] private PrizeCalculator calculator;
@@ -34,8 +35,7 @@ public class AnimationsManagement : MonoBehaviour
     {
         reelsScroll.ReelStopped += ShineScatters;
         winLinesToShow = new List<Symbol[]>();
-        allSymbols = new List<Symbol>();
-        
+        allSymbols = new List<Symbol>();        
     }
 
     
@@ -75,6 +75,7 @@ public class AnimationsManagement : MonoBehaviour
         foreach (var line in winLinesToShow)
         {
             ShowWinAnimation(line);
+            WinLineAnimationShowing?.Invoke();
             yield return new WaitForSecondsRealtime(pauseBetweenCoroutines);
             ResetAllSymbolsAnimations();
         }        

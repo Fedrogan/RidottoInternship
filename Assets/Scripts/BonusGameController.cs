@@ -108,8 +108,10 @@ public class BonusGameController : MonoBehaviour
     }
     private IEnumerator CoDoPause()
     {
+
         stopButton.interactable = false;
-        yield return new WaitForSeconds(0.3f);
+        var pause = winLinesChecker.CheckScattersOnReel(reelsScroller.SubReels[2]) > 0 ? 0.3f : 0;
+        yield return new WaitForSeconds(pause);
         resetAnimButton.interactable = true;
         stopButtonRT.localScale = invisibleButtonScale;
         resetAnimButtonRT.localScale = visibleButtonScale;
@@ -157,6 +159,7 @@ public class BonusGameController : MonoBehaviour
         if (isFirstFreeSpin == false)
         {
             counterAnimator.UpdateValue(prevWin, currentWin, false);
+            prevWin = currentWin;
         }
 
         if (isFirstFreeSpin == false && freeSpinsLeft > 0)
@@ -170,6 +173,7 @@ public class BonusGameController : MonoBehaviour
     {
         //TODO additive free spins popUp
         freeSpinsLeft += gameConfig.ScattersToFreeSpinsMap[scattersDetected];
+        freeSpinsLeftCounterText.text = freeSpinsLeft.ToString();
     }
 
     private void SubscribeEvents()

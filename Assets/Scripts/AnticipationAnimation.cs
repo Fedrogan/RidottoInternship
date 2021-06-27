@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AnticipationAnimation : MonoBehaviour
 {
-    public event Action<bool> ActiveStateChanged;
+    //public event Action Anticipation;
 
     [SerializeField] private float deactivationDuration;
     [SerializeField] private CanvasGroup canvasGroup;
@@ -18,7 +18,7 @@ public class AnticipationAnimation : MonoBehaviour
     public bool IsActive { get; private set; }
 
     public void Activate(object param = null)
-    {
+    {     
         IsActive = true;
 
         StopAllCoroutines();

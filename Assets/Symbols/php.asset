@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7ce746c086ea624596324d45836dfd5, type: 3}
   m_Name: php
   m_EditorClassIdentifier: 
-  symbolName: php
   symbolImage: {fileID: 21300000, guid: 3428a4d563f53eb45a802e1d361525cc, type: 3}
-  symbolID: 7
   symbolType: 0
   symbolCost: 100

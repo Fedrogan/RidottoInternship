@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7ce746c086ea624596324d45836dfd5, type: 3}
   m_Name: Phyton
   m_EditorClassIdentifier: 
-  symbolName: Phyton
   symbolImage: {fileID: 21300000, guid: 9017f1361eab624439add96b9e9360af, type: 3}
-  symbolID: 8
   symbolType: 1
-  symbolCost: 850
+  symbolCost: 800

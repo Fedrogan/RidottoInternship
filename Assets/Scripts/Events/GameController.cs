@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+    public event Action OrdinaryGameStarted;
     [SerializeField] private BonusGameController bonusGameController;
     [SerializeField] private ReelsScroll reelsScroller;
     [SerializeField] private AnimationsManagement animationsManager;
@@ -49,6 +50,7 @@ public class GameController : MonoBehaviour
 
     public void StartOrdinaryGame()
     {
+        OrdinaryGameStarted?.Invoke();
         SubscribeEvents();
 
         gameType = GameType.Ordinary;
@@ -80,8 +82,9 @@ public class GameController : MonoBehaviour
     private IEnumerator CoDoPause()
     {
         stopButton.interactable = false;
-        
-        yield return new WaitForSeconds(0.3f);
+
+        var pause = winLinesChecker.CheckScattersOnReel(reelsScroller.SubReels[2]) > 0 ? 0.3f : 0;
+        yield return new WaitForSeconds(pause);
 
         var winningLines = winLinesChecker.GetWinLines();
 
@@ -121,6 +124,7 @@ public class GameController : MonoBehaviour
         isFirstSpin = false;
 
         BalanceHolder.AddPrize(currentWin);
+        currentWin = 0;
     }
 
     private void OnFreeSpinsDetected(int scattersDetected)

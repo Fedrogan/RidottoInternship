@@ -88,13 +88,14 @@ public class WinLinesCheck : MonoBehaviour
         return scattersOnFirst > 0 && scattersOnSecond > 0 ? true : false;
     }
         
-    private int CheckScattersOnReel(SubReel subReel)
+    public int CheckScattersOnReel(SubReel subReel)
     {
         var scattersInReel = 0;
         foreach (var symbol in subReel.VisibleReelSymbols)
         {
             if (symbol.SymbolSO.SymbolType == SymbolType.Scatter)
             {
+
                 scattersInReel++;
             }
         }
