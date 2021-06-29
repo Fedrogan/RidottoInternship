@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class AnticipationAnimation : MonoBehaviour
 {
-    //public event Action Anticipation;
 
     [SerializeField] private float deactivationDuration;
     [SerializeField] private CanvasGroup canvasGroup;

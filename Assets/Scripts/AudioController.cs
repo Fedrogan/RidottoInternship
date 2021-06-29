@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class AudioController : MonoBehaviour
 {
+    [SerializeField] private AudioMixerSnapshot idleMixerSnapshot;
+    [SerializeField] private AudioMixerSnapshot playMixerSnapshot;
+    [SerializeField] private AudioMixerSnapshot anticipationVolumeUp;
+    [SerializeField] private AudioMixerSnapshot anticipationVolumeDown;
+
     [SerializeField] private AudioSource[] audioSources;
     [SerializeField] private GameController gameController;
     [SerializeField] private BonusGameController bonusGameController;
@@ -25,24 +28,17 @@ public class AudioController : MonoBehaviour
     private void Awake()
     {
         InitializeAudioDictionary();
-        playButton.onClick.AddListener(PlayClickSound);
-        stopButton.onClick.AddListener(PlayClickSound);
-        startBonusGameButton.onClick.AddListener(PlayClickSound);
-        stopFreeSpinButton.onClick.AddListener(PlayClickSound);
-        resetFSAnimationsButton.onClick.AddListener(PlayClickSound);
-        reelsScroll.SpinStarted += PlayReelSpinSound;
-        reelsScroll.ReelStopped += PlayStopReelSound;
-        animationsManagement.WinLineAnimationShowing += PlayWinLineSound;
-        gameController.OrdinaryGameStarted += PlayOrdinaryMusic;
-        bonusGameController.BonusGameStarted += PlayBonusGameMusic;
-        reelsScroll.Anticipation += PlayAnticipationSound;
-        reelsScroll.AllReelsStopped += StopAnticipationSound;
-        counterAnimator.StartChangingPrize += PlayPrizeSound;
-        counterAnimator.FinishChangingPrize += StopPrizeSound;
+        SubscribeEvents();
+    }
+
+    private void UnShadowMusic()
+    {
+        idleMixerSnapshot.TransitionTo(0.3f);
     }
 
     private void PlayReelSpinSound()
     {
+        playMixerSnapshot.TransitionTo(0.3f);
         audioDictionary[SoundType.ReelScrolling].Stop();
         audioDictionary[SoundType.ReelScrolling].Play();        
     }
@@ -59,11 +55,13 @@ public class AudioController : MonoBehaviour
 
     private void StopAnticipationSound()
     {
+        anticipationVolumeDown.TransitionTo(0);
         audioDictionary[SoundType.Anticipation].Stop();
     }
 
     private void PlayAnticipationSound()
     {
+        anticipationVolumeUp.TransitionTo(3f);
         audioDictionary[SoundType.ReelScrolling].Stop();
         audioDictionary[SoundType.Anticipation].Play();
     }
@@ -116,5 +114,28 @@ public class AudioController : MonoBehaviour
         audioDictionary.Add(SoundType.WinLine, audioSources[8]);
         audioDictionary.Add(SoundType.Anticipation, audioSources[9]);
         audioDictionary.Add(SoundType.PrizeChanging, audioSources[10]);        
+    }
+
+    private void SubscribeEvents()
+    {
+        playButton.onClick.AddListener(PlayClickSound);
+        stopButton.onClick.AddListener(PlayClickSound);
+        startBonusGameButton.onClick.AddListener(PlayClickSound);
+        stopFreeSpinButton.onClick.AddListener(PlayClickSound);
+        resetFSAnimationsButton.onClick.AddListener(PlayClickSound);
+
+        reelsScroll.SpinStarted += PlayReelSpinSound;
+        reelsScroll.ReelStopped += PlayStopReelSound;
+        reelsScroll.Anticipation += PlayAnticipationSound;
+        reelsScroll.AllReelsStopped += StopAnticipationSound;
+
+        animationsManagement.WinLineAnimationShowing += PlayWinLineSound;
+        animationsManagement.AllAnimationsFinished += UnShadowMusic;
+
+        gameController.OrdinaryGameStarted += PlayOrdinaryMusic;
+        bonusGameController.BonusGameStarted += PlayBonusGameMusic;
+        
+        counterAnimator.StartChangingPrize += PlayPrizeSound;
+        counterAnimator.FinishChangingPrize += StopPrizeSound;
     }
 }

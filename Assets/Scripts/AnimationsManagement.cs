@@ -36,9 +36,7 @@ public class AnimationsManagement : MonoBehaviour
         reelsScroll.ReelStopped += ShineScatters;
         winLinesToShow = new List<Symbol[]>();
         allSymbols = new List<Symbol>();        
-    }
-
-    
+    }    
 
     private void Start()
     {
