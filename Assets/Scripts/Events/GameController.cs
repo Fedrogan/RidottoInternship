@@ -126,7 +126,7 @@ public class GameController : MonoBehaviour
 
         animationsManager.ResetAnimations();
 
-        gameType = GameType.Bonus;
+        gameType = GameType.FreeSpins;
 
         popUpsContainer.ShowBonusGameStartPopUp(scattersDetected);
     }
