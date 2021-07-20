@@ -37,6 +37,7 @@ public class AnimationsManagement : MonoBehaviour
     }
     private void Start()
     {
+        winLinesChecker.WinLinesChecked += StartAnimations;
         //GameController.Instance.SpinStarted += ResetAnimations;
         foreach(var subReel in subReels)
         {

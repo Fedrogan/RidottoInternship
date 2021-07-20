@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private BonusGameController bonusGameController;
+    [SerializeField] private GameModel gameModel;
+    [SerializeField] private FreeSpinsController freeSpinsController;
     [SerializeField] private ReelsScroll reelsScroller;
     [SerializeField] private AnimationsManagement animationsManager;
     [SerializeField] private WinLinesCheck winLinesChecker;
@@ -22,12 +23,10 @@ public class GameController : MonoBehaviour
 
     private GameType gameType = GameType.Ordinary;
 
-    private Vector3 visibleButtonScale = new Vector3(1, 1);
-    private Vector3 invisibleButtonScale = new Vector3(0, 0);
-
     private bool isFirstSpin = true;
 
-    private float prevWin;
+    private int scattersDetected;
+
     private float currentWin;
 
     public static GameController Instance { get; private set; }
@@ -39,34 +38,39 @@ public class GameController : MonoBehaviour
         Instance = this;
 
         stopButton.interactable = false;
-        stopButtonRT.localScale = invisibleButtonScale;
+        stopButtonRT.localScale = Vector3.zero;
     }
     private void Start()
     {
-        StartOrdinaryGame();
+        freeSpinsController.FreeSpinsFinished += StartOrdinaryGame;
+        StartOrdinaryGame(0);
     }
 
-    public void StartOrdinaryGame()
+    public void StartOrdinaryGame(float freeSpinsWin)
     {
+        scattersDetected = 0;
+
+        balanceHolder.AddPrize(freeSpinsWin);
+
         SubscribeEvents();
 
         gameType = GameType.Ordinary;
 
         playButton.interactable = true;
-        playButtonRT.localScale = visibleButtonScale;
+        playButtonRT.localScale = Vector3.one;
     }
 
     private void OnAnimationsFinished()
     {
-        counterAnimator.UpdateValue(prevWin, currentWin, false);
+        counterAnimator.UpdateValue(0, currentWin, false);
     }
 
-    private void OnStopButtonClicked()
+ private void OnStopButtonClicked()
     {
         stopButton.interactable = false;
 
-        stopButtonRT.localScale = invisibleButtonScale;
-        playButtonRT.localScale = visibleButtonScale;
+        stopButtonRT.localScale = Vector3.zero;
+        playButtonRT.localScale = Vector3.one;
 
         reelsScroller.OnSlowdownSpin();
     }
@@ -76,15 +80,16 @@ public class GameController : MonoBehaviour
         playButton.interactable = true;
         stopButton.interactable = false;
 
-        playButtonRT.localScale = visibleButtonScale;
+        playButtonRT.localScale = Vector3.one;
+        if (scattersDetected > 2)
+        {
+            PrepareForFreeSpins();
+        }
+    }
 
-        var winningLines = winLinesChecker.GetWinLines();
-
-        animationsManager.StartAnimations(winningLines);
-
-        currentWin = prizeCalculator.CalculateWin(winningLines);
-
-        winLinesChecker.CheckFSGame();
+    private void UpdateCurrentWin(float win)
+    {
+        currentWin = win;
     }
 
     private void OnAllReelsStarted()
@@ -98,8 +103,8 @@ public class GameController : MonoBehaviour
     {
         playButton.interactable = false;
 
-        playButtonRT.localScale = invisibleButtonScale;
-        stopButtonRT.localScale = visibleButtonScale;
+        playButtonRT.localScale = Vector3.zero;
+        stopButtonRT.localScale = Vector3.one;
 
         reelsScroller.StartSpinning(isFirstSpin);
 
@@ -107,28 +112,32 @@ public class GameController : MonoBehaviour
 
         if (isFirstSpin == false)
         {
-            counterAnimator.UpdateValue(prevWin, currentWin, true);
+            counterAnimator.UpdateValue(0, currentWin, true);
         }
         isFirstSpin = false;
 
         BalanceHolder.AddPrize(currentWin);
+        currentWin = 0;
     }
 
-    private void OnFreeSpinsDetected(int scattersDetected)
+    private void PrepareForFreeSpins()
     {
         UnsubscribeEvents();
-
         playButton.interactable = false;
         stopButton.interactable = false;
 
-        playButtonRT.localScale = invisibleButtonScale;
-        stopButtonRT.localScale = invisibleButtonScale;
+        playButtonRT.localScale = Vector3.zero;
+        stopButtonRT.localScale = Vector3.zero;
 
         animationsManager.ResetAnimations();
 
         gameType = GameType.FreeSpins;
 
-        popUpsContainer.ShowBonusGameStartPopUp(scattersDetected);
+        freeSpinsController.StartFreeSpins(scattersDetected);
+    }
+    private void OnScattersDetected(int scattersDetected)
+    {
+        this.scattersDetected = scattersDetected;      
     }
 
     private void UnsubscribeEvents()
@@ -141,7 +150,9 @@ public class GameController : MonoBehaviour
 
         animationsManager.AllAnimationsFinished -= OnAnimationsFinished;
 
-        winLinesChecker.FreeSpinsDetected -= OnFreeSpinsDetected;
+        winLinesChecker.FreeSpinsDetected -= OnScattersDetected;
+
+        prizeCalculator.PrizeCalculated -= UpdateCurrentWin;
     }
 
     public void SubscribeEvents()
@@ -154,6 +165,8 @@ public class GameController : MonoBehaviour
 
         animationsManager.AllAnimationsFinished += OnAnimationsFinished;
 
-        winLinesChecker.FreeSpinsDetected += OnFreeSpinsDetected;
+        winLinesChecker.FreeSpinsDetected += OnScattersDetected;
+
+        prizeCalculator.PrizeCalculated += UpdateCurrentWin;
     }
 }

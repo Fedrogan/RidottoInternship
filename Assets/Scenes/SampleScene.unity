@@ -856,6 +856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01bd7094c00286742b553c86e133e142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  winLinesChecker: {fileID: 1491762241}
 --- !u!225 &213647443
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3560,6 +3561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01bd7094c00286742b553c86e133e142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  winLinesChecker: {fileID: 1491762241}
 --- !u!4 &958852445
 Transform:
   m_ObjectHideFlags: 0
@@ -4378,7 +4380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1111991224}
   m_Layer: 5
-  m_Name: BonusGame
+  m_Name: FreeSpinsGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6368,7 +6370,7 @@ GameObject:
   - component: {fileID: 1919212829}
   - component: {fileID: 1919212828}
   m_Layer: 0
-  m_Name: BonusGameController
+  m_Name: FreeSpinsController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6816,6 +6818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01bd7094c00286742b553c86e133e142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  winLinesChecker: {fileID: 1491762241}
 --- !u!225 &2034378190
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -7212,9 +7215,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameConfig: {fileID: 11400000, guid: 0801f5664a0622d45852e5fc76a90bdc, type: 2}
-  bonusGameStartPopUp: {fileID: 1765424881}
-  bonusGameStartPopUpRT: {fileID: 1765424880}
-  bonusGameText: {fileID: 1087346905}
+  freeSpinsStartPopUp: {fileID: 1765424881}
+  freeSpinsStartPopUpRT: {fileID: 1765424880}
+  freeSpinsText: {fileID: 1087346905}
   startFSButton: {fileID: 513222362}
   startFSButtonRT: {fileID: 513222361}
   totalPrizePopUp: {fileID: 1145404410}
@@ -7645,6 +7648,11 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 887966641163377831, guid: 18761b67e04e2404d82c5f6e843a2d59,
         type: 3}
+      propertyPath: reelsScroller
+      value: 
+      objectReference: {fileID: 536802960}
+    - target: {fileID: 887966641163377831, guid: 18761b67e04e2404d82c5f6e843a2d59,
+        type: 3}
       propertyPath: symbolsManager
       value: 
       objectReference: {fileID: 0}
@@ -7654,6 +7662,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 78aa6cfd0edea1648a66fb5428881ee8,
         type: 2}
+    - target: {fileID: 887966641163377831, guid: 18761b67e04e2404d82c5f6e843a2d59,
+        type: 3}
+      propertyPath: prizeCalculator
+      value: 
+      objectReference: {fileID: 958852444}
     - target: {fileID: 887966641163377831, guid: 18761b67e04e2404d82c5f6e843a2d59,
         type: 3}
       propertyPath: reels.Array.size
@@ -7918,6 +7931,11 @@ PrefabInstance:
     - target: {fileID: 1387075986176861063, guid: ad385d0f8348b0b4d8e66a9ab1b588fa,
         type: 3}
       propertyPath: bonusGameController
+      value: 
+      objectReference: {fileID: 1919212828}
+    - target: {fileID: 1387075986176861063, guid: ad385d0f8348b0b4d8e66a9ab1b588fa,
+        type: 3}
+      propertyPath: freeSpinsController
       value: 
       objectReference: {fileID: 1919212828}
     m_RemovedComponents: []

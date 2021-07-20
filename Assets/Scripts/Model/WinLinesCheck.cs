@@ -6,8 +6,11 @@ using System;
 public class WinLinesCheck : MonoBehaviour
 {
     public event Action<int> FreeSpinsDetected;
+    public event Action<List<Symbol[]>> WinLinesChecked;
 
-    [SerializeField] private BonusGameController bonusGameController;
+    [SerializeField] private FreeSpinsController bonusGameController;
+    [SerializeField] private ReelsScroll reelsScroller;
+    [SerializeField] private PrizeCalculator prizeCalculator;
 
     [SerializeField] private GameConfig bonusGameConfig;
     [SerializeField] private GameConfig ordinaryGameConfig;
@@ -20,11 +23,13 @@ public class WinLinesCheck : MonoBehaviour
     private void Start()
     {
         gameConfig = ordinaryGameConfig;
-        bonusGameController.BonusGameStarted += SetBonusConfig;
-        bonusGameController.BonusGameFinished += SetOrdinaryConfig;
+        reelsScroller.AllReelsStopped += GetWinLines;
+        prizeCalculator.PrizeCalculated += CheckFSGame;
+        bonusGameController.FreeSpinsStarted += SetBonusConfig;
+        bonusGameController.FreeSpinsFinished += SetOrdinaryConfig;
         winLineSymbols = new Symbol[subReels.Length];
     }
-    private void SetOrdinaryConfig()
+    private void SetOrdinaryConfig(float ignoreValue)
     {
         gameConfig = ordinaryGameConfig;
     }
@@ -34,7 +39,7 @@ public class WinLinesCheck : MonoBehaviour
         gameConfig = bonusGameConfig;
     }
 
-    public List<Symbol[]> GetWinLines()
+    public void GetWinLines()
     {
         List<Symbol[]> winningLines = new List<Symbol[]>();
         foreach (var winLine in gameConfig.WinLines)
@@ -50,10 +55,10 @@ public class WinLinesCheck : MonoBehaviour
                 winningLines.Add(newLine);
             }
         }
-        return winningLines;
+        WinLinesChecked?.Invoke(winningLines);
     }
 
-    public void CheckFSGame()
+    public void CheckFSGame(float ignore)
     {
         var scattersInReel = 0;
         var reelsWithScatters = 0;
@@ -80,17 +85,4 @@ public class WinLinesCheck : MonoBehaviour
             FreeSpinsDetected?.Invoke(scattersDetected);
         }
     }
-        
-    //private int CheckScattersOnReel(SubReel subReel)
-    //{
-    //    var scattersInReel = 0;
-    //    foreach (var symbol in subReel.VisibleReelSymbols)
-    //    {
-    //        if (symbol.SymbolSO.SymbolType == SymbolType.Scatter)
-    //        {
-    //            scattersInReel++;
-    //        }
-    //    }
-    //    return scattersInReel;
-    //}
 }
