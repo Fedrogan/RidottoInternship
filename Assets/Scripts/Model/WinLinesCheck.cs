@@ -5,12 +5,9 @@ using System;
 
 public class WinLinesCheck : MonoBehaviour
 {
-    public event Action<int> FreeSpinsDetected;
-    public event Action<List<Symbol[]>> WinLinesChecked;
-
-    [SerializeField] private FreeSpinsController bonusGameController;
     [SerializeField] private ReelsScroll reelsScroller;
     [SerializeField] private PrizeCalculator prizeCalculator;
+    [SerializeField] private GameController gameController;
 
     [SerializeField] private GameConfig bonusGameConfig;
     [SerializeField] private GameConfig ordinaryGameConfig;
@@ -23,23 +20,21 @@ public class WinLinesCheck : MonoBehaviour
     private void Start()
     {
         gameConfig = ordinaryGameConfig;
-        reelsScroller.AllReelsStopped += GetWinLines;
-        prizeCalculator.PrizeCalculated += CheckFSGame;
-        bonusGameController.FreeSpinsStarted += SetBonusConfig;
-        bonusGameController.FreeSpinsFinished += SetOrdinaryConfig;
+        gameController.FreeSpinsStarted += SetBonusConfig;
+        gameController.FreeSpinsFinished += SetOrdinaryConfig;
         winLineSymbols = new Symbol[subReels.Length];
     }
-    private void SetOrdinaryConfig(float ignoreValue)
+    private void SetOrdinaryConfig()
     {
         gameConfig = ordinaryGameConfig;
     }
 
-    private void SetBonusConfig()
+    private void SetBonusConfig(int ignoreValue)
     {
         gameConfig = bonusGameConfig;
     }
 
-    public void GetWinLines()
+    public List<Symbol[]> GetWinLines()
     {
         List<Symbol[]> winningLines = new List<Symbol[]>();
         foreach (var winLine in gameConfig.WinLines)
@@ -55,10 +50,10 @@ public class WinLinesCheck : MonoBehaviour
                 winningLines.Add(newLine);
             }
         }
-        WinLinesChecked?.Invoke(winningLines);
+        return winningLines;
     }
 
-    public void CheckFSGame(float ignore)
+    public int CheckFSGame()
     {
         var scattersInReel = 0;
         var reelsWithScatters = 0;
@@ -82,7 +77,8 @@ public class WinLinesCheck : MonoBehaviour
         }
         if (reelsWithScatters == subReels.Length)
         {
-            FreeSpinsDetected?.Invoke(scattersDetected);
+            return scattersDetected;
         }
+        else return 0;
     }
 }

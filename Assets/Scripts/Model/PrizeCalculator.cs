@@ -6,15 +6,7 @@ using UnityEngine;
 
 public class PrizeCalculator : MonoBehaviour
 {
-    public event Action<float> PrizeCalculated;
-
-    [SerializeField] private WinLinesCheck winLinesChecker;
-
-    private void Start()
-    {
-        winLinesChecker.WinLinesChecked += CalculateWin;
-    }
-    public void CalculateWin(List<Symbol[]> winningSymbols)
+    public float CalculateWin(List<Symbol[]> winningSymbols)
     {
         float prize = 0;
 
@@ -25,7 +17,6 @@ public class PrizeCalculator : MonoBehaviour
                 if (line[i].SymbolSO != null) prize += line[i].SymbolSO.SymbolCost;
             }            
         }
-        PrizeCalculated?.Invoke(prize);
-        //return prize;
+        return prize;
     }    
 }
