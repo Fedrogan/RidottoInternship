@@ -133,7 +133,7 @@ public class ReelsScroll : MonoBehaviour
 
     private void SlowdownFakeReel(RectTransform fakeReelRT)
     {
-        anticipationAnimation.Deactivate();
+        //anticipationAnimation.Deactivate();
         fakeDictionary[fakeReelRT].ReelState = ReelState.Stopping;
         var currentFakeReelPos = fakeReelRT.localPosition.y;
         DOTween.Kill(fakeReelRT);
@@ -141,11 +141,10 @@ public class ReelsScroll : MonoBehaviour
         var slowDownDistance = currentFakeReelPos - extraDistance;
 
         CorrectSubReel(fakeSubConnection[fakeReelRT], extraDistance);
-        MoveSubReelIn(fakeSubConnection[fakeReelRT]);
-
         fakeReelRT.DOAnchorPosY(slowDownDistance, slowdownDuration).SetEase(slowdownEase)
             .OnComplete(() =>
             {
+                anticipationAnimation.Deactivate();
                 fakeDictionary[fakeReelRT].ReelState = ReelState.Stop;
                 PrepareFakeReel(fakeReelRT);
                 if (fakeDictionary[fakeReelRT].ReelID == fakeReels.Length - 1 && _isForceStop == false)
@@ -158,6 +157,9 @@ public class ReelsScroll : MonoBehaviour
                     AllReelsStopped?.Invoke();
                 }
             });
+        MoveSubReelIn(fakeSubConnection[fakeReelRT]);
+
+        
     }
 
     private void PrepareFakeReel(RectTransform fakeReelRT)
@@ -202,6 +204,7 @@ public class ReelsScroll : MonoBehaviour
     {
         if (winLinesChecker.CheckAnticipation(subReels[0], subReels[1]) == true)
         {
+            print("Anticipation");
             anticipationAnimation.Activate();
             AnticipationSpin();
         }

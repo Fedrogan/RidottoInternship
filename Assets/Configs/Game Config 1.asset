@@ -13,21 +13,21 @@ MonoBehaviour:
   m_Name: Game Config 1
   m_EditorClassIdentifier: 
   finalScreens:
-  - {fileID: 11400000, guid: 8ded7bab0693688408e11b145da680fd, type: 2}
-  - {fileID: 11400000, guid: 0ef1ac813487d8c4aa6f584a4c35d3e0, type: 2}
   - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
-  - {fileID: 11400000, guid: 9901a61a3b2c72347b69b0606131e26b, type: 2}
-  - {fileID: 11400000, guid: 92c3aa461255f8a469ba366d68f76fac, type: 2}
-  - {fileID: 11400000, guid: ab36ecb4d57fae44cb73c6b039a4037a, type: 2}
-  - {fileID: 11400000, guid: 51a051b1b2e4a6c499fc207b7c883dae, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
   - {fileID: 11400000, guid: 6cb93ad78b940844288c56f5c9853ea2, type: 2}
-  - {fileID: 11400000, guid: 833a2c3c6ec7fc549b1fe8b275c75cf2, type: 2}
-  - {fileID: 11400000, guid: 9cb3d9d92083d6a44baf5211a38b58cd, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
   - {fileID: 11400000, guid: 6c80de2a7efe929489dfd58a35d5bbd5, type: 2}
-  - {fileID: 11400000, guid: 9cb3d9d92083d6a44baf5211a38b58cd, type: 2}
-  - {fileID: 11400000, guid: 9cb3d9d92083d6a44baf5211a38b58cd, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
   - {fileID: 11400000, guid: e6591f3c48cd6864aa303ba8dd40e5ba, type: 2}
-  - {fileID: 11400000, guid: 9cb3d9d92083d6a44baf5211a38b58cd, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
   symbolsData:
   - {fileID: 11400000, guid: d060e53b9ec467d4588bc8934ab2a1b8, type: 2}
   - {fileID: 11400000, guid: 251344343949f7d4db12550e11bed94c, type: 2}

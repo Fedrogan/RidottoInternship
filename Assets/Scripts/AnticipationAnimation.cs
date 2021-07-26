@@ -28,7 +28,13 @@ public class AnticipationAnimation : MonoBehaviour
         animator.enabled = true;
         animator.SetBool(Play, true);
 
-        StartCoroutine(CoActivate());
+        for (int i = 0; i < particles.Length; i++)
+        {
+            particles[i].Play();
+            particlesDisablers[i].alpha = 1f;
+        }
+
+        //StartCoroutine(CoActivate());
     }
 
     private IEnumerator CoActivate()
@@ -40,19 +46,27 @@ public class AnticipationAnimation : MonoBehaviour
             particles[i].Play();
             particlesDisablers[i].alpha = 1f;
         }
+
     }
 
     public void Deactivate()
     {
+        animator.enabled = false;
         animator.SetBool(Play, false);
 
-        StartCoroutine(CoDeactivate());
+        //StartCoroutine(CoDeactivate());
 
         for (int i = 0; i < particles.Length; i++)
         {
             particles[i].Stop();
             particlesDisablers[i].alpha = 0f;
         }
+
+        IsActive = false;
+
+        canvasGroup.alpha = 0f;
+
+        animator.enabled = false;
     }
 
     private IEnumerator CoDeactivate()

@@ -1992,16 +1992,16 @@ MonoBehaviour:
   - {fileID: 1663986066}
   boostEase: 5
   slowdownEase: 6
-  delayStep: 0.3
+  delayStep: 0.41
   symbolHeigth: 200
   reelLinearSpeed: 4000
   boostDistance: -800
-  boostDuration: 0.43
+  boostDuration: 0.39
   spinDuration: 1.5
-  slowdownDuration: 0.28
-  reelAnticipationSpeed: 0
-  anticipationDuration: 0
-  anticipationReel: {fileID: 0}
+  slowdownDuration: 0.37
+  reelAnticipationSpeed: 6394
+  anticipationDuration: 3
+  anticipationReel: {fileID: 1758673968}
 --- !u!1 &579142122
 GameObject:
   m_ObjectHideFlags: 0
@@ -2709,6 +2709,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 491455127}
     m_Modifications:
+    - target: {fileID: 608473327232071686, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 608473327232071686, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 608473327232071686, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2970101947197009428, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2970101947197009428, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2970101947197009428, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5018993141688110708, guid: 2e4e1abb1ab6d654397208028d75cc4d,
         type: 3}
       propertyPath: m_Alpha
@@ -5733,6 +5763,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 491455127}
     m_Modifications:
+    - target: {fileID: 608473327232071686, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 608473327232071686, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 608473327232071686, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2970101947197009428, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2970101947197009428, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2970101947197009428, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5018993141688110708, guid: 2e4e1abb1ab6d654397208028d75cc4d,
         type: 3}
       propertyPath: m_Alpha
@@ -6946,6 +7006,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 491455127}
     m_Modifications:
+    - target: {fileID: 608473327232071686, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 608473327232071686, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 608473327232071686, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2970101947197009428, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2970101947197009428, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2970101947197009428, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5018993141688110708, guid: 2e4e1abb1ab6d654397208028d75cc4d,
         type: 3}
       propertyPath: m_Alpha
