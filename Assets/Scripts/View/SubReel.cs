@@ -7,8 +7,15 @@ public class SubReel : MonoBehaviour
     [SerializeField] private Symbol invisibleSymbol;
     private ReelState reelState = ReelState.Stop;
 
-    [SerializeField] private GameConfig gameConfig;
+    //[SerializeField] private FreeSpinsController bonusGameController;
+    [SerializeField] private GameController gameController;
+
+    [SerializeField] private GameConfig bonusGameConfig;
+    [SerializeField] private GameConfig ordinaryGameConfig;
+    private GameConfig gameConfig;
+
     private int currentSet;
+    private int lastSet;
 
     public int ReelID { get => reelId; set => reelId = value; }
     public ReelState ReelState { get => reelState; set => reelState = value; }
@@ -17,8 +24,25 @@ public class SubReel : MonoBehaviour
 
     void Start()
     {
+        gameConfig = ordinaryGameConfig;
+        gameController.FreeSpinsStarted += SetBonusConfig;
+        gameController.FreeSpinsFinished += SetOrdinaryConfig;
         currentSet = 0;
         FillReel();
+    }
+
+    private void SetOrdinaryConfig()
+    {
+        currentSet = lastSet;
+        lastSet = 0;
+        gameConfig = ordinaryGameConfig;
+    }
+
+    private void SetBonusConfig(int ignoreValue)
+    {
+        lastSet = currentSet;
+        currentSet = 0;
+        gameConfig = bonusGameConfig;
     }
 
     public void FillReel()
@@ -27,8 +51,11 @@ public class SubReel : MonoBehaviour
         {
             var finalScreenSymbolIndex = i + (reelId - 1) * visibleReelSymbols.Length;
             var symbol = visibleReelSymbols[i];
-            symbol.SymbolSO = gameConfig.FinalScreens[currentSet].FinalScreenSymbols[finalScreenSymbolIndex] == null ?
-                    GetRandomSymbol() : gameConfig.FinalScreens[currentSet].FinalScreenSymbols[finalScreenSymbolIndex];
+            var newSymbol = gameConfig.FinalScreens[currentSet].FinalScreenSymbols[finalScreenSymbolIndex];
+            if (newSymbol != null) 
+                symbol.SymbolSO = newSymbol;
+            else 
+                symbol.SymbolSO = GetRandomSymbol();
             symbol.Icon.sprite = symbol.SymbolSO.SymbolImage;
         }
         invisibleSymbol.Icon.sprite = GetRandomSymbol().SymbolImage;

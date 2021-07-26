@@ -65,14 +65,22 @@ public class FakeReel : MonoBehaviour
         symbol.Icon.sprite = newSymbol;
     }
 
-    public void ResetSymbolsPosition(float correctedSlowDownDistance, float cellYCorrection, float startReelPositionY)
+    public void ResetSymbolsPosition(float cellYCorrection, float startReelPositionY)
     {
         for (int i = 0; i < fakeReelSymbols.Length; i++)
         {
             var symbol = fakeReelSymbols[i];
             var symbolPos = symbol.SymbolRT.localPosition;
-            var newYPos = Mathf.Round(symbolPos.y + correctedSlowDownDistance - cellYCorrection - startReelPositionY);
+            var newYPos = Mathf.Round(symbolPos.y - cellYCorrection - startReelPositionY);
             symbol.SymbolRT.localPosition = new Vector3(symbolPos.x, newYPos, symbolPos.z);
+        }
+    }
+
+    public void MakeAllSymbolsTransparent()
+    {
+        foreach (var symbol in fakeReelSymbols)
+        {
+            symbol.SetSymbolTransparency(true);
         }
     }
 
