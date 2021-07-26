@@ -5,9 +5,9 @@ using System;
 
 public class WinLinesCheck : MonoBehaviour
 {
-    public event Action<int> FreeSpinsDetected;
-
-    [SerializeField] private BonusGameController bonusGameController;
+    [SerializeField] private ReelsScroll reelsScroller;
+    [SerializeField] private PrizeCalculator prizeCalculator;
+    [SerializeField] private GameController gameController;
 
     [SerializeField] private GameConfig bonusGameConfig;
     [SerializeField] private GameConfig ordinaryGameConfig;
@@ -20,8 +20,8 @@ public class WinLinesCheck : MonoBehaviour
     private void Start()
     {
         gameConfig = ordinaryGameConfig;
-        bonusGameController.BonusGameStarted += SetBonusConfig;
-        bonusGameController.BonusGameFinished += SetOrdinaryConfig;
+        gameController.FreeSpinsStarted += SetBonusConfig;
+        gameController.FreeSpinsFinished += SetOrdinaryConfig;
         winLineSymbols = new Symbol[subReels.Length];
     }
     private void SetOrdinaryConfig()
@@ -29,7 +29,7 @@ public class WinLinesCheck : MonoBehaviour
         gameConfig = ordinaryGameConfig;
     }
 
-    private void SetBonusConfig()
+    private void SetBonusConfig(int ignoreValue)
     {
         gameConfig = bonusGameConfig;
     }
@@ -53,7 +53,7 @@ public class WinLinesCheck : MonoBehaviour
         return winningLines;
     }
 
-    public void CheckFSGame()
+    public int CheckFSGame()
     {
         var scattersInReel = 0;
         var reelsWithScatters = 0;
@@ -77,9 +77,11 @@ public class WinLinesCheck : MonoBehaviour
         }
         if (reelsWithScatters == subReels.Length)
         {
-            FreeSpinsDetected?.Invoke(scattersDetected);
+            return scattersDetected;
         }
+        else return 0;
     }
+<<<<<<< HEAD:Assets/Scripts/WinLinesCheck.cs
 
     public bool CheckAnticipation(SubReel firstSubReel, SubReel secondSubReel)
     {
@@ -100,4 +102,6 @@ public class WinLinesCheck : MonoBehaviour
         }
         return scattersInReel;
     }
+=======
+>>>>>>> 5098b3992c496f78358106ee1a93257ae3fa84c8:Assets/Scripts/Model/WinLinesCheck.cs
 }
