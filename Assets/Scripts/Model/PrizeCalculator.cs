@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class PrizeCalculator : MonoBehaviour
 {
-    public event Action<float> PrizeCalculated;
     public float CalculateWin(List<Symbol[]> winningSymbols)
     {
         float prize = 0;

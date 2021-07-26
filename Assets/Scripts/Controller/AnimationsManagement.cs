@@ -11,8 +11,6 @@ public class AnimationsManagement : MonoBehaviour
     public event Action AllAnimationsFinished;
     public event Action WinLineAnimationShowing;
 
-    [SerializeField] private WinLinesCheck winLinesChecker;
-    [SerializeField] private PrizeCalculator calculator;
     [SerializeField] private ReelsScroll reelsScroll;
 
     [SerializeField] private SubReel[] subReels;
@@ -31,34 +29,40 @@ public class AnimationsManagement : MonoBehaviour
     private List<Symbol[]> winLinesToShow;
     private List<Symbol> allSymbols;
 
+    public bool isAnimationsPlaying = false;
+
     private void Awake()
     {
         reelsScroll.ReelStopped += ShineScatters;
         winLinesToShow = new List<Symbol[]>();
+<<<<<<< HEAD:Assets/Scripts/AnimationsManagement.cs
         allSymbols = new List<Symbol>();        
     }    
+=======
+        allSymbols = new List<Symbol>();
+
+    }
+
+    
+>>>>>>> 9a736a84cc41ff1bd4adccf53607a50af66d772d:Assets/Scripts/Controller/AnimationsManagement.cs
 
     private void Start()
     {
-        foreach(var subReel in subReels)
+        foreach (var subReel in subReels)
         {
             var symbols = subReel.VisibleReelSymbols;
-            foreach(var symbol in symbols)
+            foreach (var symbol in symbols)
             {
                 allSymbols.Add(symbol);
-            }            
+            }
         }
-    }
-
-    public void AddWinLineToShowList(Symbol[] winLine)
-    {
-        var newLine = winLine.Clone() as Symbol[];
-        winLinesToShow.Add(newLine);
     }
 
     public void StartAnimations(List<Symbol[]> winningLines)
     {
-        StartCoroutine(CoShowWinLine(winningLines));
+        winLinesToShow = winningLines;
+        isAnimationsPlaying = true;
+        StartCoroutine(CoShowWinLine(winLinesToShow));
         if (winningLines.Count > 0)
         {
             foreach (var reelBG in reelsBG)
@@ -76,8 +80,8 @@ public class AnimationsManagement : MonoBehaviour
             WinLineAnimationShowing?.Invoke();
             yield return new WaitForSecondsRealtime(pauseBetweenCoroutines);
             ResetAllSymbolsAnimations();
-        }        
-        ResetAnimations();        
+        }
+        ResetAnimations();
     }
 
     private void ResetReelsBG()
@@ -117,14 +121,16 @@ public class AnimationsManagement : MonoBehaviour
             var symbolRT = winningSymbol.SymbolRT;
             winningSymbol.ParticleFrame.SetActive(true);
             winningSymbol.ParticleSystem.Play();
-            var putForwardTweener = symbolRT.DOScale(putForwardScale, putForwardTweenDuration).OnComplete(() =>
-            {
-                var pulseTweener = symbolRT.DOScale(pulseScale, pulseTweenDuration).SetLoops(pulseLoops, LoopType.Yoyo)
+            var putForwardTweener = symbolRT.DOScale(putForwardScale, putForwardTweenDuration)
                 .OnComplete(() =>
                 {
-                    var backTweener = symbolRT.DOScale(defaultSymboleScale, backTweenDuration);
+                    var pulseTweener = symbolRT.DOScale(pulseScale, pulseTweenDuration)
+                    .SetLoops(pulseLoops, LoopType.Yoyo)
+                    .OnComplete(() =>
+                    {
+                        var backTweener = symbolRT.DOScale(defaultSymboleScale, backTweenDuration);
+                    });
                 });
-            });
         }
     }
 
@@ -142,15 +148,17 @@ public class AnimationsManagement : MonoBehaviour
     }
 
     public void ResetAnimations()
-    {        
+    {
+        isAnimationsPlaying = false;
+
         ResetReelsBG();
 
-        ResetAllSymbolsAnimations();      
+        ResetAllSymbolsAnimations();
 
         StopAllCoroutines();
 
         winLinesToShow.Clear();
 
         AllAnimationsFinished?.Invoke();
-    }    
+    }
 }

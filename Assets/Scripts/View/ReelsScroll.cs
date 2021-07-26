@@ -46,9 +46,7 @@ public class ReelsScroll : MonoBehaviour
     private readonly float middlePosition = 0;
     private float startFakeReelPositionY;
 
-    private float correctedSlowDownDistance;
     private float traveledDistance;
-    private float cellYCorrection;
 
     public SubReel[] SubReels => subReels;
 
@@ -67,8 +65,7 @@ public class ReelsScroll : MonoBehaviour
         anticipationDistance = -anticipationDuration * reelAnticipationSpeed;
         startFakeReelPositionY = fakeReelsRT[0].localPosition.y;
         startSubReelPositionY = subReelsRT[0].localPosition.y;
-    }
-
+    }    
 
     private void Update()
     {
@@ -145,7 +142,11 @@ public class ReelsScroll : MonoBehaviour
 
     private void SlowdownFakeReel(RectTransform fakeReelRT)
     {
+<<<<<<< HEAD:Assets/Scripts/ReelsScroll.cs
         
+=======
+        //anticipationAnimation.Deactivate();
+>>>>>>> 9a736a84cc41ff1bd4adccf53607a50af66d772d:Assets/Scripts/View/ReelsScroll.cs
         fakeDictionary[fakeReelRT].ReelState = ReelState.Stopping;
         var currentFakeReelPos = fakeReelRT.localPosition.y;
         DOTween.Kill(fakeReelRT);
@@ -153,11 +154,10 @@ public class ReelsScroll : MonoBehaviour
         var slowDownDistance = currentFakeReelPos - extraDistance;
 
         CorrectSubReel(fakeSubConnection[fakeReelRT], extraDistance);
-        MoveSubReelIn(fakeSubConnection[fakeReelRT]);
-
         fakeReelRT.DOAnchorPosY(slowDownDistance, slowdownDuration).SetEase(slowdownEase)
             .OnComplete(() =>
             {
+                anticipationAnimation.Deactivate();
                 fakeDictionary[fakeReelRT].ReelState = ReelState.Stop;
                 PrepareFakeReel(fakeReelRT);
                 if (fakeDictionary[fakeReelRT].ReelID == fakeReels.Length - 1 && _isForceStop == false)
@@ -171,17 +171,18 @@ public class ReelsScroll : MonoBehaviour
                     AllReelsStopped?.Invoke();
                 }
             });
+        MoveSubReelIn(fakeSubConnection[fakeReelRT]);
+
+        
     }
 
     private void PrepareFakeReel(RectTransform fakeReelRT)
     {
         var currentFakeReelPos = fakeReelRT.localPosition;
-        if (correctedSlowDownDistance != currentFakeReelPos.y)
-            cellYCorrection = correctedSlowDownDistance - currentFakeReelPos.y;
-        else
-            cellYCorrection = 0;
+         var cellYCorrection = -currentFakeReelPos.y;
         fakeReelRT.localPosition = new Vector3(currentFakeReelPos.x, startFakeReelPositionY, currentFakeReelPos.z);
-        fakeDictionary[fakeReelRT].ResetSymbolsPosition(correctedSlowDownDistance, cellYCorrection, startFakeReelPositionY);
+        fakeDictionary[fakeReelRT].ResetSymbolsPosition(cellYCorrection, startFakeReelPositionY);
+        fakeDictionary[fakeReelRT].MakeAllSymbolsTransparent();
     }
 
     private float CalculateSlowDownDistance(float currentFakeReelPos)
@@ -217,6 +218,7 @@ public class ReelsScroll : MonoBehaviour
     {
         if (winLinesChecker.CheckAnticipation(SubReels[0], SubReels[1]) == true)
         {
+            print("Anticipation");
             anticipationAnimation.Activate();
             Anticipation?.Invoke();
             AnticipationSpin();

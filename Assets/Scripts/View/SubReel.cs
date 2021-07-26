@@ -7,7 +7,8 @@ public class SubReel : MonoBehaviour
     [SerializeField] private Symbol invisibleSymbol;
     private ReelState reelState = ReelState.Stop;
 
-    [SerializeField] private BonusGameController bonusGameController;
+    //[SerializeField] private FreeSpinsController bonusGameController;
+    [SerializeField] private GameController gameController;
 
     [SerializeField] private GameConfig bonusGameConfig;
     [SerializeField] private GameConfig ordinaryGameConfig;
@@ -24,8 +25,8 @@ public class SubReel : MonoBehaviour
     void Start()
     {
         gameConfig = ordinaryGameConfig;
-        bonusGameController.BonusGameStarted += SetBonusConfig;
-        bonusGameController.BonusGameFinished += SetOrdinaryConfig;
+        gameController.FreeSpinsStarted += SetBonusConfig;
+        gameController.FreeSpinsFinished += SetOrdinaryConfig;
         currentSet = 0;
         FillReel();
     }
@@ -37,7 +38,7 @@ public class SubReel : MonoBehaviour
         gameConfig = ordinaryGameConfig;
     }
 
-    private void SetBonusConfig()
+    private void SetBonusConfig(int ignoreValue)
     {
         lastSet = currentSet;
         currentSet = 0;
