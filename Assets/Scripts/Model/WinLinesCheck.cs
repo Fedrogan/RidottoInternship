@@ -81,7 +81,6 @@ public class WinLinesCheck : MonoBehaviour
         }
         else return 0;
     }
-<<<<<<< HEAD:Assets/Scripts/WinLinesCheck.cs
 
     public bool CheckAnticipation(SubReel firstSubReel, SubReel secondSubReel)
     {
@@ -102,6 +101,4 @@ public class WinLinesCheck : MonoBehaviour
         }
         return scattersInReel;
     }
-=======
->>>>>>> 5098b3992c496f78358106ee1a93257ae3fa84c8:Assets/Scripts/Model/WinLinesCheck.cs
 }

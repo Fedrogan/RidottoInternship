@@ -10,13 +10,8 @@ public class AnimationsManagement : MonoBehaviour
 {
     public event Action AllAnimationsFinished;
 
-<<<<<<< HEAD:Assets/Scripts/AnimationsManagement.cs
-    [SerializeField] private WinLinesCheck winLinesChecker;
-    [SerializeField] private PrizeCalculator calculator;
     [SerializeField] private ReelsScroll reelsScroll;
 
-=======
->>>>>>> 5098b3992c496f78358106ee1a93257ae3fa84c8:Assets/Scripts/Controller/AnimationsManagement.cs
     [SerializeField] private SubReel[] subReels;
     [SerializeField] private Image[] reelsBG;
 
@@ -47,11 +42,7 @@ public class AnimationsManagement : MonoBehaviour
 
     private void Start()
     {
-<<<<<<< HEAD:Assets/Scripts/AnimationsManagement.cs
-        foreach(var subReel in subReels)
-=======
         foreach (var subReel in subReels)
->>>>>>> 5098b3992c496f78358106ee1a93257ae3fa84c8:Assets/Scripts/Controller/AnimationsManagement.cs
         {
             var symbols = subReel.VisibleReelSymbols;
             foreach (var symbol in symbols)
@@ -61,15 +52,6 @@ public class AnimationsManagement : MonoBehaviour
         }
     }
 
-<<<<<<< HEAD:Assets/Scripts/AnimationsManagement.cs
-    public void AddWinLineToShowList(Symbol[] winLine)
-    {
-        var newLine = winLine.Clone() as Symbol[];
-        winLinesToShow.Add(newLine);
-    }
-
-=======
->>>>>>> 5098b3992c496f78358106ee1a93257ae3fa84c8:Assets/Scripts/Controller/AnimationsManagement.cs
     public void StartAnimations(List<Symbol[]> winningLines)
     {
         winLinesToShow = winningLines;

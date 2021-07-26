@@ -60,12 +60,7 @@ public class ReelsScroll : MonoBehaviour
         anticipationDistance = -anticipationDuration * reelAnticipationSpeed;
         startFakeReelPositionY = fakeReelsRT[0].localPosition.y;
         startSubReelPositionY = subReelsRT[0].localPosition.y;
-<<<<<<< HEAD:Assets/Scripts/ReelsScroll.cs
-    }
-
-=======
     }    
->>>>>>> 5098b3992c496f78358106ee1a93257ae3fa84c8:Assets/Scripts/View/ReelsScroll.cs
 
     private void Update()
     {
@@ -167,17 +162,8 @@ public class ReelsScroll : MonoBehaviour
 
     private void PrepareFakeReel(RectTransform fakeReelRT)
     {
-
         var currentFakeReelPos = fakeReelRT.localPosition;
-<<<<<<< HEAD:Assets/Scripts/ReelsScroll.cs
-        if (correctedSlowDownDistance != currentFakeReelPos.y)
-            cellYCorrection = correctedSlowDownDistance - currentFakeReelPos.y;
-        else
-            cellYCorrection = 0;
-=======
          var cellYCorrection = -currentFakeReelPos.y;
-        
->>>>>>> 5098b3992c496f78358106ee1a93257ae3fa84c8:Assets/Scripts/View/ReelsScroll.cs
         fakeReelRT.localPosition = new Vector3(currentFakeReelPos.x, startFakeReelPositionY, currentFakeReelPos.z);
         fakeDictionary[fakeReelRT].ResetSymbolsPosition(cellYCorrection, startFakeReelPositionY);
         fakeDictionary[fakeReelRT].MakeAllSymbolsTransparent();
