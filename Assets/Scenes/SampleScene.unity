@@ -1183,6 +1183,7 @@ MonoBehaviour:
   particleSystem: {fileID: 0}
   icon: {fileID: 347585448}
   symbolRT: {fileID: 347585446}
+  symbolShiny: {fileID: 0}
 --- !u!114 &347585448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1289,6 +1290,7 @@ MonoBehaviour:
   particleSystem: {fileID: 0}
   icon: {fileID: 403936140}
   symbolRT: {fileID: 403936137}
+  symbolShiny: {fileID: 0}
 --- !u!114 &403936140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1725,6 +1727,7 @@ MonoBehaviour:
   particleSystem: {fileID: 0}
   icon: {fileID: 516738183}
   symbolRT: {fileID: 516738180}
+  symbolShiny: {fileID: 0}
 --- !u!114 &516738183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1817,6 +1820,7 @@ MonoBehaviour:
   particleSystem: {fileID: 0}
   icon: {fileID: 523677759}
   symbolRT: {fileID: 523677757}
+  symbolShiny: {fileID: 0}
 --- !u!114 &523677759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1968,6 +1972,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameConfig: {fileID: 11400000, guid: 0801f5664a0622d45852e5fc76a90bdc, type: 2}
+  winLinesChecker: {fileID: 1491762241}
+  anticipationAnimation: {fileID: 1687748518}
   fakeReelsRT:
   - {fileID: 255176930}
   - {fileID: 682357622}
@@ -1993,6 +1999,9 @@ MonoBehaviour:
   boostDuration: 0.43
   spinDuration: 1.5
   slowdownDuration: 0.28
+  reelAnticipationSpeed: 0
+  anticipationDuration: 0
+  anticipationReel: {fileID: 0}
 --- !u!1 &579142122
 GameObject:
   m_ObjectHideFlags: 0
@@ -2403,6 +2412,7 @@ MonoBehaviour:
   particleSystem: {fileID: 0}
   icon: {fileID: 698412605}
   symbolRT: {fileID: 698412602}
+  symbolShiny: {fileID: 0}
 --- !u!114 &698412605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3038,6 +3048,7 @@ MonoBehaviour:
   particleSystem: {fileID: 0}
   icon: {fileID: 914652993}
   symbolRT: {fileID: 914652991}
+  symbolShiny: {fileID: 0}
 --- !u!114 &914652993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3314,6 +3325,7 @@ MonoBehaviour:
   particleSystem: {fileID: 0}
   icon: {fileID: 989231093}
   symbolRT: {fileID: 989231090}
+  symbolShiny: {fileID: 0}
 --- !u!114 &989231093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3406,6 +3418,7 @@ MonoBehaviour:
   particleSystem: {fileID: 0}
   icon: {fileID: 993914278}
   symbolRT: {fileID: 993914276}
+  symbolShiny: {fileID: 0}
 --- !u!114 &993914278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3512,6 +3525,7 @@ MonoBehaviour:
   particleSystem: {fileID: 0}
   icon: {fileID: 1038693533}
   symbolRT: {fileID: 1038693530}
+  symbolShiny: {fileID: 0}
 --- !u!114 &1038693533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4561,6 +4575,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1176526245}
   m_CullTransparentMesh: 0
+--- !u!225 &1177930229 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 217895114427556408, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1857851049}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1177930231 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3986387102803370330, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1857851049}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1202566950
 GameObject:
   m_ObjectHideFlags: 0
@@ -4779,6 +4805,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f823621fce06e534d80301f6cf0cb711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1243143486 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2693477802018896767, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1857851049}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1275815036
 GameObject:
   m_ObjectHideFlags: 0
@@ -5077,6 +5109,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1360404171}
   m_CullTransparentMesh: 0
+--- !u!225 &1384166464 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 7543518466661364827, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1857851049}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1384166466 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1506903216441584176, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1857851049}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1390418221
 GameObject:
   m_ObjectHideFlags: 0
@@ -5482,6 +5526,39 @@ MonoBehaviour:
   gameController: {fileID: 1816126861}
   bonusGameConfig: {fileID: 11400000, guid: 78aa6cfd0edea1648a66fb5428881ee8, type: 2}
   ordinaryGameConfig: {fileID: 11400000, guid: 0801f5664a0622d45852e5fc76a90bdc, type: 2}
+--- !u!1 &1687748516 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 128597740906287338, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1857851049}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1687748518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687748516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc6ee6952a0e8649b399075e60e760f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deactivationDuration: 0
+  canvasGroup: {fileID: 1687748519}
+  animator: {fileID: 1243143486}
+  particles:
+  - {fileID: 1177930231}
+  - {fileID: 1384166466}
+  particlesDisablers:
+  - {fileID: 1177930229}
+  - {fileID: 1384166464}
+--- !u!225 &1687748519 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 5018993141688110708, guid: 2e4e1abb1ab6d654397208028d75cc4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1857851049}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1751803517 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6289337123800813540, guid: 2e4e1abb1ab6d654397208028d75cc4d,
@@ -6100,6 +6177,7 @@ MonoBehaviour:
   particleSystem: {fileID: 0}
   icon: {fileID: 1919700219}
   symbolRT: {fileID: 1919700217}
+  symbolShiny: {fileID: 0}
 --- !u!114 &1919700219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6359,6 +6437,7 @@ MonoBehaviour:
   particleSystem: {fileID: 0}
   icon: {fileID: 2002974085}
   symbolRT: {fileID: 2002974083}
+  symbolShiny: {fileID: 0}
 --- !u!114 &2002974085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6812,6 +6891,7 @@ MonoBehaviour:
   particleSystem: {fileID: 0}
   icon: {fileID: 2127121924}
   symbolRT: {fileID: 2127121921}
+  symbolShiny: {fileID: 0}
 --- !u!114 &2127121924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7568,6 +7648,11 @@ PrefabInstance:
       propertyPath: calculator
       value: 
       objectReference: {fileID: 958852444}
+    - target: {fileID: 6500038676613511570, guid: 738b6e6a9be98824c87ae7e6d516c4f6,
+        type: 3}
+      propertyPath: reelsScroll
+      value: 
+      objectReference: {fileID: 536802960}
     - target: {fileID: 6500038676613511570, guid: 738b6e6a9be98824c87ae7e6d516c4f6,
         type: 3}
       propertyPath: symbolsManager
