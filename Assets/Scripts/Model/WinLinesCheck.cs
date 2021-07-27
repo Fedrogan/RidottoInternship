@@ -5,8 +5,6 @@ using System;
 
 public class WinLinesCheck : MonoBehaviour
 {
-    [SerializeField] private ReelsScroll reelsScroller;
-    [SerializeField] private PrizeCalculator prizeCalculator;
     [SerializeField] private GameController gameController;
 
     [SerializeField] private GameConfig bonusGameConfig;
@@ -20,7 +18,7 @@ public class WinLinesCheck : MonoBehaviour
     private void Start()
     {
         gameConfig = ordinaryGameConfig;
-        gameController.FreeSpinsStarted += SetBonusConfig;
+        gameController.FreeSpinsDetected += SetBonusConfig;
         gameController.FreeSpinsFinished += SetOrdinaryConfig;
         winLineSymbols = new Symbol[subReels.Length];
     }
@@ -44,7 +42,7 @@ public class WinLinesCheck : MonoBehaviour
                 winLineSymbols[i] = subReels[i].VisibleReelSymbols[winLine.WinSymbols[i]];
             }
 
-            if (winLineSymbols[0].SymbolSO == winLineSymbols[1].SymbolSO && winLineSymbols[1].SymbolSO == winLineSymbols[2].SymbolSO)
+            if (winLineSymbols[0].SymbolSO.SymbolType != SymbolType.Scatter && winLineSymbols[0].SymbolSO == winLineSymbols[1].SymbolSO && winLineSymbols[1].SymbolSO == winLineSymbols[2].SymbolSO)
             {
                 var newLine = winLineSymbols.Clone() as Symbol[];
                 winningLines.Add(newLine);

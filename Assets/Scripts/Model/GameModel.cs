@@ -39,9 +39,9 @@ public class GameModel : MonoBehaviour
         lastWinning = 0;
     }
     
-    public void UpdateGame(float newWinning, int scattersDetected, Action<int> startFSCallBack, Action finishFSCallBack)
+    public void UpdateGame(int scattersDetected, Action<int> startFSCallBack, Action finishFSCallBack)
     {
-        UpdateWinnings(newWinning);
+        //UpdateWinnings(newWinning);
         if (scattersDetected > 0)
         {
             if (gameType == GameType.FreeSpins)
@@ -71,7 +71,7 @@ public class GameModel : MonoBehaviour
         }
     }
 
-    private void UpdateWinnings(float newWinning)
+    public void UpdateWinnings(float newWinning)
     {
         lastWinning = newWinning;
         totalWinning += lastWinning;

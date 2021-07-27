@@ -12,7 +12,6 @@ public class AudioController : MonoBehaviour
 
     [SerializeField] private AudioSource[] audioSources;
     [SerializeField] private GameController gameController;
-    [SerializeField] private BonusGameController bonusGameController;
     [SerializeField] private ReelsScroll reelsScroll;
     [SerializeField] private AnimationsManagement animationsManagement;
     [SerializeField] private WinLinesCheck winLinesCheck;
@@ -101,6 +100,21 @@ public class AudioController : MonoBehaviour
         audioDictionary[SoundType.ButtonClick].Play();
     }
 
+    public void PlayStartFSPopupSound()
+    {
+        audioDictionary[SoundType.StartFSPopup].Play();
+    }
+
+    public void PlayTotalFSPrizePopupSound()
+    {
+        audioDictionary[SoundType.TotalFSPrizePopup].Play();
+    }
+
+    public void PlayHidePopupSound()
+    {
+        audioDictionary[SoundType.HidePopup].Play();
+    }
+
     private void InitializeAudioDictionary()
     {
         audioDictionary.Add(SoundType.Backgroung, audioSources[0]);
@@ -113,7 +127,10 @@ public class AudioController : MonoBehaviour
         audioDictionary.Add(SoundType.ScatterThird, audioSources[7]);
         audioDictionary.Add(SoundType.WinLine, audioSources[8]);
         audioDictionary.Add(SoundType.Anticipation, audioSources[9]);
-        audioDictionary.Add(SoundType.PrizeChanging, audioSources[10]);        
+        audioDictionary.Add(SoundType.PrizeChanging, audioSources[10]);
+        audioDictionary.Add(SoundType.StartFSPopup, audioSources[11]);
+        audioDictionary.Add(SoundType.TotalFSPrizePopup, audioSources[12]);
+        audioDictionary.Add(SoundType.HidePopup, audioSources[13]);
     }
 
     private void SubscribeEvents()
@@ -132,8 +149,9 @@ public class AudioController : MonoBehaviour
         animationsManagement.WinLineAnimationShowing += PlayWinLineSound;
         animationsManagement.AllAnimationsFinished += UnShadowMusic;
 
-        gameController.OrdinaryGameStarted += PlayOrdinaryMusic;
-        bonusGameController.BonusGameStarted += PlayBonusGameMusic;
+        gameController.OrdinaryStarted += PlayOrdinaryMusic;
+        gameController.FreeSpinsStarted += PlayBonusGameMusic;
+        gameController.NoWinLinesFound += UnShadowMusic;
         
         counterAnimator.StartChangingPrize += PlayPrizeSound;
         counterAnimator.FinishChangingPrize += StopPrizeSound;

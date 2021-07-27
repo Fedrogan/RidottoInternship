@@ -8,8 +8,11 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    public Action<int> FreeSpinsStarted;
+    public Action<int> FreeSpinsDetected;
+    public Action FreeSpinsStarted;
     public Action FreeSpinsFinished;
+    public Action OrdinaryStarted;
+    public Action NoWinLinesFound;
 
     [SerializeField] private GameModel gameModel;
     [SerializeField] private ReelsScroll reelsScroller;
@@ -36,14 +39,20 @@ public class GameController : MonoBehaviour
     {
         buttonsContainer.ValidateButton(ButtonType.Stop, isInteractable: false, scale: Vector3.zero);
 
-        buttonsContainer.ValidateButton(ButtonType.Reset, isInteractable: false, scale: Vector3.zero);        
+        buttonsContainer.ValidateButton(ButtonType.Reset, isInteractable: false, scale: Vector3.zero);
     }
     private void Start()
     {
         gameLogicController.LinesChecked += OnLinesChecked;
-        FreeSpinsStarted += OnFreeSpinsStarted;
+        FreeSpinsDetected += OnFreeSpinsDetected;
         FreeSpinsFinished += OnFreeSpinsFinished;
+        OrdinaryStarted += OnOrdinaryStarted;
         SubscribeEvents();
+    }
+
+    private void OnOrdinaryStarted()
+    {
+        buttonsContainer.ValidateButton(ButtonType.Play, isInteractable: true);
     }
 
     private void OnFreeSpinsFinished()
@@ -53,7 +62,7 @@ public class GameController : MonoBehaviour
         StartCoroutine(CoShowFinishPopup());
 
         buttonsContainer.ValidateButton(ButtonType.Stop, scale: Vector3.zero);
-        
+
         buttonsContainer.ValidateButton(ButtonType.Play, isInteractable: false);
     }
 
@@ -63,28 +72,27 @@ public class GameController : MonoBehaviour
         {
             yield return null;
         }
-        popUpsContainer.TotalFSPrizePopup.ShowPopup(prize: gameModel.FreeSpinsWinning);
+        popUpsContainer.TotalFSPrizePopup.ShowPopup(prize: gameModel.FreeSpinsWinning, callBack: OrdinaryStarted);
 
-        buttonsContainer.ValidateButton(ButtonType.Play, isInteractable: true);
-
-        yield return null;
+        buttonsContainer.ValidateButton(ButtonType.Play, isInteractable: true, scale: Vector3.one);
     }
 
-    private void OnFreeSpinsStarted(int freeSpinsLeft)
+    private void OnFreeSpinsDetected(int freeSpinsLeft)
     {
+        print("FreeSpinsStarted");
         buttonsContainer.ValidateButton(ButtonType.Stop, scale: Vector3.one);
 
         buttonsContainer.ValidateButton(ButtonType.Play, scale: Vector3.zero);
 
-        animationsManager.ResetAnimations();
-
-        popUpsContainer.StartFSPopup.ShowPopup(freeSpins: freeSpinsLeft);
+        popUpsContainer.StartFSPopup.ShowPopup(freeSpins: freeSpinsLeft, callBack: FreeSpinsStarted);
     }
 
     private void OnLinesChecked(List<Symbol[]> winLines, float currentWin, int scattersDetected)
     {
+        print("Lines Checked");
         this.currentWin = currentWin;
         this.scattersDetected = scattersDetected;
+        
 
         if (winLines.Count > 0)
         {
@@ -94,6 +102,52 @@ public class GameController : MonoBehaviour
                 buttonsContainer.ValidateButton(ButtonType.Reset, isInteractable: true, scale: Vector3.one);
             }
         }
+        else
+        {
+            NoWinLinesFound?.Invoke();
+        }
+
+        StartCoroutine(CoUpdateGame());
+
+        if (gameModel.GameType == GameType.Ordinary)
+        {
+            buttonsContainer.ValidateButton(ButtonType.Stop, scale: Vector3.zero);
+
+            buttonsContainer.ValidateButton(ButtonType.Play, isInteractable: true, scale: Vector3.one);
+        }
+    }
+
+    private IEnumerator CoUpdateGame()
+    {
+        while (animationsManager.isAnimationsPlaying == true)
+        {
+            yield return null;
+        }
+        while (popUpsContainer.isPopupShowing == true)
+        {
+            yield return null;
+        }
+
+        gameModel.UpdateWinnings(currentWin);
+
+        if (gameModel.GameType == GameType.FreeSpins)
+        {
+            counterAnimator.UpdateValue(gameModel.PrevWinning, gameModel.FreeSpinsWinning, false);
+        }
+        else
+        {
+            counterAnimator.UpdateValue(0, gameModel.LastWinning, false);
+        }
+
+        gameModel.UpdateGame(scattersDetected, FreeSpinsDetected, FreeSpinsFinished);
+        
+
+        if (gameModel.GameType == GameType.FreeSpins)
+        {
+            StartCoroutine(CoStartNextFreeSpin());
+        }
+
+        buttonsContainer.ValidateButton(ButtonType.Stop, isInteractable: false);
     }
 
     public IEnumerator CoStartNextFreeSpin()
@@ -111,61 +165,34 @@ public class GameController : MonoBehaviour
         reelsScroller.StartSpinning(isFirstSpin);
     }
 
-    private void OnAnimationsFinished()
-    {
-        if (gameModel.GameType == GameType.FreeSpins)
-        {
-            counterAnimator.UpdateValue(gameModel.PrevWinning, gameModel.FreeSpinsWinning, false);
-        }
-        else
-        {
-            counterAnimator.UpdateValue(0, gameModel.LastWinning, false);
-        }
-    }
-
     private void OnStopButtonClicked()
-    { 
+    {
         buttonsContainer.ValidateButton(ButtonType.Stop, isInteractable: false);
 
         if (gameModel.GameType == GameType.Ordinary)
         {
             buttonsContainer.ValidateButton(ButtonType.Stop, scale: Vector3.zero);
-            
+
             buttonsContainer.ValidateButton(ButtonType.Play, scale: Vector3.one);
         }
 
         reelsScroller.OnSlowdownSpin(true);
-    }
-
-    private void OnAllReelsStopped()
-    {
-        gameModel.UpdateGame(currentWin, scattersDetected, FreeSpinsStarted, FreeSpinsFinished);
-
-        if (gameModel.GameType == GameType.FreeSpins)
-        {
-            StartCoroutine(CoStartNextFreeSpin());
-        }
-
-        buttonsContainer.ValidateButton(ButtonType.Stop, isInteractable: false);
-
-        if (gameModel.GameType == GameType.Ordinary)
-        {
-            buttonsContainer.ValidateButton(ButtonType.Stop, scale: Vector3.zero);
-            
-            buttonsContainer.ValidateButton(ButtonType.Play, isInteractable: true, scale: Vector3.one);
-        }
-    }
+    }      
 
     private void OnAllReelsStarted()
-    {        
+    {
+        buttonsContainer.ValidateButton(ButtonType.Play, scale: Vector3.zero);
         buttonsContainer.ValidateButton(ButtonType.Stop, isInteractable: true, scale: Vector3.one);
 
-        counterAnimator.ResetCounter();
+        if (gameModel.GameType != GameType.FreeSpins)
+        {
+            counterAnimator.ResetCounter();
+        }        
     }
     private void OnForceStartNextSpin()
     {
         buttonsContainer.ValidateButton(ButtonType.Reset, isInteractable: false, scale: Vector3.zero);
-        
+
         buttonsContainer.ValidateButton(ButtonType.Stop, scale: Vector3.one);
 
         animationsManager.ResetAnimations();
@@ -173,18 +200,15 @@ public class GameController : MonoBehaviour
 
     private void OnPlayButtonClicked()
     {
+        print("PlayClicked");
         buttonsContainer.ValidateButton(ButtonType.Play, isInteractable: false, scale: Vector3.zero);
-        
+
         buttonsContainer.ValidateButton(ButtonType.Stop, scale: Vector3.one);
 
         reelsScroller.StartSpinning(isFirstSpin);
 
         animationsManager.ResetAnimations();
 
-        if (isFirstSpin == false)
-        {
-            counterAnimator.UpdateValue(0, gameModel.LastWinning, true);
-        }
         isFirstSpin = false;
     }
 
@@ -195,8 +219,5 @@ public class GameController : MonoBehaviour
         resetAnimButton.onClick.AddListener(OnForceStartNextSpin);
 
         reelsScroller.AllReelsStarted += OnAllReelsStarted;
-        reelsScroller.AllReelsStopped += OnAllReelsStopped;
-
-        animationsManager.AllAnimationsFinished += OnAnimationsFinished;
     }
 }

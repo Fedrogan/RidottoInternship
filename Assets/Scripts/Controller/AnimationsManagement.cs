@@ -35,16 +35,8 @@ public class AnimationsManagement : MonoBehaviour
     {
         reelsScroll.ReelStopped += ShineScatters;
         winLinesToShow = new List<Symbol[]>();
-<<<<<<< HEAD:Assets/Scripts/AnimationsManagement.cs
         allSymbols = new List<Symbol>();        
     }    
-=======
-        allSymbols = new List<Symbol>();
-
-    }
-
-    
->>>>>>> 9a736a84cc41ff1bd4adccf53607a50af66d772d:Assets/Scripts/Controller/AnimationsManagement.cs
 
     private void Start()
     {
@@ -149,6 +141,7 @@ public class AnimationsManagement : MonoBehaviour
 
     public void ResetAnimations()
     {
+        print("Anim Reseted");
         isAnimationsPlaying = false;
 
         ResetReelsBG();
