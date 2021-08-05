@@ -49,55 +49,5 @@ public class WinLinesCheck : MonoBehaviour
             }
         }
         return winningLines;
-    }
-
-    public int CheckFSGame()
-    {
-        var scattersInReel = 0;
-        var reelsWithScatters = 0;
-        var scattersDetected = 0;
-        foreach (var subReel in subReels)
-        {
-            foreach (var symbol in subReel.VisibleReelSymbols)
-            {
-                if (symbol.SymbolSO.SymbolType == SymbolType.Scatter)
-                {
-                    scattersInReel++;
-                    scattersDetected++;
-                }
-            }
-            if (scattersInReel > 0)
-            {
-                scattersInReel = 0;
-                reelsWithScatters++;
-            }
-            else break;
-        }
-        if (reelsWithScatters == subReels.Length)
-        {
-            return scattersDetected;
-        }
-        else return 0;
-    }
-
-    public bool CheckAnticipation(SubReel firstSubReel, SubReel secondSubReel)
-    {
-        var scattersOnFirst = CheckScattersOnReel(firstSubReel);
-        var scattersOnSecond = CheckScattersOnReel(secondSubReel);
-        return scattersOnFirst > 0 && scattersOnSecond > 0 ? true : false;
-    }
-        
-    public int CheckScattersOnReel(SubReel subReel)
-    {
-        var scattersInReel = 0;
-        foreach (var symbol in subReel.VisibleReelSymbols)
-        {
-            if (symbol.SymbolSO.SymbolType == SymbolType.Scatter)
-            {
-
-                scattersInReel++;
-            }
-        }
-        return scattersInReel;
-    }
+    } 
 }

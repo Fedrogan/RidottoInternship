@@ -7,10 +7,11 @@ public class GameLogicController : MonoBehaviour
 {
     public Action<List<Symbol[]>, float, int> LinesChecked;
     [SerializeField] private WinLinesCheck winLinesChecker;
+    [SerializeField] private ScattersChecker scattersChecker;
     [SerializeField] private PrizeCalculator prizeCalculator;
     [SerializeField] private ReelsScroll reelsScroll;
     private List<Symbol[]> winLines;
-    private int freeSpinsDetected;
+    private int scattersDetected;
     private float currentPrize;
 
     private void Start()
@@ -20,10 +21,10 @@ public class GameLogicController : MonoBehaviour
 
     private void CheckLines()
     {
-        freeSpinsDetected = winLinesChecker.CheckFSGame();
+        scattersDetected = scattersChecker.CheckScattersOnAllReels();
         winLines = winLinesChecker.GetWinLines();
         currentPrize = prizeCalculator.CalculateWin(winLines);
 
-        LinesChecked?.Invoke(winLines, currentPrize, freeSpinsDetected);
+        LinesChecked?.Invoke(winLines, currentPrize, scattersDetected);
     }
 }

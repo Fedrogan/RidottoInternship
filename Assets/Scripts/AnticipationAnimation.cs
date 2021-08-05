@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class AnticipationAnimation : MonoBehaviour
 {
-
     [SerializeField] private float deactivationDuration;
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Animator animator;
@@ -32,20 +31,6 @@ public class AnticipationAnimation : MonoBehaviour
             particles[i].Play();
             particlesDisablers[i].alpha = 1f;
         }
-
-        //StartCoroutine(CoActivate());
-    }
-
-    private IEnumerator CoActivate()
-    {
-        yield return new WaitForSeconds(deactivationDuration);
-
-        for (int i = 0; i < particles.Length; i++)
-        {
-            particles[i].Play();
-            particlesDisablers[i].alpha = 1f;
-        }
-
     }
 
     public void Deactivate()
@@ -53,24 +38,11 @@ public class AnticipationAnimation : MonoBehaviour
         animator.enabled = false;
         animator.SetBool(Play, false);
 
-        //StartCoroutine(CoDeactivate());
-
         for (int i = 0; i < particles.Length; i++)
         {
             particles[i].Stop();
             particlesDisablers[i].alpha = 0f;
         }
-
-        IsActive = false;
-
-        canvasGroup.alpha = 0f;
-
-        animator.enabled = false;
-    }
-
-    private IEnumerator CoDeactivate()
-    {
-        yield return new WaitForSeconds(deactivationDuration);
 
         IsActive = false;
 

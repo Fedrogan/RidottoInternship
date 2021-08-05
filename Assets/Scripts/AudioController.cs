@@ -15,6 +15,7 @@ public class AudioController : MonoBehaviour
     [SerializeField] private ReelsScroll reelsScroll;
     [SerializeField] private AnimationsManagement animationsManagement;
     [SerializeField] private WinLinesCheck winLinesCheck;
+    [SerializeField] private ScattersChecker scattersChecker;
     [SerializeField] private CounterAnimator counterAnimator;
     [SerializeField] private Button playButton;
     [SerializeField] private Button stopButton;
@@ -85,7 +86,7 @@ public class AudioController : MonoBehaviour
     private void PlayStopReelSound(SubReel obj)
     {
         if (obj.ReelID == 3) audioDictionary[SoundType.ReelScrolling].Stop();
-        if (winLinesCheck.CheckScattersOnReel(obj) > 0)
+        if (scattersChecker.CheckScattersOnReel(obj) > 0)
         {
             if (obj.ReelID == 1) audioDictionary[SoundType.ScatterFirst].Play();
             if (obj.ReelID == 2) audioDictionary[SoundType.ScatterSecond].Play();

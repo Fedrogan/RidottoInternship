@@ -14,6 +14,7 @@ public class ReelsScroll : MonoBehaviour
 
     [SerializeField] private GameConfig gameConfig;
     [SerializeField] private WinLinesCheck winLinesChecker;
+    [SerializeField] private ScattersChecker scattersChecker;
     [SerializeField] private AnticipationAnimation anticipationAnimation;
     [Space]
     [SerializeField] private RectTransform[] fakeReelsRT;
@@ -209,7 +210,8 @@ public class ReelsScroll : MonoBehaviour
 
     private void TryToStartAnticipation()
     {
-        if (winLinesChecker.CheckAnticipation(SubReels[0], SubReels[1]) == true)
+        if (scattersChecker.CheckScattersOnReel(subReels[0]) > 0 &&
+            scattersChecker.CheckScattersOnReel(subReels[1]) > 0)        
         {
             anticipationAnimation.Activate();
             Anticipation?.Invoke();
