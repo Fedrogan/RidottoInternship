@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Coffee.UIEffects;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Symbol : MonoBehaviour
@@ -8,6 +9,7 @@ public class Symbol : MonoBehaviour
     [SerializeField] private new ParticleSystem particleSystem;
     [SerializeField] private Image icon;
     [SerializeField] private RectTransform symbolRT;
+    [SerializeField] private UIShiny symbolShiny;
     private bool isHidden = false;
 
     private readonly Color transparent = new Color(1, 1, 1, 0);
@@ -19,8 +21,9 @@ public class Symbol : MonoBehaviour
     public RectTransform SymbolRT => symbolRT;
     public SymbolData SymbolSO { get => symbolSO; set => symbolSO = value; }        
     public bool IsHidden { get => isHidden; set => isHidden = value; }
-    public Image Icon { get => icon; set => icon = value; }  
-    
+    public Image Icon { get => icon; set => icon = value; }
+    public UIShiny SymbolShiny => symbolShiny;
+
     public void SetSymbolTransparency(bool isTransparent)
     {
         if (isTransparent == true) icon.color = transparent;

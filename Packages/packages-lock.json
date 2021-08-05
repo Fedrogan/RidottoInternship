@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "com.coffee.ui-effect": {
+      "version": "file:UIEffect",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.coffee.ui-particle": {
       "version": "file:ParticleEffectForUGUI",
       "depth": 0,

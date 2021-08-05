@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee45d604f1e6bea47b1710fc29f7250c, type: 3}
-  m_Name: Bonus Game Config
+  m_Name: FS Game Config
   m_EditorClassIdentifier: 
   finalScreens:
-  - {fileID: 11400000, guid: b267005734349cb43abd3b086a8b979d, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
   - {fileID: 11400000, guid: 4b8e3d1360d8d824694ac5843de7bc8a, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
   - {fileID: 11400000, guid: b267005734349cb43abd3b086a8b979d, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
   - {fileID: 11400000, guid: b267005734349cb43abd3b086a8b979d, type: 2}
-  - {fileID: 11400000, guid: b267005734349cb43abd3b086a8b979d, type: 2}
-  - {fileID: 11400000, guid: b267005734349cb43abd3b086a8b979d, type: 2}
-  - {fileID: 11400000, guid: b267005734349cb43abd3b086a8b979d, type: 2}
-  - {fileID: 11400000, guid: b267005734349cb43abd3b086a8b979d, type: 2}
-  - {fileID: 11400000, guid: b267005734349cb43abd3b086a8b979d, type: 2}
+  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
   - {fileID: 11400000, guid: 8ded7bab0693688408e11b145da680fd, type: 2}
   symbolsData:
   - {fileID: 11400000, guid: d060e53b9ec467d4588bc8934ab2a1b8, type: 2}

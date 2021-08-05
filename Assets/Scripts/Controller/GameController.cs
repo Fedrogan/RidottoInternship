@@ -134,7 +134,7 @@ public class GameController : MonoBehaviour
             buttonsContainer.ValidateButton(ButtonType.Play, scale: Vector3.one);
         }
 
-        reelsScroller.OnSlowdownSpin();
+        reelsScroller.OnSlowdownSpin(true);
     }
 
     private void OnAllReelsStopped()

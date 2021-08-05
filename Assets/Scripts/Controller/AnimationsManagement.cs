@@ -10,6 +10,8 @@ public class AnimationsManagement : MonoBehaviour
 {
     public event Action AllAnimationsFinished;
 
+    [SerializeField] private ReelsScroll reelsScroll;
+
     [SerializeField] private SubReel[] subReels;
     [SerializeField] private Image[] reelsBG;
 
@@ -30,10 +32,14 @@ public class AnimationsManagement : MonoBehaviour
 
     private void Awake()
     {
+        reelsScroll.ReelStopped += ShineScatters;
         winLinesToShow = new List<Symbol[]>();
         allSymbols = new List<Symbol>();
 
     }
+
+    
+
     private void Start()
     {
         foreach (var subReel in subReels)
@@ -76,6 +82,21 @@ public class AnimationsManagement : MonoBehaviour
         foreach (var reelBG in reelsBG)
         {
             reelBG.color = Color.white;
+        }
+    }
+    private void ShineScatters(SubReel subReel)
+    {
+        foreach (var symbol in subReel.VisibleReelSymbols)
+        {
+            if (symbol.SymbolSO.SymbolType == SymbolType.Scatter)
+            {
+                symbol.SymbolShiny.Play();
+                symbol.SymbolRT.DOScale(new Vector3(1.2f, 1.2f), 0.2f)
+                    .OnComplete(() => 
+                    {
+                        symbol.SymbolRT.DOScale(Vector3.one, 0.2f);
+                    });
+            }
         }
     }
 
