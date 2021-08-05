@@ -8,6 +8,9 @@ public class ReelsScroll : MonoBehaviour
     public event Action AllReelsStarted;
     public event Action AllReelsStopped;
     public event Action<SubReel> ReelStopped;
+    public event Action SpinStarted;
+
+    public event Action Anticipation;
 
     [SerializeField] private GameConfig gameConfig;
     [SerializeField] private WinLinesCheck winLinesChecker;
@@ -46,6 +49,8 @@ public class ReelsScroll : MonoBehaviour
 
     private float traveledDistance;
 
+    public SubReel[] SubReels => subReels;
+
     private void Awake()
     {
         fakeDictionary = new Dictionary<RectTransform, FakeReel>();
@@ -54,7 +59,7 @@ public class ReelsScroll : MonoBehaviour
         for (int i = 0; i < fakeReels.Length; i++)
         {
             fakeDictionary.Add(fakeReelsRT[i], fakeReels[i]);
-            subDictionary.Add(subReelsRT[i], subReels[i]);
+            subDictionary.Add(subReelsRT[i], SubReels[i]);
             fakeSubConnection.Add(fakeReelsRT[i], subReelsRT[i]);
         }
         spinDistance = -spinDuration * reelLinearSpeed;
@@ -67,7 +72,7 @@ public class ReelsScroll : MonoBehaviour
     {
         for (int i = 0; i < subReelsRT.Length; i++)
         {
-            if (subReels[i].ReelState == ReelState.Stopping)
+            if (SubReels[i].ReelState == ReelState.Stopping)
             {
                 if (subReelsRT[i].localPosition.y <= startSubReelPositionY + symbolHeigth / 2)
                     fakeReels[i].HideSymbolsOnFakeReel(true);
@@ -96,15 +101,19 @@ public class ReelsScroll : MonoBehaviour
     {
         for (int i = 0; i < fakeReels.Length; i++)
         {
+            
             var delay = i * delayStep;
-            var fakeReelRT = fakeReelsRT[i];
+            var fakeReelRT = fakeReelsRT[i];            
+
             fakeDictionary[fakeReelRT].ReelState = ReelState.Spin;
             if (isFirstSpin == false)
             {
                 MoveSubReelOut(fakeSubConnection[fakeReelRT], delay);
             }
             fakeReelRT.DOAnchorPosY(boostDistance, boostDuration).SetDelay(delay)
-                .SetEase(boostEase).OnComplete(() =>
+                .OnStart(() => SpinStarted?.Invoke())
+                .SetEase(boostEase)
+                .OnComplete(() =>
                 {
                     LinearSpin(fakeReelRT);
                 });
@@ -134,7 +143,6 @@ public class ReelsScroll : MonoBehaviour
 
     private void SlowdownFakeReel(RectTransform fakeReelRT)
     {
-        //anticipationAnimation.Deactivate();
         fakeDictionary[fakeReelRT].ReelState = ReelState.Stopping;
         var currentFakeReelPos = fakeReelRT.localPosition.y;
         DOTween.Kill(fakeReelRT);
@@ -154,13 +162,12 @@ public class ReelsScroll : MonoBehaviour
                 }
                 if (fakeDictionary[fakeReelRT].ReelID == fakeReels.Length)
                 {
+                    anticipationAnimation.Deactivate();
                     _isForceStop = false;
                     AllReelsStopped?.Invoke();
                 }
             });
-        MoveSubReelIn(fakeSubConnection[fakeReelRT]);
-
-        
+        MoveSubReelIn(fakeSubConnection[fakeReelRT]);        
     }
 
     private void PrepareFakeReel(RectTransform fakeReelRT)
@@ -207,6 +214,7 @@ public class ReelsScroll : MonoBehaviour
             scattersChecker.CheckScattersOnReel(subReels[1]) > 0)        
         {
             anticipationAnimation.Activate();
+            Anticipation?.Invoke();
             AnticipationSpin();
         }
     }
@@ -227,9 +235,9 @@ public class ReelsScroll : MonoBehaviour
     {
         var reelCurrPos = subReelRT.localPosition;
         subReelRT.localPosition = new Vector3(reelCurrPos.x, startSubReelPositionY, reelCurrPos.z);
-        if (reelID == subReels.Length)
+        if (reelID == SubReels.Length)
         {
-            foreach (var subReel in subReels)
+            foreach (var subReel in SubReels)
             {
                 subReel.FillReel();
             }

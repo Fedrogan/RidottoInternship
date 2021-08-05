@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7ce746c086ea624596324d45836dfd5, type: 3}
   m_Name: Java
   m_EditorClassIdentifier: 
-  symbolName: Java
   symbolImage: {fileID: 21300000, guid: 8ca860a7cac576143a00c1be7324e0e7, type: 3}
-  symbolID: 4
   symbolType: 1
-  symbolCost: 950
+  symbolCost: 900

@@ -25,7 +25,7 @@ public class SubReel : MonoBehaviour
     void Start()
     {
         gameConfig = ordinaryGameConfig;
-        gameController.FreeSpinsStarted += SetBonusConfig;
+        gameController.FreeSpinsDetected += SetBonusConfig;
         gameController.FreeSpinsFinished += SetOrdinaryConfig;
         currentSet = 0;
         FillReel();

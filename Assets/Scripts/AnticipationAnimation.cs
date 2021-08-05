@@ -16,7 +16,7 @@ public class AnticipationAnimation : MonoBehaviour
     public bool IsActive { get; private set; }
 
     public void Activate(object param = null)
-    {
+    {     
         IsActive = true;
 
         StopAllCoroutines();

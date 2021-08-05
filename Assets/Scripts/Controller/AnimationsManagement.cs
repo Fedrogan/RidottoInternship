@@ -9,6 +9,7 @@ using System;
 public class AnimationsManagement : MonoBehaviour
 {
     public event Action AllAnimationsFinished;
+    public event Action WinLineAnimationShowing;
 
     [SerializeField] private ReelsScroll reelsScroll;
 
@@ -34,11 +35,8 @@ public class AnimationsManagement : MonoBehaviour
     {
         reelsScroll.ReelStopped += ShineScatters;
         winLinesToShow = new List<Symbol[]>();
-        allSymbols = new List<Symbol>();
-
-    }
-
-    
+        allSymbols = new List<Symbol>();        
+    }    
 
     private void Start()
     {
@@ -71,6 +69,7 @@ public class AnimationsManagement : MonoBehaviour
         foreach (var line in winLinesToShow)
         {
             ShowWinAnimation(line);
+            WinLineAnimationShowing?.Invoke();
             yield return new WaitForSecondsRealtime(pauseBetweenCoroutines);
             ResetAllSymbolsAnimations();
         }
@@ -142,6 +141,7 @@ public class AnimationsManagement : MonoBehaviour
 
     public void ResetAnimations()
     {
+        print("Anim Reseted");
         isAnimationsPlaying = false;
 
         ResetReelsBG();

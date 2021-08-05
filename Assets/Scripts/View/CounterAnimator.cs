@@ -15,8 +15,8 @@ public class CounterAnimator : MonoBehaviour
     [SerializeField] private CanvasGroup currencyDisabler;
     [SerializeField] private PrizeCalculator calculator;
 
-    //public event Action StartChangingPrize;
-    //public event Action FinishChangingPrize;
+    public event Action StartChangingPrize;
+    public event Action FinishChangingPrize;
 
     private float value;
     private bool isInterrupted;
@@ -41,7 +41,7 @@ public class CounterAnimator : MonoBehaviour
         else
         {
             ShowText(newValue);
-            //StartChangingPrize?.Invoke();
+            StartChangingPrize?.Invoke();
             value = prevValue;
             tween = DOTween.To(() => value, (x) => value = x, newValue, countDuration);
             tween.onComplete = () =>
@@ -53,7 +53,7 @@ public class CounterAnimator : MonoBehaviour
                     ShowText(newValue);
                 }
 
-                //FinishChangingPrize?.Invoke();
+                FinishChangingPrize?.Invoke();
             };
             StartCoroutine(CoCount());
         }
@@ -107,6 +107,7 @@ public class CounterAnimator : MonoBehaviour
     public void ResetCounter()
     {
         isInterrupted = true;
+        value = 0;
         counterDisabler.alpha = 0f;
         currencyDisabler.alpha = 0f;
     }

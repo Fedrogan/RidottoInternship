@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Game Config 1
   m_EditorClassIdentifier: 
   finalScreens:
-  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
-  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
-  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
-  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
-  - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
+  - {fileID: 11400000, guid: 92c3aa461255f8a469ba366d68f76fac, type: 2}
+  - {fileID: 11400000, guid: ab36ecb4d57fae44cb73c6b039a4037a, type: 2}
+  - {fileID: 11400000, guid: 00f1c60bcfe1da743978444339b6b81a, type: 2}
+  - {fileID: 11400000, guid: 92c3aa461255f8a469ba366d68f76fac, type: 2}
+  - {fileID: 11400000, guid: 3eaa31dac3fcd0441b238bbe851f5779, type: 2}
   - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
   - {fileID: 11400000, guid: a294af091b8397a4d8677cb607a167c9, type: 2}
   - {fileID: 11400000, guid: 6cb93ad78b940844288c56f5c9853ea2, type: 2}

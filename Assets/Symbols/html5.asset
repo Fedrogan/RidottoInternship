@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7ce746c086ea624596324d45836dfd5, type: 3}
   m_Name: html5
   m_EditorClassIdentifier: 
-  symbolName: html5
   symbolImage: {fileID: 21300000, guid: 8789771bf98900a47949d23fe140245a, type: 3}
-  symbolID: 3
   symbolType: 0
-  symbolCost: 450
+  symbolCost: 500
